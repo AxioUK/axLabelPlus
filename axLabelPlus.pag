@@ -1,0 +1,553 @@
+VERSION 5.00
+Begin VB.PropertyPage axLPProPag 
+   Caption         =   "Picture"
+   ClientHeight    =   5205
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   5310
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   5205
+   ScaleWidth      =   5310
+   Begin VB.PictureBox PicContainer 
+      BackColor       =   &H00FFFFFF&
+      BorderStyle     =   0  'None
+      Height          =   345
+      Index           =   1
+      Left            =   120
+      ScaleHeight     =   23
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   305
+      TabIndex        =   8
+      TabStop         =   0   'False
+      Top             =   4560
+      Width           =   4575
+   End
+   Begin VB.CommandButton CmdChangeCaption 
+      Caption         =   ">"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   360
+      Index           =   1
+      Left            =   4800
+      TabIndex        =   7
+      Top             =   4575
+      Width           =   375
+   End
+   Begin VB.CommandButton CmdChangeCaption 
+      Caption         =   ">"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   360
+      Index           =   0
+      Left            =   4800
+      TabIndex        =   3
+      Top             =   4080
+      Width           =   375
+   End
+   Begin VB.PictureBox PicContainer 
+      BackColor       =   &H00FFFFFF&
+      BorderStyle     =   0  'None
+      Height          =   345
+      Index           =   0
+      Left            =   120
+      ScaleHeight     =   23
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   305
+      TabIndex        =   0
+      Top             =   4080
+      Width           =   4575
+   End
+   Begin VB.CommandButton CmdDelete 
+      Caption         =   "Delete"
+      Enabled         =   0   'False
+      Height          =   315
+      Left            =   3120
+      TabIndex        =   2
+      Top             =   3480
+      Width           =   975
+   End
+   Begin VB.CommandButton cmdBrowse 
+      Caption         =   "Browse..."
+      Height          =   315
+      Left            =   4200
+      TabIndex        =   1
+      Top             =   3480
+      Width           =   915
+   End
+   Begin Proyecto1.axLabelPlus axLabelPlus1 
+      Height          =   2985
+      Left            =   60
+      TabIndex        =   6
+      Top             =   45
+      Width           =   5130
+      _ExtentX        =   9049
+      _ExtentY        =   5265
+      Caption1        =   "axLabelPlus.pgx":0000
+      Caption2        =   "axLabelPlus.pgx":0038
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
+   End
+   Begin VB.Label LblInfo 
+      Height          =   255
+      Left            =   120
+      TabIndex        =   5
+      Top             =   3120
+      Width           =   5055
+   End
+   Begin VB.Label Label1 
+      Caption         =   "Captions"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   4
+      Top             =   3840
+      Width           =   615
+   End
+   Begin VB.Line Line1 
+      BorderColor     =   &H8000000A&
+      Index           =   1
+      X1              =   705
+      X2              =   5045
+      Y1              =   3945
+      Y2              =   3945
+   End
+   Begin VB.Line Line1 
+      BorderColor     =   &H80000016&
+      Index           =   0
+      X1              =   705
+      X2              =   5045
+      Y1              =   3960
+      Y2              =   3960
+   End
+End
+Attribute VB_Name = "axLPProPag"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+
+
+Option Explicit
+Private Declare Function CreateWindowEx Lib "user32.dll" Alias "CreateWindowExA" (ByVal dwExStyle As Long, ByVal lpClassName As String, ByVal lpWindowName As String, ByVal dwStyle As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, ByRef lpParam As Any) As Long
+Private Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Any) As Long
+Private Declare Function SetWindowLong Lib "user32.dll" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function GetWindowLong Lib "user32.dll" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+
+Private Declare Function CreateWindowExW Lib "user32.dll" (ByVal dwExStyle As Long, ByVal lpClassName As Long, ByVal lpWindowName As Long, ByVal dwStyle As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, ByRef lpParam As Any) As Long
+Private Declare Function SendMessageW Lib "user32.dll" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Any) As Long
+Private Declare Function SetWindowLongW Lib "user32.dll" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function GetWindowLongW Lib "user32.dll" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+
+'Private Declare Function SetProp Lib "user32.dll" Alias "SetPropA" (ByVal hWnd As Long, ByVal lpString As String, ByVal hData As Long) As Long
+'Private Declare Function GetProp Lib "user32.dll" Alias "GetPropA" (ByVal hWnd As Long, ByVal lpString As String) As Long
+Private Declare Function DestroyWindow Lib "user32.dll" (ByVal hwnd As Long) As Long
+Private Declare Function GetDesktopWindow Lib "user32.dll" () As Long
+Private Declare Function IsWindowUnicode Lib "user32.dll" (ByVal hwnd As Long) As Long
+Private Declare Function SetFocusAPI Lib "user32.dll" Alias "SetFocus" (ByVal hwnd As Long) As Long
+
+
+Private Const WM_GETFONT As Long = &H31
+Private Const WM_SETFONT As Long = &H30
+Private Const WM_GETTEXTLENGTH As Long = &HE
+Private Const WM_GETTEXT As Long = &HD
+Private Const WM_SETTEXT As Long = &HC
+Private Const EM_SETSEL As Long = &HB1
+
+
+Private Const WM_KILLFOCUS As Long = &H8
+Private Const WM_SETFOCUS As Long = &H7
+Private Const EN_CHANGE As Long = &H300
+Private Const WM_COMMAND As Long = &H111
+Private Const GWL_WNDPROC As Long = -4
+Private Const WM_DESTROY As Long = &H2
+Private Const WS_CHILD As Long = &H40000000
+
+
+Private Declare Function GetFileTitle Lib "COMDLG32" Alias "GetFileTitleA" (ByVal szFile As String, ByVal szTitle As String, ByVal cbBuf As Long) As Long
+Private Declare Function GetOpenFileName Lib "COMDLG32" Alias "GetOpenFileNameA" (file As OPENFILENAME) As Long
+Private Declare Function lstrlen Lib "kernel32" Alias "lstrlenA" (ByVal lpString As String) As Long
+
+
+Private Enum TextBoxStyleEnum
+    ES_AUTOHSCROLL = &H80&
+    ES_AUTOVSCROLL = &H40&
+    ES_CENTER = &H1&
+    ES_LEFT = &H0&
+    ES_LOWERCASE = &H10&
+    ES_MULTILINE = &H4&
+    ES_NOHIDESEL = &H100&
+    ES_NUMBER = &H2000&
+    ES_PASSWORD = &H20&
+    ES_READONLY = &H800&
+    ES_RIGHT = &H2&
+    ES_SUNKEN = &H4000&
+    ES_UPPERCASE = &H8&
+    ES_WANTRETURN = &H1000&
+    WS_DISABLED = &H8000000
+    WS_DLGFRAME = &H400000
+    WS_HSCROLL = &H100000
+    WS_THICKFRAME = &H40000
+    WS_VISIBLE = &H10000000
+    WS_VSCROLL = &H200000
+End Enum
+
+Private Enum TextBoxStyleExEnum
+    WS_EX_CLIENTEDGE = &H200&
+    WS_EX_LAYOUTRTL = &H400000
+    WS_EX_LEFTSCROLLBAR = &H4000&
+    WS_EX_NOPARENTNOTIFY = &H4&
+    WS_EX_RIGHT = &H1000&
+    WS_EX_RTLREADING = &H2000&
+    WS_EX_STATICEDGE = &H20000
+End Enum
+
+Private Enum EOpenFile
+    OFN_READONLY = &H1
+    OFN_OVERWRITEPROMPT = &H2
+    OFN_HIDEREADONLY = &H4
+    OFN_NOCHANGEDIR = &H8
+    OFN_SHOWHELP = &H10
+    OFN_ENABLEHOOK = &H20
+    OFN_ENABLETEMPLATE = &H40
+    OFN_ENABLETEMPLATEHANDLE = &H80
+    OFN_NOVALIDATE = &H100
+    OFN_ALLOWMULTISELECT = &H200
+    OFN_EXTENSIONDIFFERENT = &H400
+    OFN_PATHMUSTEXIST = &H800
+    OFN_FILEMUSTEXIST = &H1000
+    OFN_CREATEPROMPT = &H2000
+    OFN_SHAREAWARE = &H4000
+    OFN_NOREADONLYRETURN = &H8000&
+    OFN_NOTESTFILECREATE = &H10000
+    OFN_NONETWORKBUTTON = &H20000
+    OFN_NOLONGNAMES = &H40000
+    OFN_EXPLORER = &H80000
+    OFN_NODEREFERENCELINKS = &H100000
+    OFN_LONGNAMES = &H200000
+End Enum
+
+Private Type OPENFILENAME
+    lStructSize As Long          ' Filled with UDT size
+    hWndOwner As Long            ' Tied to Owner
+    hInstance As Long            ' Ignored (used only by templates)
+    lpstrFilter As String        ' Tied to Filter
+    lpstrCustomFilter As String  ' Ignored (exercise for reader)
+    nMaxCustFilter As Long       ' Ignored (exercise for reader)
+    nFilterIndex As Long         ' Tied to FilterIndex
+    lpstrFile As String          ' Tied to FileName
+    nMaxFile As Long             ' Handled internally
+    lpstrFileTitle As String     ' Tied to FileTitle
+    nMaxFileTitle As Long        ' Handled internally
+    lpstrInitialDir As String    ' Tied to InitDir
+    lpstrTitle As String         ' Tied to DlgTitle
+    flags As Long                ' Tied to Flags
+    nFileOffset As Integer       ' Ignored (exercise for reader)
+    nFileExtension As Integer    ' Ignored (exercise for reader)
+    lpstrDefExt As String        ' Tied to DefaultExt
+    lCustData As Long            ' Ignored (needed for hooks)
+    lpfnHook As Long             ' Ignored (good luck with hooks)
+    lpTemplateName As Long       ' Ignored (good luck with templates)
+End Type
+
+
+Private m_Hwnd(1) As Long
+Private m_Parent As Long
+Private m_Unicode As Boolean
+Private m_WinProc As Long
+Private m_WinProcParent As Long
+
+
+Private Const FILTER_PICTURES As String = "Pictures|*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.dib;*.rle;*.jpe;*.jfif;*.emf;*.wmf;*.tif;*.tiff;*.ico;*.cur"
+
+Private Const MAX_PATH = 260
+Private Const MAX_FILE = 260
+
+Private m_oUCImage As axLabelPlus
+Dim I As Integer
+
+Private Function VBGetOpenFileName(Filename As String, _
+       Optional FileTitle As String, _
+       Optional FileMustExist As Boolean = True, _
+       Optional MultiSelect As Boolean = False, _
+       Optional ReadOnly As Boolean = False, _
+       Optional HideReadOnly As Boolean = False, _
+       Optional Filter As String = "All (*.*)| *.*", _
+       Optional FilterIndex As Long = 1, _
+       Optional InitDir As String, _
+       Optional DlgTitle As String, _
+       Optional DefaultExt As String, _
+       Optional Owner As Long = -1, _
+       Optional flags As Long = 0) As Boolean
+
+    Dim opfile As OPENFILENAME, S As String, afFlags As Long
+  
+    With opfile
+        .lStructSize = Len(opfile)
+        
+        .flags = (-FileMustExist * OFN_FILEMUSTEXIST) Or _
+           (-MultiSelect * OFN_ALLOWMULTISELECT) Or _
+           (-ReadOnly * OFN_READONLY) Or _
+           (-HideReadOnly * OFN_HIDEREADONLY) Or _
+           (flags And CLng(Not (OFN_ENABLEHOOK Or _
+           OFN_ENABLETEMPLATE)))
+           
+        If Owner <> -1 Then .hWndOwner = Owner
+        .lpstrInitialDir = InitDir
+        .lpstrDefExt = DefaultExt
+        .lpstrTitle = DlgTitle
+    
+        ' To make Windows-style filter, replace | and : with nulls
+        Dim ch As String, I As Integer
+        For I = 1 To Len(Filter)
+            ch = Mid$(Filter, I, 1)
+            If ch = "|" Or ch = ":" Then
+                S = S & vbNullChar
+            Else
+                S = S & ch
+            End If
+        Next
+        
+        S = S & vbNullChar & vbNullChar
+        .lpstrFilter = S
+        .nFilterIndex = FilterIndex
+
+        ' Pad file and file title buffers to maximum path
+        S = Filename & String$(MAX_PATH - Len(Filename), 0)
+        .lpstrFile = S
+        .nMaxFile = MAX_PATH
+        S = FileTitle & String$(MAX_FILE - Len(FileTitle), 0)
+        .lpstrFileTitle = S
+        .nMaxFileTitle = MAX_FILE
+        ' All other fields set to zero
+    
+        If GetOpenFileName(opfile) = 1 Then
+            ' Success
+            VBGetOpenFileName = True
+            Filename = StrZToStr(.lpstrFile)
+            FileTitle = StrZToStr(.lpstrFileTitle)
+            flags = .flags
+            ' Return the filter index
+            FilterIndex = .nFilterIndex
+            ' Look up the filter the user selected and return that
+            Filter = FilterLookup(.lpstrFilter, FilterIndex)
+            If (.flags And OFN_READONLY) Then ReadOnly = True
+        End If
+    End With
+End Function
+
+Private Function StrZToStr(S As String) As String
+    StrZToStr = Left$(S, lstrlen(S))
+End Function
+
+Private Function FilterLookup(ByVal sFilters As String, ByVal iCur As Long) As String
+    Dim iStart As Long, iEnd As Long, S As String
+    iStart = 1
+    If sFilters = "" Then Exit Function
+    Do
+        ' Cut out both parts marked by null character
+        iEnd = InStr(iStart, sFilters, vbNullChar)
+        If iEnd = 0 Then Exit Function
+        iEnd = InStr(iEnd + 1, sFilters, vbNullChar)
+        If iEnd Then
+            S = Mid$(sFilters, iStart, iEnd - iStart)
+        Else
+            S = Mid$(sFilters, iStart)
+        End If
+        iStart = iEnd + 1
+        If iCur = 1 Then
+            FilterLookup = S
+            Exit Function
+        End If
+        iCur = iCur - 1
+    Loop While iCur
+End Function
+
+Private Sub cmdBrowse_Click()
+    Dim sFile       As String
+    Dim svName()    As String
+    
+    If VBGetOpenFileName(sFile, Filter:=FILTER_PICTURES, Owner:=PropertyPage.hwnd) Then
+
+        Changed = True
+        
+        axLabelPlus1.PictureFromStream ReadFile(sFile)
+        If axLabelPlus1.PictureExist Then
+            CmdDelete.Enabled = True
+        End If
+    End If
+End Sub
+
+Private Function ReadFile(sFileName As String) As Byte()
+    Dim FF As Integer
+    FF = FreeFile
+    Open sFileName For Binary As #FF
+        ReDim ReadFile(LOF(FF) - 1)
+        Get #FF, , ReadFile
+    Close #FF
+End Function
+
+Private Sub CmdChangeCaption_Click(Index As Integer)
+
+    Changed = True
+    
+    SendMessage m_Hwnd(Index), EM_SETSEL, 0&, -1&
+    SetFocusAPI m_Hwnd(Index)
+End Sub
+
+Private Sub CmdDelete_Click()
+    axLabelPlus1.PictureDelete
+    CmdDelete.Enabled = False
+    Changed = True
+End Sub
+
+Private Sub PicContainer_GotFocus(Index As Integer)
+    SendMessage m_Hwnd(Index), EM_SETSEL, 0&, -1&
+    SetFocusAPI m_Hwnd(Index)
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    m_oUCImage.Caption1 = GetText(0)
+    m_oUCImage.Caption2 = GetText(1)
+    If axLabelPlus1.PictureExist Then
+        m_oUCImage.PictureFromStream axLabelPlus1.PictureGetStream
+    Else
+        m_oUCImage.PictureDelete
+    End If
+End Sub
+
+Private Sub PropertyPage_Initialize()
+   Dim Style As TextBoxStyleEnum
+   Dim ExtendedStyle As TextBoxStyleExEnum
+
+    PropertyPage.ScaleMode = vbPixels
+    
+    With axLabelPlus1
+        .BackColorOpacity = 0
+        .Border = True
+        .BorderColor = &H8000000A
+        .BorderWidth = 1
+        .Caption1 = vbNullString
+        .Caption2 = vbNullString
+        .PictureAlignmentH = pCenter
+        .PictureAlignmentV = pMiddle
+        .PictureSetWidth = .Width
+        .PictureSetHeight = .Height
+    End With
+    
+    m_Unicode = Not (IsWindowUnicode(GetDesktopWindow) = 0&)
+
+    Style = ES_AUTOHSCROLL Or ES_LEFT Or WS_VISIBLE Or ES_MULTILINE Or ES_AUTOVSCROLL Or ES_WANTRETURN Or WS_VSCROLL
+    ExtendedStyle = WS_EX_STATICEDGE
+    
+    If m_Unicode Then
+        m_Hwnd(0) = CreateWindowExW(ExtendedStyle, StrPtr("Edit"), StrPtr(axLabelPlus1.Caption1), Style Or WS_CHILD, 0, 0, PicContainer(0).ScaleWidth, PicContainer(0).ScaleHeight, PicContainer(0).hwnd, 0&, App.hInstance, ByVal 0&)
+        m_Hwnd(1) = CreateWindowExW(ExtendedStyle, StrPtr("Edit"), StrPtr(axLabelPlus1.Caption2), Style Or WS_CHILD, 0, 0, PicContainer(1).ScaleWidth, PicContainer(1).ScaleHeight, PicContainer(1).hwnd, 0&, App.hInstance, ByVal 0&)
+    Else
+        m_Hwnd(0) = CreateWindowEx(ExtendedStyle, "Edit", axLabelPlus1.Caption1, Style Or WS_CHILD, 0, 0, PicContainer(0).ScaleWidth, PicContainer(0).ScaleHeight, PicContainer(0).hwnd, 0&, App.hInstance, ByVal 0&)
+        m_Hwnd(1) = CreateWindowEx(ExtendedStyle, "Edit", axLabelPlus1.Caption2, Style Or WS_CHILD, 0, 0, PicContainer(1).ScaleWidth, PicContainer(1).ScaleHeight, PicContainer(1).hwnd, 0&, App.hInstance, ByVal 0&)
+    End If
+    
+  For I = 0 To 1
+    SendMessage m_Hwnd(I), WM_SETFONT, SendMessage(PicContainer(I).hwnd, WM_GETFONT, 0&, ByVal 0&), ByVal 0&
+    SendMessage m_Hwnd(I), EM_SETSEL, 0&, -1&
+    SetFocusAPI m_Hwnd(I)
+  Next I
+End Sub
+
+
+Private Sub PropertyPage_SelectionChanged()
+    Set m_oUCImage = SelectedControls(0)
+    SetText 0, m_oUCImage.Caption1
+    SetText 1, m_oUCImage.Caption2
+    If m_oUCImage.PictureExist Then
+        axLabelPlus1.PictureFromStream m_oUCImage.PictureGetStream
+        CmdDelete.Enabled = True
+        LblInfo.Caption = "File Size: " & Format(UBound(m_oUCImage.PictureGetStream) + 1, "#,###") & " Bytes, Dimensions: " & _
+                          m_oUCImage.PictureGetWidth & "x" & m_oUCImage.PictureGetHeight
+    Else
+        LblInfo.Caption = vbNullString
+        axLabelPlus1.PictureDelete
+    End If
+    For I = 0 To 1
+      SendMessage m_Hwnd(I), EM_SETSEL, 0&, -1&
+      SetFocusAPI m_Hwnd(I)
+    Next I
+End Sub
+
+Private Sub PropertyPage_Terminate()
+    If m_Hwnd(0) Then
+      DestroyWindow m_Hwnd(0)
+      DestroyWindow m_Hwnd(1)
+    End If
+End Sub
+
+Private Function GetText(I As Integer) As String
+Dim text As String
+    If m_Hwnd(I) Then
+        Dim lLength As Long
+        If m_Unicode Then
+            lLength = SendMessageW(m_Hwnd(I), WM_GETTEXTLENGTH, 0&, ByVal 0&)
+            If lLength Then
+                text = String$(lLength, 0)
+                SendMessageW m_Hwnd(I), WM_GETTEXT, lLength + 1&, ByVal StrPtr(text)
+            End If
+        Else
+            lLength = SendMessage(m_Hwnd(I), WM_GETTEXTLENGTH, 0&, ByVal 0&)
+            If lLength Then
+                text = String$(lLength, 0)
+                SendMessage m_Hwnd(I), WM_GETTEXT, lLength + 1&, ByVal StrPtr(text)
+            End If
+        End If
+        GetText = text
+    End If
+End Function
+
+Private Function SetText(I As Integer, newVal As String)
+    If m_Hwnd(I) Then
+        If m_Unicode Then
+            SendMessageW m_Hwnd(I), WM_SETTEXT, 0&, ByVal StrPtr(newVal)
+        Else
+            SendMessage m_Hwnd(I), WM_SETTEXT, 0&, ByVal newVal
+        End If
+    End If
+End Function
+
+
+
