@@ -12,16 +12,22 @@ Begin VB.UserControl axLabelPlus
    ScaleWidth      =   318
    ToolboxBitmap   =   "axLabelPlus.ctx":0011
    Windowless      =   -1  'True
+   Begin VB.Timer tmrGlow 
+      Enabled         =   0   'False
+      Interval        =   50
+      Left            =   0
+      Top             =   30
+   End
    Begin VB.Timer tmrMOUSEOVER 
-      Left            =   1320
-      Top             =   1800
+      Left            =   420
+      Top             =   30
    End
 End
 Attribute VB_Name = "axLabelPlus"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 Option Explicit
 '------------------------------------------
 'Original Name: LabelPlus
@@ -36,7 +42,7 @@ Option Explicit
 'Moded Name: axLabelPlus
 'Autor:  David Rojas A. [AxioUK]
 'LastUpdate: 19/01/2020
-'Version: 1.5.5
+'Version: 1.5.6
 'Special thanks to:
 '- Leandro Ascierto por la creación de este Espectacular Control, su apoyo y guía y por permitirme modificar su control.
 '- YAcosta por sus ideas y por testear cada modificación.
@@ -44,7 +50,6 @@ Option Explicit
 '-----------------------------------------------
 Private Declare Function TlsGetValue Lib "kernel32.dll" (ByVal dwTlsIndex As Long) As Long
 Private Declare Function TlsSetValue Lib "kernel32.dll" (ByVal dwTlsIndex As Long, ByVal lpTlsValue As Long) As Long
-'Private Declare Function TlsFree Lib "kernel32.dll" (ByVal dwTlsIndex As Long) As Long
 Private Declare Function TlsAlloc Lib "kernel32.dll" () As Long
 Private Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" (ByRef Destination As Any, ByRef Source As Any, ByVal Length As Long)
 Private Declare Sub RtlMoveMemory Lib "kernel32" (ByVal Destination As Long, ByVal Source As Long, ByVal Length As Long)
@@ -91,11 +96,9 @@ Private Declare Function GdipDrawImageRectRectI Lib "gdiplus" (ByVal hGraphics A
 Private Declare Function GdipDisposeImageAttributes Lib "gdiplus" (ByVal imageattr As Long) As Long
 Private Declare Function GdipCreateImageAttributes Lib "gdiplus" (ByRef imageattr As Long) As Long
 Private Declare Function GdipSetImageAttributesColorMatrix Lib "gdiplus" (ByVal imageattr As Long, ByVal ColorAdjust As Long, ByVal EnableFlag As Boolean, ByRef MatrixColor As COLORMATRIX, ByRef MatrixGray As COLORMATRIX, ByVal flags As Long) As Long
-'Private Declare Function GdipImageRotateFlip Lib "gdiplus" (ByVal Image As Long, ByVal rfType As Long) As Long
 Private Declare Function GdipSetSmoothingMode Lib "gdiplus" (ByVal graphics As Long, ByVal SmoothingMd As Long) As Long
 Private Declare Function GdipCreateSolidFill Lib "gdiplus" (ByVal argb As Long, ByRef Brush As Long) As Long
 Private Declare Function GdipDeleteBrush Lib "gdiplus" (ByVal Brush As Long) As Long
-'Private Declare Function GdipSetSolidFillColor Lib "gdiplus" (ByVal Brush As Long, ByVal argb As Long) As Long
 Private Declare Function GdipCreatePen1 Lib "GdiPlus.dll" (ByVal mColor As Long, ByVal mWidth As Single, ByVal mUnit As Long, ByRef mPen As Long) As Long
 Private Declare Function GdipDrawLineI Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mPen As Long, ByVal mX1 As Long, ByVal mY1 As Long, ByVal mX2 As Long, ByVal mY2 As Long) As Long
 Private Declare Function GdipFillPolygonI Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mBrush As Long, ByRef mPoints As Any, ByVal mCount As Long, ByVal mFillMode As Long) As Long
@@ -125,7 +128,6 @@ Private Declare Function GdipCreateLineBrushFromRectWithAngleI Lib "GdiPlus.dll"
 Private Declare Function GdipCreateFontFamilyFromName Lib "gdiplus" (ByVal Name As Long, ByVal fontCollection As Long, fontFamily As Long) As Long
 Private Declare Function GdipDeleteFontFamily Lib "gdiplus" (ByVal fontFamily As Long) As Long
 Private Declare Function GdipAddPathString Lib "GdiPlus.dll" (ByVal mPath As Long, ByVal mString As Long, ByVal mLength As Long, ByVal mFamily As Long, ByVal mStyle As Long, ByVal mEmSize As Single, ByRef mLayoutRect As RECTF, ByVal mFormat As Long) As Long
-'Private Declare Function GdipGetGenericFontFamilySerif Lib "gdiplus" (ByRef nativeFamily As Long) As Long
 Private Declare Function GdipGetGenericFontFamilySansSerif Lib "GdiPlus.dll" (ByRef mNativeFamily As Long) As Long
 Private Declare Function GdipCreateStringFormat Lib "gdiplus" (ByVal formatAttributes As Long, ByVal language As Integer, StringFormat As Long) As Long
 Private Declare Function GdipSetStringFormatFlags Lib "GdiPlus.dll" (ByVal mFormat As Long, ByVal mFlags As StringFormatFlags) As Long
@@ -140,9 +142,7 @@ Private Declare Function GdipDeleteStringFormat Lib "GdiPlus.dll" (ByVal mFormat
 Private Declare Function GdipCreateBitmapFromHBITMAP Lib "GdiPlus.dll" (ByVal mHbm As Long, ByVal mhPal As Long, ByRef mBitmap As Long) As Long
 Private Declare Function GdipCreateEffect Lib "gdiplus" (ByVal dwCid1 As Long, ByVal dwCid2 As Long, ByVal dwCid3 As Long, ByVal dwCid4 As Long, ByRef Effect As Long) As Long
 Private Declare Function GdipSetEffectParameters Lib "gdiplus" (ByVal Effect As Long, ByRef params As Any, ByVal Size As Long) As Long
-'Private Declare Function GdipDeleteEffect Lib "gdiplus" (ByVal Effect As Long) As Long
 Private Declare Function GdipDrawImageFX Lib "gdiplus" (ByVal graphics As Long, ByVal Image As Long, ByRef Source As RECTF, ByVal xForm As Long, ByVal Effect As Long, ByVal imageAttributes As Long, ByVal srcUnit As Long) As Long
-'Private Declare Function GdipDrawPie Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mPen As Long, ByVal mX As Single, ByVal mY As Single, ByVal mWidth As Single, ByVal mHeight As Single, ByVal mStartAngle As Single, ByVal mSweepAngle As Single) As Long
 Private Declare Function GdipDrawArc Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mPen As Long, ByVal mX As Single, ByVal mY As Single, ByVal mWidth As Single, ByVal mHeight As Single, ByVal mStartAngle As Single, ByVal mSweepAngle As Single) As Long
 Private Declare Function GdipSetClipRectI Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mX As Long, ByVal mY As Long, ByVal mWidth As Long, ByVal mHeight As Long, ByVal mCombineMode As Long) As Long
 Private Declare Function GdipResetClip Lib "GdiPlus.dll" (ByVal mGraphics As Long) As Long
@@ -384,6 +384,7 @@ Public Event PictureDownloadComplete()
 Public Event PictureDownloadError()
 
 'Default Property Values:
+Const m_def_Glowing = False
 Const m_def_BackColorOpacity = 100
 Const m_def_BackColorP = &HE0E0E0
 Const m_def_BackColorPOpacity = 100
@@ -417,6 +418,7 @@ Const m_def_Value = False
 Const m_def_OptionBehavior = False
 
 'Property Variables:
+Dim m_Glowing As Boolean
 Dim m_CallOut As Boolean
 Dim m_CallOutPosicion As eCallOutPosition
 Dim m_CallOutAlign As eCallOutAlign
@@ -433,14 +435,14 @@ Dim m_BackShadow As Boolean
 Dim m_Border As Boolean
 Dim m_BorderColor As OLE_COLOR
 Dim m_BorderColorOpacity As Integer
-Dim m_ColorOnMouseOver As OLE_COLOR
-Dim m_ColorOnMouseOverOpacity As Integer
 Dim m_BorderPosition As eBorderPosition
 Dim m_BorderCornerLeftTop As Integer
 Dim m_BorderCornerRightTop As Integer
 Dim m_BorderCornerBottomLeft As Integer
 Dim m_BorderCornerBottomRight As Integer
 Dim m_BorderWidth As Integer
+Dim m_OldBorderWidth As Integer
+Dim m_BorderGlow As Integer
 Dim hImgShadow As Long
 Dim m_ShadowSize As Integer
 Dim m_ShadowColor As OLE_COLOR
@@ -463,6 +465,8 @@ Dim m_CaptionBorderColor As OLE_COLOR
 Dim m_CaptionShadow As Boolean
 Dim m_CaptionAngle As Integer
 Dim m_CaptionShowPrefix As Boolean
+Dim m_ColorOnMouseOver As OLE_COLOR
+Dim m_ColorOnMouseOverOpacity As Integer
 Dim m_AutoSize As Boolean
 Dim m_MousePointerHands As Boolean
 Dim WithEvents m_Font As StdFont
@@ -2046,6 +2050,20 @@ Private Function zFnAddr(ByVal sDLL As String, ByVal sProc As String) As Long
     zFnAddr = GetProcAddress(GetModuleHandleA(sDLL), sProc)  'Get the specified procedure address
 End Function
 
+Private Sub tmrGlow_Timer()
+If m_Glowing And m_BorderGlow <= 10 Then
+  m_BorderPosition = bpInside
+  m_BorderGlow = m_BorderGlow + 1
+  m_BorderWidth = m_BorderGlow
+  m_BorderColorOpacity = 100 - (m_BorderGlow * 10)
+  Refresh
+Else
+  m_BorderGlow = 1
+  m_BorderWidth = m_BorderGlow
+  m_BorderColorOpacity = 60
+End If
+End Sub
+
 Private Sub tmrMOUSEOVER_Timer()
     If Not IsMouseInExtender Then
         tmrMOUSEOVER.Interval = 0
@@ -2175,9 +2193,12 @@ Private Sub UserControl_InitProperties()
     m_IconOpacity = m_def_PictureOpacity
     m_Value = m_def_Value
     m_OptionBehavior = m_def_OptionBehavior
-    
+    m_HotLineColorOpacity = 100
+    m_HotLineWidth = 5&
+
     c_lhWnd = UserControl.ContainerHwnd
     Call ManageGDIToken(c_lhWnd)
+  m_Glowing = m_def_Glowing
 End Sub
 
 Private Sub UserControl_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -2339,6 +2360,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_IconAlignmentH = .ReadProperty("IconAlignmentH", 0)
         m_IconAlignmentV = .ReadProperty("IconAlignmentV", 0)
         m_IconOpacity = .ReadProperty("IconOpacity", 100)
+        m_Glowing = PropBag.ReadProperty("Glowing", m_def_Glowing)
         
         If m_MousePointerHands Then
             If Ambient.UserMode Then
@@ -2355,6 +2377,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         CreateShadow
         If m_BackAcrylicBlur Then CreateBuffer
     End With
+  
 End Sub
 
 Private Sub UserControl_Resize()
@@ -2477,6 +2500,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("IconAlignmentH", m_IconAlignmentH, 0)
         Call .WriteProperty("IconAlignmentV", m_IconAlignmentV, 0)
         Call .WriteProperty("IconOpacity", m_IconOpacity, 100)
+        Call PropBag.WriteProperty("Glowing", m_Glowing, m_def_Glowing)
         
         Call .WriteProperty("PicturePresent", m_PicturePresent, False)
         If m_PicturePresent Then
@@ -2487,6 +2511,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         
     End With
 
+  
 End Sub
 
 Public Property Get AutoSize() As Boolean
@@ -2746,6 +2771,7 @@ End Property
 
 Public Property Let BorderWidth(ByVal New_BorderWidth As Integer)
     m_BorderWidth = New_BorderWidth
+    m_OldBorderWidth = New_BorderWidth
     PropertyChanged "BorderWidth"
     If m_PictureBrush <> 0 Then GdipDeleteBrush m_PictureBrush: m_PictureBrush = 0
     CreateShadow
@@ -3701,4 +3727,15 @@ Public Property Let WordWrap(ByVal New_WordWrap As Boolean)
     Refresh
 End Property
 
+Public Property Get Glowing() As Boolean
+  Glowing = m_Glowing
+End Property
+
+Public Property Let Glowing(ByVal New_Glowing As Boolean)
+  m_Glowing = New_Glowing
+  PropertyChanged "Glowing"
+  tmrGlow.Enabled = m_Glowing
+  If Not New_Glowing Then m_BorderWidth = m_OldBorderWidth
+  Refresh
+End Property
 

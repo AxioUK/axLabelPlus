@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "*\AaxLabelPlus.vbp"
 Begin VB.Form Form1 
    Caption         =   "New Properties axLabelPlus (Mod Version of Great LabelPlus from Leandro Ascierto)"
    ClientHeight    =   6375
@@ -15,11 +16,18 @@ Begin VB.Form Form1
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    ScaleHeight     =   6375
    ScaleWidth      =   10725
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton cmdGlowing 
+      Caption         =   "Glowing"
+      Height          =   360
+      Left            =   4575
+      TabIndex        =   38
+      Top             =   2310
+      Width           =   1305
+   End
    Begin VB.TextBox Text2 
       Height          =   330
       Left            =   7875
@@ -163,6 +171,87 @@ Begin VB.Form Form1
       Value           =   -1  'True
       Width           =   2040
    End
+   Begin VB.Label Label8 
+      AutoSize        =   -1  'True
+      Caption         =   " Glowing "
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000080&
+      Height          =   240
+      Left            =   3735
+      TabIndex        =   39
+      Top             =   1815
+      Width           =   855
+   End
+   Begin VB.Shape Shape1 
+      BorderColor     =   &H000000FF&
+      BorderWidth     =   3
+      Height          =   1050
+      Left            =   3630
+      Top             =   1950
+      Width           =   2520
+   End
+   Begin AXLPCTRL.axLabelPlus axLPGlow 
+      Height          =   555
+      Left            =   3810
+      TabIndex        =   37
+      Top             =   2190
+      Width           =   555
+      _ExtentX        =   979
+      _ExtentY        =   979
+      BackColor       =   65535
+      Border          =   -1  'True
+      BorderColor     =   8438015
+      BorderColorOpacity=   30
+      BorderCornerLeftTop=   50
+      BorderCornerRightTop=   50
+      BorderCornerBottomRight=   50
+      BorderCornerBottomLeft=   50
+      BorderPosition  =   0
+      CaptionAlignmentH=   1
+      CaptionAlignmentV=   1
+      Caption1        =   "Form1.frx":0000
+      Caption2        =   "Form1.frx":0022
+      CaptionBorderColor=   0
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ChangeOnMouseOver=   0
+      GradientColorP1 =   0
+      GradientColorP1Opacity=   0
+      GradientColorP2 =   0
+      GradientColorP2Opacity=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLineColor    =   0
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      PictureArr      =   0
+   End
    Begin VB.Label Label6 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
@@ -185,46 +274,63 @@ Begin VB.Form Form1
       Top             =   5490
       Width           =   645
    End
-   Begin Proyecto1.axLabelPlus axLPCross 
+   Begin AXLPCTRL.axLabelPlus axLPCross 
       Height          =   915
       Left            =   345
       TabIndex        =   29
       Top             =   4890
       Width           =   2775
-      _extentx        =   4895
-      _extenty        =   1614
-      backcolor       =   12648447
-      backcolorpress  =   8438015
-      border          =   -1
-      bordercolor     =   16711680
-      coloronmouseover=   255
-      bordercornerlefttop=   5
-      bordercornerrighttop=   5
-      bordercornerbottomright=   5
-      bordercornerbottomleft=   5
-      borderwidth     =   2
-      captionalignmenth=   1
-      captionalignmentv=   1
-      caption1        =   "Form1.frx":0000
-      caption2        =   "Form1.frx":003C
-      caption2paddingx=   10
-      caption2paddingy=   10
-      crossposition   =   7
-      font            =   "Form1.frx":005C
-      forecoloronpress=   16777215
-      changecoloronclick=   -1
-      changeonmouseover=   0
-      shadowcoloropacity=   0
-      calloutalign    =   0
-      calloutwidth    =   0
-      calloutlen      =   0
-      mousepointer    =   0
-      hotline         =   -1
-      hotlinewidth    =   8
-      hotlineposition =   0
-      iconfont        =   "Form1.frx":0084
-      iconforecolor   =   0
-      iconopacity     =   0
+      _ExtentX        =   4895
+      _ExtentY        =   1614
+      BackColor       =   12648447
+      BackColorPress  =   8438015
+      Border          =   -1  'True
+      BorderColor     =   16711680
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      CaptionAlignmentH=   1
+      CaptionAlignmentV=   1
+      Caption1        =   "Form1.frx":0042
+      Caption2        =   "Form1.frx":007E
+      Caption2PaddingX=   10
+      Caption2PaddingY=   10
+      CrossPosition   =   7
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColorOnPress=   16777215
+      ChangeColorOnClick=   -1  'True
+      ChangeOnMouseOver=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLine         =   -1  'True
+      HotLineWidth    =   8
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
@@ -266,46 +372,63 @@ Begin VB.Form Form1
       Top             =   135
       Width           =   2925
    End
-   Begin Proyecto1.axLabelPlus axLPValue 
+   Begin AXLPCTRL.axLabelPlus axLPValue 
       Height          =   990
       Left            =   6480
       TabIndex        =   26
       Top             =   525
       Width           =   2775
-      _extentx        =   4895
-      _extenty        =   1746
-      backcolor       =   12648447
-      backcolorpress  =   8438015
-      border          =   -1
-      bordercolor     =   -2147483635
-      coloronmouseover=   255
-      bordercornerlefttop=   5
-      bordercornerrighttop=   5
-      bordercornerbottomright=   5
-      bordercornerbottomleft=   5
-      borderwidth     =   2
-      captionalignmenth=   1
-      caption1        =   "Form1.frx":00AC
-      caption2        =   "Form1.frx":00DE
-      caption2sizeminus=   1
-      caption2paddingx=   50
-      caption2paddingy=   12
-      crossposition   =   7
-      font            =   "Form1.frx":0108
-      forecoloronpress=   16777215
-      changecoloronclick=   -1
-      changeonmouseover=   0
-      shadowcoloropacity=   0
-      calloutalign    =   0
-      calloutwidth    =   0
-      calloutlen      =   0
-      mousepointer    =   0
-      hotline         =   -1
-      hotlinewidth    =   45
-      hotlineposition =   0
-      iconfont        =   "Form1.frx":0130
-      iconforecolor   =   0
-      iconopacity     =   0
+      _ExtentX        =   4895
+      _ExtentY        =   1746
+      BackColor       =   12648447
+      BackColorPress  =   8438015
+      Border          =   -1  'True
+      BorderColor     =   -2147483635
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      CaptionAlignmentH=   1
+      Caption1        =   "Form1.frx":009E
+      Caption2        =   "Form1.frx":00D0
+      Caption2SizeMinus=   1
+      Caption2PaddingX=   50
+      Caption2PaddingY=   12
+      CrossPosition   =   7
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColorOnPress=   16777215
+      ChangeColorOnClick=   -1  'True
+      ChangeOnMouseOver=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLine         =   -1  'True
+      HotLineWidth    =   45
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
    End
    Begin VB.Label Label7 
       AutoSize        =   -1  'True
@@ -389,42 +512,59 @@ Begin VB.Form Form1
       Top             =   1845
       Width           =   2925
    End
-   Begin Proyecto1.axLabelPlus axLPdc 
+   Begin AXLPCTRL.axLabelPlus axLPdc 
       Height          =   1245
       Left            =   7020
       TabIndex        =   10
       Top             =   2790
       Width           =   2775
-      _extentx        =   4895
-      _extenty        =   2196
-      backcolor       =   12648447
-      backcolorpress  =   8438015
-      border          =   -1
-      bordercolor     =   16711680
-      coloronmouseover=   255
-      bordercornerlefttop=   5
-      bordercornerrighttop=   5
-      bordercornerbottomright=   5
-      bordercornerbottomleft=   5
-      borderwidth     =   2
-      caption1        =   "Form1.frx":0158
-      caption2        =   "Form1.frx":0188
-      crossposition   =   7
-      font            =   "Form1.frx":01B8
-      forecoloronpress=   16777215
-      changecoloronclick=   -1
-      changeonmouseover=   0
-      shadowcoloropacity=   0
-      calloutalign    =   0
-      calloutwidth    =   0
-      calloutlen      =   0
-      mousepointer    =   0
-      hotline         =   -1
-      hotlinewidth    =   8
-      hotlineposition =   0
-      iconfont        =   "Form1.frx":01E0
-      iconforecolor   =   0
-      iconopacity     =   0
+      _ExtentX        =   4895
+      _ExtentY        =   2196
+      BackColor       =   12648447
+      BackColorPress  =   8438015
+      Border          =   -1  'True
+      BorderColor     =   16711680
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      Caption1        =   "Form1.frx":00FA
+      Caption2        =   "Form1.frx":012A
+      CrossPosition   =   7
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColorOnPress=   16777215
+      ChangeColorOnClick=   -1  'True
+      ChangeOnMouseOver=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLine         =   -1  'True
+      HotLineWidth    =   8
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
@@ -446,122 +586,173 @@ Begin VB.Form Form1
       Top             =   3135
       Width           =   2925
    End
-   Begin Proyecto1.axLabelPlus axLPccc 
+   Begin AXLPCTRL.axLabelPlus axLPccc 
       Height          =   795
       Left            =   285
       TabIndex        =   7
       Top             =   3480
       Width           =   2775
-      _extentx        =   4895
-      _extenty        =   1402
-      backcolor       =   12648447
-      backcolorpress  =   8438015
-      border          =   -1
-      bordercolor     =   16711680
-      coloronmouseover=   255
-      bordercornerlefttop=   5
-      bordercornerrighttop=   5
-      bordercornerbottomright=   5
-      bordercornerbottomleft=   5
-      borderwidth     =   2
-      captionalignmenth=   1
-      captionalignmentv=   1
-      caption1        =   "Form1.frx":0208
-      caption2        =   "Form1.frx":023A
-      caption2paddingx=   10
-      caption2paddingy=   10
-      crossposition   =   7
-      font            =   "Form1.frx":025A
-      forecoloronpress=   16777215
-      changecoloronclick=   -1
-      changeonmouseover=   0
-      shadowcoloropacity=   0
-      calloutalign    =   0
-      calloutwidth    =   0
-      calloutlen      =   0
-      mousepointer    =   0
-      hotline         =   -1
-      hotlinewidth    =   8
-      hotlineposition =   0
-      iconfont        =   "Form1.frx":0282
-      iconforecolor   =   0
-      iconopacity     =   0
+      _ExtentX        =   4895
+      _ExtentY        =   1402
+      BackColor       =   12648447
+      BackColorPress  =   8438015
+      Border          =   -1  'True
+      BorderColor     =   16711680
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      CaptionAlignmentH=   1
+      CaptionAlignmentV=   1
+      Caption1        =   "Form1.frx":015A
+      Caption2        =   "Form1.frx":018C
+      Caption2PaddingX=   10
+      Caption2PaddingY=   10
+      CrossPosition   =   7
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColorOnPress=   16777215
+      ChangeColorOnClick=   -1  'True
+      ChangeOnMouseOver=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLine         =   -1  'True
+      HotLineWidth    =   8
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
    End
-   Begin Proyecto1.axLabelPlus axLPbc 
+   Begin AXLPCTRL.axLabelPlus axLPbc 
       Height          =   795
       Index           =   2
       Left            =   300
       TabIndex        =   6
       Top             =   2160
       Width           =   2775
-      _extentx        =   4895
-      _extenty        =   1402
-      backcolor       =   12648447
-      border          =   -1
-      bordercolor     =   16711680
-      coloronmouseover=   255
-      bordercornerlefttop=   5
-      bordercornerrighttop=   5
-      bordercornerbottomright=   5
-      bordercornerbottomleft=   5
-      borderwidth     =   2
-      caption1        =   "Form1.frx":02AA
-      caption2        =   "Form1.frx":02CA
-      caption1paddingx=   10
-      caption2paddingx=   10
-      caption2paddingy=   10
-      crossposition   =   7
-      font            =   "Form1.frx":02EA
-      changeonmouseover=   0
-      shadowcoloropacity=   0
-      calloutalign    =   0
-      calloutwidth    =   0
-      calloutlen      =   0
-      mousepointer    =   0
-      hotline         =   -1
-      hotlinewidth    =   8
-      hotlineposition =   0
-      iconfont        =   "Form1.frx":0312
-      iconforecolor   =   0
-      iconopacity     =   0
+      _ExtentX        =   4895
+      _ExtentY        =   1402
+      BackColor       =   12648447
+      Border          =   -1  'True
+      BorderColor     =   16711680
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      Caption1        =   "Form1.frx":01AC
+      Caption2        =   "Form1.frx":01CC
+      Caption1PaddingX=   10
+      Caption2PaddingX=   10
+      Caption2PaddingY=   10
+      CrossPosition   =   7
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ChangeOnMouseOver=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLine         =   -1  'True
+      HotLineWidth    =   8
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
    End
-   Begin Proyecto1.axLabelPlus axLPbc 
+   Begin AXLPCTRL.axLabelPlus axLPbc 
       Height          =   795
       Index           =   1
       Left            =   300
       TabIndex        =   5
       Top             =   1320
       Width           =   2775
-      _extentx        =   4895
-      _extenty        =   1402
-      backcolor       =   12648447
-      border          =   -1
-      bordercolor     =   16711680
-      coloronmouseover=   255
-      bordercornerlefttop=   5
-      bordercornerrighttop=   5
-      bordercornerbottomright=   5
-      bordercornerbottomleft=   5
-      borderwidth     =   2
-      caption1        =   "Form1.frx":033A
-      caption2        =   "Form1.frx":035A
-      caption1paddingx=   10
-      caption2paddingx=   10
-      caption2paddingy=   10
-      crossposition   =   7
-      font            =   "Form1.frx":037A
-      changeonmouseover=   0
-      shadowcoloropacity=   0
-      calloutalign    =   0
-      calloutwidth    =   0
-      calloutlen      =   0
-      mousepointer    =   0
-      hotline         =   -1
-      hotlinewidth    =   8
-      hotlineposition =   0
-      iconfont        =   "Form1.frx":03A2
-      iconforecolor   =   0
-      iconopacity     =   0
+      _ExtentX        =   4895
+      _ExtentY        =   1402
+      BackColor       =   12648447
+      Border          =   -1  'True
+      BorderColor     =   16711680
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      Caption1        =   "Form1.frx":01EC
+      Caption2        =   "Form1.frx":020C
+      Caption1PaddingX=   10
+      Caption2PaddingX=   10
+      Caption2PaddingY=   10
+      CrossPosition   =   7
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ChangeOnMouseOver=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLine         =   -1  'True
+      HotLineWidth    =   8
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
@@ -583,43 +774,60 @@ Begin VB.Form Form1
       Top             =   150
       Width           =   2925
    End
-   Begin Proyecto1.axLabelPlus axLPbc 
+   Begin AXLPCTRL.axLabelPlus axLPbc 
       Height          =   795
       Index           =   0
       Left            =   300
       TabIndex        =   0
       Top             =   480
       Width           =   2775
-      _extentx        =   4895
-      _extenty        =   1402
-      backcolor       =   12648447
-      border          =   -1
-      bordercolor     =   16711680
-      coloronmouseover=   255
-      bordercornerlefttop=   5
-      bordercornerrighttop=   5
-      bordercornerbottomright=   5
-      bordercornerbottomleft=   5
-      borderwidth     =   2
-      caption1        =   "Form1.frx":03CA
-      caption2        =   "Form1.frx":03EA
-      caption1paddingx=   10
-      caption2paddingx=   10
-      caption2paddingy=   10
-      crossposition   =   7
-      font            =   "Form1.frx":040A
-      changeonmouseover=   0
-      shadowcoloropacity=   0
-      calloutalign    =   0
-      calloutwidth    =   0
-      calloutlen      =   0
-      mousepointer    =   0
-      hotline         =   -1
-      hotlinewidth    =   8
-      hotlineposition =   0
-      iconfont        =   "Form1.frx":0432
-      iconforecolor   =   0
-      iconopacity     =   0
+      _ExtentX        =   4895
+      _ExtentY        =   1402
+      BackColor       =   12648447
+      Border          =   -1  'True
+      BorderColor     =   16711680
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      Caption1        =   "Form1.frx":022C
+      Caption2        =   "Form1.frx":024C
+      Caption1PaddingX=   10
+      Caption2PaddingX=   10
+      Caption2PaddingY=   10
+      CrossPosition   =   7
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ChangeOnMouseOver=   0
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLine         =   -1  'True
+      HotLineWidth    =   8
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
    End
 End
 Attribute VB_Name = "Form1"
@@ -650,6 +858,10 @@ Private Sub Check2_Click()
 axLPCross.CrossVisible = Check2.Value
 End Sub
 
+Private Sub cmdGlowing_Click()
+axLPGlow.Glowing = Not axLPGlow.Glowing
+End Sub
+
 Private Sub Command1_Click()
 axLPCross.Visible = True
 End Sub
@@ -670,12 +882,12 @@ End Sub
 
 Private Sub HScroll1_Change()
 axLPdc.Caption1PaddingX = HScroll1.Value
-X1.text = HScroll1.Value
+X1.Text = HScroll1.Value
 End Sub
 
 Private Sub HScroll2_Change()
 axLPdc.Caption2PaddingX = HScroll2.Value
-X2.text = HScroll2.Value
+X2.Text = HScroll2.Value
 End Sub
 
 Private Sub List1_Click()
@@ -689,19 +901,19 @@ Next I
 End Sub
 
 Private Sub Text1_Change()
-axLPdc.Caption1 = Text1.text
+axLPdc.Caption1 = Text1.Text
 End Sub
 
 Private Sub Text2_Change()
-axLPdc.Caption2 = Text2.text
+axLPdc.Caption2 = Text2.Text
 End Sub
 
 Private Sub VScroll1_Change()
 axLPdc.Caption1PaddingY = VScroll1.Value
-Y1.text = VScroll1.Value
+Y1.Text = VScroll1.Value
 End Sub
 
 Private Sub VScroll2_Change()
 axLPdc.Caption2PaddingY = VScroll2.Value
-Y2.text = VScroll2.Value
+Y2.Text = VScroll2.Value
 End Sub

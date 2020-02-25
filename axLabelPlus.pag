@@ -17,7 +17,7 @@ Begin VB.PropertyPage axLPProPag
       ScaleHeight     =   23
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   305
-      TabIndex        =   8
+      TabIndex        =   7
       TabStop         =   0   'False
       Top             =   4560
       Width           =   4575
@@ -36,7 +36,7 @@ Begin VB.PropertyPage axLPProPag
       Height          =   360
       Index           =   1
       Left            =   4800
-      TabIndex        =   7
+      TabIndex        =   6
       Top             =   4575
       Width           =   375
    End
@@ -88,16 +88,21 @@ Begin VB.PropertyPage axLPProPag
       Top             =   3480
       Width           =   915
    End
-   Begin Proyecto1.axLabelPlus axLabelPlus1 
-      Height          =   2985
-      Left            =   60
-      TabIndex        =   6
-      Top             =   45
-      Width           =   5130
-      _ExtentX        =   9049
-      _ExtentY        =   5265
+   Begin AXLPCTRL.axLabelPlus axLabelPlus1 
+      Height          =   2940
+      Left            =   75
+      TabIndex        =   8
+      Top             =   75
+      Width           =   5160
+      _ExtentX        =   9102
+      _ExtentY        =   5186
+      BackColor       =   16777215
+      Border          =   -1  'True
+      BorderColor     =   8421504
+      BorderWidth     =   1
       Caption1        =   "axLabelPlus.pgx":0000
-      Caption2        =   "axLabelPlus.pgx":0038
+      Caption2        =   "axLabelPlus.pgx":0022
+      CaptionBorderColor=   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -107,11 +112,20 @@ Begin VB.PropertyPage axLPProPag
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ChangeOnMouseOver=   0
+      GradientColorP1 =   0
+      GradientColorP1Opacity=   0
+      GradientColorP2 =   0
+      GradientColorP2Opacity=   0
       ShadowColorOpacity=   0
       CallOutAlign    =   0
       CallOutWidth    =   0
       CallOutLen      =   0
       MousePointer    =   0
+      HotLineColor    =   0
+      HotLineColorOpacity=   0
+      HotLineWidth    =   0
+      HotLinePosition =   0
       BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -121,8 +135,6 @@ Begin VB.PropertyPage axLPProPag
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      IconForeColor   =   0
-      IconOpacity     =   0
       PictureArr      =   0
    End
    Begin VB.Label LblInfo 
@@ -159,9 +171,11 @@ Begin VB.PropertyPage axLPProPag
 End
 Attribute VB_Name = "axLPProPag"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
+
+
 
 
 Option Explicit
