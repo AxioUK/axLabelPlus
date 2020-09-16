@@ -25,27 +25,11 @@ Or Compile the usercontrol to OCX (ActiveX), and reference to your VB6 Project
 AXLPCTRL.OCX
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+...
 
-## Running the tests
 
-Explain how to run the automated tests for this system
 
-### Break down into end to end tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Deployment
 
@@ -61,7 +45,9 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Leandro Ascierto** - *Initial work* - [Leandro Ascierto VB6 Latin Blog & Forums](http://leandroascierto.com/blog/)
+
+* **AxioUK** - David Rojas *Editor* - [Leandro Ascierto VB6 Latin Blog & Forums](http://leandroascierto.com/blog/)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
