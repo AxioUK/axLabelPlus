@@ -1,0 +1,9 @@
+[History]
+1=#P0#=mb	#P1#=List1_Click	#P2#=Proyecto1/Form1/List1_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20200916162850	#P7#=0	#P8#=0	.
+2=#P0#=mb	#P1#=cmdGlowing_Click	#P2#=Proyecto1/Form1/cmdGlowing_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20200916133202	#P7#=0	#P8#=0	.
+3=#P0#=mb	#P1#=SW_Change	#P2#=Proyecto1/Form1/SW_Change	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20200916122730	#P7#=0	#P8#=3	.
+4=#P0#=mb	#P1#=Check4_Click	#P2#=Proyecto1/Form1/Check4_Click	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20200916122659	#P7#=0	#P8#=2	.
+5=#P0#=mb	#P1#=Check3_Click	#P2#=Proyecto1/Form1/Check3_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20200916122056	#P7#=0	#P8#=2	.
+6=#P0#=mb	#P1#=HW_Change	#P2#=Proyecto1/Form1/HW_Change	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20200916122033	#P7#=0	#P8#=2	.
+7=#P0#=mb	#P1#=Form_Load	#P2#=Proyecto1/Form2/Form_Load	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20200616130836	#P7#=0	#P8#=3	.
+8=#P0#=mb	#P1#=Option1_Click	#P2#=Proyecto1/Form1/Option1_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20200507214833	#P7#=0	#P8#=1	.

@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "*\AaxLabelPlus.vbp"
 Begin VB.Form Form1 
    Caption         =   "New Properties axLabelPlus (Mod Version of Great LabelPlus from Leandro Ascierto)"
-   ClientHeight    =   6375
+   ClientHeight    =   6555
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   10725
@@ -16,10 +16,44 @@ Begin VB.Form Form1
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6375
+   ScaleHeight     =   6555
    ScaleWidth      =   10725
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.CheckBox Check4 
+      Caption         =   "Shadow"
+      Height          =   210
+      Left            =   3120
+      TabIndex        =   43
+      Top             =   4905
+      Width           =   1335
+   End
+   Begin VB.TextBox SW 
+      Alignment       =   2  'Center
+      Height          =   285
+      Left            =   4515
+      TabIndex        =   42
+      Text            =   "8"
+      Top             =   4890
+      Width           =   405
+   End
+   Begin VB.TextBox HW 
+      Alignment       =   2  'Center
+      Height          =   285
+      Left            =   4515
+      TabIndex        =   41
+      Text            =   "8"
+      Top             =   4590
+      Width           =   405
+   End
+   Begin VB.CheckBox Check3 
+      Caption         =   "HotLine Visible"
+      Height          =   210
+      Left            =   3120
+      TabIndex        =   40
+      Top             =   4605
+      Width           =   1335
+   End
    Begin VB.CommandButton cmdGlowing 
       Caption         =   "Glowing"
       Height          =   360
@@ -45,10 +79,10 @@ Begin VB.Form Form1
       Width           =   2160
    End
    Begin VB.ListBox List1 
-      Height          =   1620
-      Left            =   3225
+      Height          =   1230
+      Left            =   3150
       TabIndex        =   32
-      Top             =   4650
+      Top             =   5190
       Width           =   1860
    End
    Begin VB.CheckBox Check2 
@@ -57,15 +91,7 @@ Begin VB.Form Form1
       Left            =   1815
       TabIndex        =   31
       Top             =   4605
-      Width           =   1335
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Visible=True"
-      Height          =   360
-      Left            =   1710
-      TabIndex        =   30
-      Top             =   5880
-      Width           =   1350
+      Width           =   1200
    End
    Begin VB.HScrollBar HScroll2 
       Height          =   210
@@ -171,6 +197,75 @@ Begin VB.Form Form1
       Value           =   -1  'True
       Width           =   2040
    End
+   Begin VB.CommandButton Command1 
+      Caption         =   "Visible=True"
+      Height          =   360
+      Left            =   345
+      TabIndex        =   30
+      Top             =   4815
+      Width           =   1350
+   End
+   Begin AXLPCTRL.axLabelPlus axLPCross 
+      Height          =   990
+      Left            =   255
+      TabIndex        =   29
+      Top             =   5250
+      Width           =   2775
+      _ExtentX        =   4895
+      _ExtentY        =   1746
+      BackColor       =   12648447
+      BackColorPress  =   8438015
+      BackAcrylicBlur =   -1  'True
+      Border          =   -1  'True
+      BorderColor     =   16711680
+      ColorOnMouseOver=   255
+      BorderCornerLeftTop=   5
+      BorderCornerRightTop=   5
+      BorderCornerBottomRight=   5
+      BorderCornerBottomLeft=   5
+      BorderWidth     =   2
+      CaptionAlignmentH=   1
+      CaptionAlignmentV=   1
+      Caption1        =   "Form1.frx":0000
+      Caption2        =   "Form1.frx":003C
+      Caption2PaddingX=   10
+      Caption2PaddingY=   10
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColorOnPress=   16777215
+      ChangeColorOnClick=   -1  'True
+      ChangeOnMouseOver=   0
+      ShadowSize      =   3
+      ShadowColor     =   4210752
+      ShadowOffsetX   =   5
+      ShadowOffsetY   =   5
+      ShadowColorOpacity=   60
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      MousePointer    =   0
+      HotLineWidth    =   8
+      HotLinePosition =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconForeColor   =   0
+      IconOpacity     =   0
+      PictureArr      =   0
+   End
    Begin VB.Label Label8 
       AutoSize        =   -1  'True
       Caption         =   " Glowing "
@@ -217,8 +312,8 @@ Begin VB.Form Form1
       BorderPosition  =   0
       CaptionAlignmentH=   1
       CaptionAlignmentV=   1
-      Caption1        =   "Form1.frx":0000
-      Caption2        =   "Form1.frx":0022
+      Caption1        =   "Form1.frx":005C
+      Caption2        =   "Form1.frx":007E
       CaptionBorderColor=   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
@@ -273,64 +368,6 @@ Begin VB.Form Form1
       TabIndex        =   33
       Top             =   5490
       Width           =   645
-   End
-   Begin AXLPCTRL.axLabelPlus axLPCross 
-      Height          =   915
-      Left            =   345
-      TabIndex        =   29
-      Top             =   4890
-      Width           =   2775
-      _ExtentX        =   4895
-      _ExtentY        =   1614
-      BackColor       =   12648447
-      BackColorPress  =   8438015
-      Border          =   -1  'True
-      BorderColor     =   16711680
-      ColorOnMouseOver=   255
-      BorderCornerLeftTop=   5
-      BorderCornerRightTop=   5
-      BorderCornerBottomRight=   5
-      BorderCornerBottomLeft=   5
-      BorderWidth     =   2
-      CaptionAlignmentH=   1
-      CaptionAlignmentV=   1
-      Caption1        =   "Form1.frx":0042
-      Caption2        =   "Form1.frx":007E
-      Caption2PaddingX=   10
-      Caption2PaddingY=   10
-      CrossPosition   =   7
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Verdana"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColorOnPress=   16777215
-      ChangeColorOnClick=   -1  'True
-      ChangeOnMouseOver=   0
-      ShadowColorOpacity=   0
-      CallOutAlign    =   0
-      CallOutWidth    =   0
-      CallOutLen      =   0
-      MousePointer    =   0
-      HotLine         =   -1  'True
-      HotLineWidth    =   8
-      HotLinePosition =   0
-      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      IconForeColor   =   0
-      IconOpacity     =   0
-      PictureArr      =   0
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
@@ -858,6 +895,14 @@ Private Sub Check2_Click()
 axLPCross.CrossVisible = Check2.Value
 End Sub
 
+Private Sub Check3_Click()
+axLPCross.HotLine = Check3.Value
+End Sub
+
+Private Sub Check4_Click()
+axLPCross.BackShadow = Check4.Value
+End Sub
+
 Private Sub cmdGlowing_Click()
 axLPGlow.Glowing = Not axLPGlow.Glowing
 End Sub
@@ -890,6 +935,11 @@ axLPdc.Caption2PaddingX = HScroll2.Value
 X2.Text = HScroll2.Value
 End Sub
 
+Private Sub HW_Change()
+On Error Resume Next
+axLPCross.HotLineWidth = CInt(HW.Text)
+End Sub
+
 Private Sub List1_Click()
 axLPCross.CrossPosition = List1.ListIndex
 End Sub
@@ -898,6 +948,11 @@ Private Sub Option1_Click(Index As Integer)
 For I = 0 To 2
   axLPbc(I).ChangeOnMouseOver = Index
 Next I
+End Sub
+
+Private Sub SW_Change()
+On Error Resume Next
+axLPCross.ShadowSize = CInt(SW.Text)
 End Sub
 
 Private Sub Text1_Change()

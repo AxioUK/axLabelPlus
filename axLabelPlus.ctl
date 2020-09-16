@@ -33,16 +33,16 @@ Option Explicit
 'Original Name: LabelPlus
 'Autor:  Leandro Ascierto
 'Web: www.leandroascierto.com
-'LastUpdate: 18/01/2020
-'Version: 1.5.0
+'LastUpdate: 14/02/2020
+'Version: 1.5.3
 'Based on: FirenzeLabel Project :http://www.vbforums.com/showthread.php?845221-VB6-FIRENZE-LABEL-label-control-with-so-many-functions
            'Martin Vartiak, powered by Cairo Graphics and vbRichClient-Framework.
 'Special thanks to: All members of the VB6 Latin group (www.leandroacierto.com/foro), vbforum.com and activevb.net
 '-----------------------------------------------
 'Moded Name: axLabelPlus
 'Autor:  David Rojas A. [AxioUK]
-'LastUpdate: 19/01/2020
-'Version: 1.5.6
+'LastUpdate: 07/05/2020
+'Version: 1.5.7
 'Special thanks to:
 '- Leandro Ascierto por la creación de este Espectacular Control, su apoyo y guía y por permitirme modificar su control.
 '- YAcosta por sus ideas y por testear cada modificación.
@@ -50,6 +50,7 @@ Option Explicit
 '-----------------------------------------------
 Private Declare Function TlsGetValue Lib "kernel32.dll" (ByVal dwTlsIndex As Long) As Long
 Private Declare Function TlsSetValue Lib "kernel32.dll" (ByVal dwTlsIndex As Long, ByVal lpTlsValue As Long) As Long
+'Private Declare Function TlsFree Lib "kernel32.dll" (ByVal dwTlsIndex As Long) As Long
 Private Declare Function TlsAlloc Lib "kernel32.dll" () As Long
 Private Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" (ByRef Destination As Any, ByRef Source As Any, ByVal Length As Long)
 Private Declare Sub RtlMoveMemory Lib "kernel32" (ByVal Destination As Long, ByVal Source As Long, ByVal Length As Long)
@@ -68,14 +69,16 @@ Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" (By
 Private Declare Function WindowFromPoint Lib "user32.dll" (ByVal xPoint As Long, ByVal yPoint As Long) As Long
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 Private Declare Function PtInRect Lib "user32.dll" (ByRef lpRect As RECT, ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function ScreenToClient Lib "user32.dll" (ByVal hwnd As Long, ByRef lpPoint As POINTAPI) As Long
 Private Declare Function ClientToScreen Lib "user32.dll" (ByVal hwnd As Long, ByRef lpPoint As POINTAPI) As Long
+Private Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Any) As Long
 Private Declare Function SetRect Lib "user32" (lpRect As Any, ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long) As Long
 Private Declare Function LoadCursor Lib "user32" Alias "LoadCursorA" (ByVal hInstance As Long, ByVal lpCursorName As Long) As Long
 Private Declare Function DestroyCursor Lib "user32" (ByVal hCursor As Long) As Long
 Private Declare Function SetCursor Lib "user32.dll" (ByVal hCursor As Long) As Long
 Private Declare Function GetDC Lib "user32.dll" (ByVal hwnd As Long) As Long
 Private Declare Function ReleaseDC Lib "user32.dll" (ByVal hwnd As Long, ByVal hdc As Long) As Long
-Private Declare Function VarPtrArray Lib "msvbvm60.dll" Alias "VarPtr" (Ptr() As Any) As Long
+Private Declare Function VarPtrArray Lib "msvbvm60.dll" Alias "VarPtr" (ptr() As Any) As Long
 Private Declare Function OleCreatePictureIndirect Lib "olepro32.dll" (PicDesc As PicBmp, RefIID As Any, ByVal fPictureOwnsHandle As Long, IPic As IPicture) As Long
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hdc As Long, ByVal nIndex As Long) As Long
 Private Declare Function BitBlt Lib "gdi32.dll" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
@@ -85,20 +88,24 @@ Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObj
 Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32.dll" (ByVal hObject As Long) As Long
 Private Declare Function OleTranslateColor Lib "oleaut32.dll" (ByVal lOleColor As Long, ByVal lHPalette As Long, ByVal lColorRef As Long) As Long
+
 Private Declare Sub CreateStreamOnHGlobal Lib "ole32.dll" (ByRef hGlobal As Any, ByVal fDeleteOnRelease As Long, ByRef ppstm As Any)
+
 Private Declare Sub GdiplusShutdown Lib "gdiplus" (ByVal Token As Long)
 Private Declare Function GdiplusStartup Lib "gdiplus" (Token As Long, inputbuf As GdiplusStartupInput, Optional ByVal outputbuf As Long = 0) As Long
 Private Declare Function GdipLoadImageFromStream Lib "gdiplus" (ByVal Stream As Any, ByRef Image As Long) As Long
 Private Declare Function GdipDisposeImage Lib "gdiplus" (ByVal Image As Long) As Long
 Private Declare Function GdipCreateFromHDC Lib "gdiplus" (ByVal hdc As Long, hGraphics As Long) As Long
 Private Declare Function GdipDeleteGraphics Lib "gdiplus" (ByVal hGraphics As Long) As Long
-Private Declare Function GdipDrawImageRectRectI Lib "gdiplus" (ByVal hGraphics As Long, ByVal hImage As Long, ByVal dstX As Long, ByVal dstY As Long, ByVal dstWidth As Long, ByVal dstHeight As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, ByVal srcUnit As Long, Optional ByVal imageAttributes As Long = 0, Optional ByVal Callback As Long = 0, Optional ByVal CallbackData As Long = 0) As Long
+Private Declare Function GdipDrawImageRectRectI Lib "gdiplus" (ByVal hGraphics As Long, ByVal hImage As Long, ByVal dstX As Long, ByVal dstY As Long, ByVal dstWidth As Long, ByVal dstHeight As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal SrcWidth As Long, ByVal SrcHeight As Long, ByVal srcUnit As Long, Optional ByVal imageAttributes As Long = 0, Optional ByVal Callback As Long = 0, Optional ByVal CallbackData As Long = 0) As Long
 Private Declare Function GdipDisposeImageAttributes Lib "gdiplus" (ByVal imageattr As Long) As Long
 Private Declare Function GdipCreateImageAttributes Lib "gdiplus" (ByRef imageattr As Long) As Long
 Private Declare Function GdipSetImageAttributesColorMatrix Lib "gdiplus" (ByVal imageattr As Long, ByVal ColorAdjust As Long, ByVal EnableFlag As Boolean, ByRef MatrixColor As COLORMATRIX, ByRef MatrixGray As COLORMATRIX, ByVal flags As Long) As Long
+'Private Declare Function GdipImageRotateFlip Lib "gdiplus" (ByVal Image As Long, ByVal rfType As Long) As Long
 Private Declare Function GdipSetSmoothingMode Lib "gdiplus" (ByVal graphics As Long, ByVal SmoothingMd As Long) As Long
 Private Declare Function GdipCreateSolidFill Lib "gdiplus" (ByVal argb As Long, ByRef Brush As Long) As Long
 Private Declare Function GdipDeleteBrush Lib "gdiplus" (ByVal Brush As Long) As Long
+'Private Declare Function GdipSetSolidFillColor Lib "gdiplus" (ByVal Brush As Long, ByVal argb As Long) As Long
 Private Declare Function GdipCreatePen1 Lib "GdiPlus.dll" (ByVal mColor As Long, ByVal mWidth As Single, ByVal mUnit As Long, ByRef mPen As Long) As Long
 Private Declare Function GdipDrawLineI Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mPen As Long, ByVal mX1 As Long, ByVal mY1 As Long, ByVal mX2 As Long, ByVal mY2 As Long) As Long
 Private Declare Function GdipFillPolygonI Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mBrush As Long, ByRef mPoints As Any, ByVal mCount As Long, ByVal mFillMode As Long) As Long
@@ -128,13 +135,14 @@ Private Declare Function GdipCreateLineBrushFromRectWithAngleI Lib "GdiPlus.dll"
 Private Declare Function GdipCreateFontFamilyFromName Lib "gdiplus" (ByVal Name As Long, ByVal fontCollection As Long, fontFamily As Long) As Long
 Private Declare Function GdipDeleteFontFamily Lib "gdiplus" (ByVal fontFamily As Long) As Long
 Private Declare Function GdipAddPathString Lib "GdiPlus.dll" (ByVal mPath As Long, ByVal mString As Long, ByVal mLength As Long, ByVal mFamily As Long, ByVal mStyle As Long, ByVal mEmSize As Single, ByRef mLayoutRect As RECTF, ByVal mFormat As Long) As Long
+'Private Declare Function GdipGetGenericFontFamilySerif Lib "gdiplus" (ByRef nativeFamily As Long) As Long
 Private Declare Function GdipGetGenericFontFamilySansSerif Lib "GdiPlus.dll" (ByRef mNativeFamily As Long) As Long
 Private Declare Function GdipCreateStringFormat Lib "gdiplus" (ByVal formatAttributes As Long, ByVal language As Integer, StringFormat As Long) As Long
-Private Declare Function GdipSetStringFormatFlags Lib "GdiPlus.dll" (ByVal mFormat As Long, ByVal mFlags As StringFormatFlags) As Long
+Private Declare Function GdipSetStringFormatFlags Lib "GdiPlus.dll" (ByVal mFormat As Long, ByVal mFlags As eStringFormatFlags) As Long
 Private Declare Function GdipSetStringFormatHotkeyPrefix Lib "GdiPlus.dll" (ByVal mFormat As Long, ByVal mHotkeyPrefix As HotkeyPrefix) As Long
 Private Declare Function GdipSetStringFormatTrimming Lib "GdiPlus.dll" (ByVal mFormat As Long, ByVal mTrimming As StringTrimming) As Long
-Private Declare Function GdipSetStringFormatAlign Lib "gdiplus" (ByVal StringFormat As Long, ByVal Align As StringAlignment) As Long
-Private Declare Function GdipSetStringFormatLineAlign Lib "GdiPlus.dll" (ByVal mFormat As Long, ByVal mAlign As StringAlignment) As Long
+Private Declare Function GdipSetStringFormatAlign Lib "gdiplus" (ByVal StringFormat As Long, ByVal Align As eStringAlignment) As Long
+Private Declare Function GdipSetStringFormatLineAlign Lib "GdiPlus.dll" (ByVal mFormat As Long, ByVal mAlign As eStringAlignment) As Long
 Private Declare Function GdipTranslateWorldTransform Lib "gdiplus" (ByVal graphics As Long, ByVal dX As Single, ByVal dY As Single, ByVal Order As Long) As Long
 Private Declare Function GdipRotateWorldTransform Lib "gdiplus" (ByVal graphics As Long, ByVal Angle As Single, ByVal Order As Long) As Long
 Private Declare Function GdipResetWorldTransform Lib "GdiPlus.dll" (ByVal mGraphics As Long) As Long
@@ -142,7 +150,9 @@ Private Declare Function GdipDeleteStringFormat Lib "GdiPlus.dll" (ByVal mFormat
 Private Declare Function GdipCreateBitmapFromHBITMAP Lib "GdiPlus.dll" (ByVal mHbm As Long, ByVal mhPal As Long, ByRef mBitmap As Long) As Long
 Private Declare Function GdipCreateEffect Lib "gdiplus" (ByVal dwCid1 As Long, ByVal dwCid2 As Long, ByVal dwCid3 As Long, ByVal dwCid4 As Long, ByRef Effect As Long) As Long
 Private Declare Function GdipSetEffectParameters Lib "gdiplus" (ByVal Effect As Long, ByRef params As Any, ByVal Size As Long) As Long
+Private Declare Function GdipDeleteEffect Lib "gdiplus" (ByVal Effect As Long) As Long
 Private Declare Function GdipDrawImageFX Lib "gdiplus" (ByVal graphics As Long, ByVal Image As Long, ByRef Source As RECTF, ByVal xForm As Long, ByVal Effect As Long, ByVal imageAttributes As Long, ByVal srcUnit As Long) As Long
+'Private Declare Function GdipDrawPie Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mPen As Long, ByVal mX As Single, ByVal mY As Single, ByVal mWidth As Single, ByVal mHeight As Single, ByVal mStartAngle As Single, ByVal mSweepAngle As Single) As Long
 Private Declare Function GdipDrawArc Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mPen As Long, ByVal mX As Single, ByVal mY As Single, ByVal mWidth As Single, ByVal mHeight As Single, ByVal mStartAngle As Single, ByVal mSweepAngle As Single) As Long
 Private Declare Function GdipSetClipRectI Lib "GdiPlus.dll" (ByVal mGraphics As Long, ByVal mX As Long, ByVal mY As Long, ByVal mWidth As Long, ByVal mHeight As Long, ByVal mCombineMode As Long) As Long
 Private Declare Function GdipResetClip Lib "GdiPlus.dll" (ByVal mGraphics As Long) As Long
@@ -239,13 +249,13 @@ Public Enum eBorderPosition
     bpOutside
 End Enum
 
-Public Enum CaptionAlignmentH
+Public Enum eCaptionAlignmentH
     cLeft
     cCenter
     cRight
 End Enum
 
-Public Enum CaptionAlignmentV
+Public Enum eCaptionAlignmentV
     cTop
     cMiddle
     cBottom
@@ -290,7 +300,7 @@ Private Enum GDIPLUS_FONTSTYLE
     FontStyleStrikeout = 8
 End Enum
   
-Public Enum StringAlignment
+Public Enum eStringAlignment
     StringAlignmentNear = &H0
     StringAlignmentCenter = &H1
     StringAlignmentFar = &H2
@@ -305,7 +315,7 @@ Public Enum StringTrimming
     StringTrimmingEllipsisPath = &H5
 End Enum
 
-Public Enum StringFormatFlags
+Public Enum eStringFormatFlags
     StringFormatFlagsNone = &H0
     StringFormatFlagsDirectionRightToLeft = &H1
     StringFormatFlagsDirectionVertical = &H2
@@ -354,6 +364,7 @@ Private Const IDC_HAND                  As Long = 32649
 Private Const GWL_WNDPROC               As Long = -4
 Private Const GW_OWNER                  As Long = 4
 Private Const WS_CHILD                  As Long = &H40000000
+Private Const WM_MOUSEMOVE              As Long = &H200
 Private Const UnitPixel                 As Long = &H2&
 Private Const LOGPIXELSX                As Long = 88
 Private Const LOGPIXELSY                As Long = 90
@@ -361,6 +372,7 @@ Private Const PixelFormat32bppPARGB     As Long = &HE200B
 Private Const PixelFormat32bppARGB      As Long = &H26200A
 Private Const SmoothingModeAntiAlias    As Long = 4
 Private Const CombineModeExclude        As Long = &H4
+
 
 Public Event Click()
 Public Event DblClick()
@@ -372,6 +384,8 @@ Public Event MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Si
 Public Event MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Public Event MouseEnter()
 Public Event MouseLeave()
+Public Event MouseOver()
+'Public Event MouseOut()
 Public Event PrePaint(hdc As Long, X As Long, Y As Long)
 Public Event PostPaint(ByVal hdc As Long)
 Public Event KeyPress(KeyAscii As Integer)
@@ -395,8 +409,8 @@ Const m_def_ColorOnMouseOver = vbWhite
 Const m_def_ColorOnMouseOverOpacity = 100
 Const m_def_BorderPosition = 1
 Const m_def_BorderWidth = 0
-Const m_def_CaptionAlignmentH = 0
-Const m_def_CaptionAlignmentV = 0
+Const m_def_eCaptionAlignmentH = 0
+Const m_def_eCaptionAlignmentV = 0
 Const m_def_ForeColor = &H80000012
 Const m_def_ForeColorOpacity = 100
 Const m_def_ForeColorP = &HC0C0C0
@@ -452,8 +466,8 @@ Dim m_ShadowColorOpacity As Integer
 Dim hImgCaptionShadow As Long
 Dim m_Caption1() As Byte
 Dim m_Caption2() As Byte
-Dim m_CaptionAlignmentH As CaptionAlignmentH
-Dim m_CaptionAlignmentV As CaptionAlignmentV
+Dim m_eCaptionAlignmentH As eCaptionAlignmentH
+Dim m_eCaptionAlignmentV As eCaptionAlignmentV
 Dim m_Caption1PaddingX As Integer
 Dim m_Caption1PaddingY As Integer
 Dim m_Caption2PaddingX As Integer
@@ -469,7 +483,7 @@ Dim m_ColorOnMouseOver As OLE_COLOR
 Dim m_ColorOnMouseOverOpacity As Integer
 Dim m_AutoSize As Boolean
 Dim m_MousePointerHands As Boolean
-Dim WithEvents m_Font As StdFont
+Dim m_Font As StdFont
 Attribute m_Font.VB_VarHelpID = -1
 Dim m_ForeColor As OLE_COLOR
 Dim m_ForeColorOpacity As Integer
@@ -496,58 +510,57 @@ Dim m_PictureRealWidth As Long
 Dim m_PictureRealHeight As Long
 Dim m_PictureSetWidth As Long
 Dim m_PictureSetHeight As Long
-Dim m_PictureArr()  As Byte
-Dim m_PicturePresent As Boolean
+Dim m_PictureArr()    As Byte
+Dim m_PicturePresent  As Boolean
 Dim m_PictureGraysScale As Boolean
 Dim m_PictureContrast As Integer
 Dim m_PictureBrightness As Integer
-Dim m_PictureOpacity As Integer
-Dim m_PictureColor As OLE_COLOR
+Dim m_PictureOpacity  As Integer
+Dim m_PictureColor    As OLE_COLOR
 Dim m_PictureColorize As Boolean
-Dim m_PictureShadow As Boolean
-Dim m_MouseToParent As Boolean
-Dim m_HotLine As Boolean
-Dim m_HotLineColor As OLE_COLOR
+Dim m_PictureShadow   As Boolean
+Dim m_MouseToParent   As Boolean
+Dim m_HotLine         As Boolean
+Dim m_HotLineColor    As OLE_COLOR
 Dim m_HotLineColorOpacity As Integer
-Dim m_HotLineWidth As Long
+Dim m_HotLineWidth    As Long
 Dim m_HotLinePosition As HotLinePosition
-Dim m_Value As Boolean
-Dim m_OptionBehavior As Boolean
-Dim m_Clicked As Boolean
-Dim m_MouseOver As Boolean
-Dim YCrossPos As Long
-Dim XCrossPos As Long
-Dim m_CrossPosition As CrossPos
-Dim m_CrossVisible As Boolean
+Dim m_Value           As Boolean
+Dim m_OptionBehavior  As Boolean
+Dim m_Clicked         As Boolean
+Dim m_MouseOver       As Boolean
+Dim m_MouseEnter      As Boolean
+Dim YCrossPos         As Long
+Dim XCrossPos         As Long
+Dim m_CrossPosition   As CrossPos
+Dim m_CrossVisible    As Boolean
 
-Dim m_WordWrap As Boolean
-Dim m_IconFont As StdFont
-Dim m_IconCharCode As Long
-Dim m_IconForeColor As Long
-Dim m_IconPaddingX As Integer
-Dim m_IconPaddingY As Integer
-Dim m_IconAlignmentH As CaptionAlignmentH
-Dim m_IconAlignmentV As CaptionAlignmentV
-Dim m_IconOpacity As Integer
+Dim m_WordWrap        As Boolean
+Dim m_IconFont        As StdFont
+Dim m_IconCharCode    As Long
+Dim m_IconForeColor   As Long
+Dim m_IconPaddingX    As Integer
+Dim m_IconPaddingY    As Integer
+Dim m_IconAlignmentH  As eCaptionAlignmentH
+Dim m_IconAlignmentV  As eCaptionAlignmentV
+Dim m_IconOpacity     As Integer
 
-Dim hCur As Long
-Dim c_lhWnd As Long
-Dim nScale As Single
-Dim hDCMemory As Long
-Dim hBmp As Long
-Dim OldhBmp As Long
+Dim m_Redraw    As Boolean
+Dim hCur        As Long
+Dim c_lhWnd     As Long
+Dim nScale      As Single
+Dim hDCMemory   As Long
+Dim hBmp        As Long
+Dim OldhBmp     As Long
 Dim bRecreateShadowCaption As Boolean
-Dim m_DrawProgress As Boolean
-Dim c_AsyncProp As AsyncProperty
-Dim m_PictureBrush As Long
+Dim m_DrawProgress  As Boolean
+Dim c_AsyncProp     As AsyncProperty
+Dim m_PictureBrush  As Long
 Dim hFontCollection As Long
-
-Private Sub DrawCross(ByVal Left As Long, ByVal Top As Long, ByVal Width As Long, ByVal Heigth As Long, ByVal PenWidth As Long, ByVal ForeColor As OLE_COLOR)
-    UserControl.DrawWidth = PenWidth
-    UserControl.ForeColor = ForeColor
-    UserControl.Line (Left, Top)-(Left + Width, Top + Heigth)
-    UserControl.Line (Left, Top + Heigth)-(Left + Width, Top)
-End Sub
+Dim bIntercept      As Boolean
+Dim m_PT            As POINTAPI
+Dim m_Left          As Long
+Dim m_Top           As Long
 
 Public Function ChrW2(ByVal CharCode As Long) As String
   Const POW10 As Long = 2 ^ 10
@@ -555,28 +568,6 @@ Public Function ChrW2(ByVal CharCode As Long) As String
                               ChrW2 = ChrW$(&HD800& + (CharCode And &HFFFF&) \ POW10) & _
                                       ChrW$(&HDC00& + (CharCode And (POW10 - 1)))
 End Function
-
-Private Sub OptBehavior()
-Dim Frm As Form
-    Set Frm = Extender.Parent
-    
-Dim lHWnd As Long
-    lHWnd = Extender.Container.hwnd
-
-    Dim Ctrl As Control
-    For Each Ctrl In Frm.Controls
-        With Ctrl
-           If TypeOf Ctrl Is axLabelPlus Then
-              If .OptionBehavior = True Then
-                 'If (.Container.hWnd = lHWnd) And (Ctrl.hWnd <> UserControl.hWnd) Then
-                 If (.Container.hwnd = lHWnd) And ObjPtr(Ctrl) <> ObjPtr(Extender) Then
-                  If .Value Then .Value = False
-                 End If
-              End If
-           End If
-        End With
-    Next
-End Sub
 
 Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, PosY As Long)
     Dim hPath As Long
@@ -689,7 +680,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
     End If
     
     If m_HotLine Then
-          DrawHotLine hGraphics, hPath, PosX, PosY
+        DrawHotLine hGraphics, hPath ', PosX, PosY
     End If
     
     GDIP_AddPathString hGraphics, Xx, Yy, WW, HH
@@ -705,10 +696,10 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
         ElseIf m_BorderPosition = bpOutside Then
     
             GdipDeletePath hPath
-            X = (BorderWidth / 2) + PosX   '+ ShadowSize + ShadowOffsetX
-            Y = (BorderWidth / 2) + PosY  '+ ShadowSize + ShadowOffsetX
-            lWidth = UserControl.ScaleWidth - BorderWidth '- (ShadowSize * 2)
-            lHeight = UserControl.ScaleHeight - BorderWidth  '- (ShadowSize * 2)
+            X = (BorderWidth / 2) + PosX
+            Y = (BorderWidth / 2) + PosY
+            lWidth = UserControl.ScaleWidth - BorderWidth
+            lHeight = UserControl.ScaleHeight - BorderWidth
             hPath = RoundRectangle(X, Y, lWidth, lHeight, True)
         End If
         
@@ -725,51 +716,57 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
       Case Is = cTopRight
           If m_BackShadow Then
             YCrossPos = (BorderWidth + m_ShadowSize + 5)
-            XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 12)
+            XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 17)
           Else
             YCrossPos = BorderWidth + 10
             XCrossPos = UserControl.ScaleWidth - (BorderWidth + 15)
           End If
+          
       Case Is = cMiddleRight
           If m_BackShadow Then
             YCrossPos = (UserControl.ScaleHeight / 2) - 5
-            XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 12)
+            XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 17)
           Else
-            YCrossPos = UserControl.ScaleHeight / 2
+            YCrossPos = (UserControl.ScaleHeight / 2) - 6
             XCrossPos = UserControl.ScaleWidth - (BorderWidth + 15)
           End If
+          
       Case Is = cBottomRight
           If m_BackShadow Then
-            YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 12)
-            XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 12)
+            YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 17)
+            XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 17)
           Else
             YCrossPos = UserControl.ScaleHeight - (BorderWidth + 14)
             XCrossPos = UserControl.ScaleWidth - (BorderWidth + 15)
           End If
+          
       Case Is = cTopLeft
           If m_BackShadow Then
             YCrossPos = (BorderWidth + m_ShadowSize + 5)
-            XCrossPos = (BorderWidth + m_ShadowSize + 5)
+            XCrossPos = (BorderWidth + m_ShadowSize + 5) + IIf(m_HotLine, m_HotLineWidth, 0)
           Else
             YCrossPos = BorderWidth + 10
-            XCrossPos = (BorderWidth + 10)
+            XCrossPos = (BorderWidth + 10) + IIf(m_HotLine, m_HotLineWidth, 0)
           End If
+              
       Case Is = cMiddleLeft
           If m_BackShadow Then
             YCrossPos = (UserControl.ScaleHeight / 2) - 5
-            XCrossPos = (BorderWidth + m_ShadowSize + 5)
+            XCrossPos = (BorderWidth + m_ShadowSize + 5) + IIf(m_HotLine, m_HotLineWidth, 0)
           Else
-            YCrossPos = UserControl.ScaleHeight / 2
-            XCrossPos = (BorderWidth + 10)
+            YCrossPos = (UserControl.ScaleHeight / 2) - 6
+            XCrossPos = (BorderWidth + 10) + IIf(m_HotLine, m_HotLineWidth, 0)
           End If
+          
       Case Is = cBottomLeft
           If m_BackShadow Then
-            YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 12)
-            XCrossPos = (BorderWidth + m_ShadowSize + 5)
+            YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 17)
+            XCrossPos = (BorderWidth + m_ShadowSize + 5) + IIf(m_HotLine, m_HotLineWidth, 0)
           Else
             YCrossPos = UserControl.ScaleHeight - (BorderWidth + 14)
-            XCrossPos = (BorderWidth + 10)
+            XCrossPos = (BorderWidth + 10) + IIf(m_HotLine, m_HotLineWidth, 0)
           End If
+          
       Case Is = cMiddleTop
           If m_BackShadow Then
             YCrossPos = (BorderWidth + m_ShadowSize + 5)
@@ -778,6 +775,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
             YCrossPos = BorderWidth + 10
             XCrossPos = (UserControl.ScaleWidth / 2)
           End If
+          
       Case Is = cMiddleBottom
           If m_BackShadow Then
             YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 12)
@@ -786,6 +784,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
             YCrossPos = UserControl.ScaleHeight - (BorderWidth + 14)
             XCrossPos = (UserControl.ScaleWidth / 2)
           End If
+          
     End Select
 
     DrawCross XCrossPos, YCrossPos, 6, 6, 2, m_BorderColor
@@ -803,7 +802,7 @@ Public Function DrawLine(ByVal hdc As Long, ByVal X1 As Long, ByVal Y1 As Long, 
     GdipDeleteGraphics hGraphics
 End Function
 
-Function DrawText(ByVal hdc As Long, ByVal text As String, ByVal X As Long, ByVal Y As Long, ByVal Width As Long, ByVal Height As Long, ByVal oFont As StdFont, ByVal ForeColor As OLE_COLOR, Optional ByVal ColorOpacity As Integer = 100, Optional HAlign As CaptionAlignmentH, Optional VAlign As CaptionAlignmentV, Optional bWordWrap As Boolean) As Long
+Function DrawText(ByVal hdc As Long, ByVal text As String, ByVal X As Long, ByVal Y As Long, ByVal Width As Long, ByVal Height As Long, ByVal oFont As StdFont, ByVal ForeColor As OLE_COLOR, Optional ByVal ColorOpacity As Integer = 100, Optional HAlign As eCaptionAlignmentH, Optional VAlign As eCaptionAlignmentV, Optional bWordWrap As Boolean) As Long
     Dim hBrush As Long
     Dim hFontFamily As Long
     Dim hFormat As Long
@@ -938,7 +937,7 @@ Public Function PictureDelete()
     m_PicturePresent = False
     Call PropertyChanged("PicturePresent")
     Call PropertyChanged("PictureArr")
-    UserControl.Refresh
+    Refresh
 End Function
 
 
@@ -959,7 +958,7 @@ Public Function PictureFromStream(ByRef bvStream() As Byte) As Boolean
     If m_PictureBrush <> 0 Then GdipDeleteBrush m_PictureBrush: m_PictureBrush = 0
     Call PropertyChanged("PicturePresent")
     Call PropertyChanged("PictureArr")
-    UserControl.Refresh
+    Refresh
 End Function
 
 Public Function PictureFromURL(ByVal sUrl As String, Optional ByVal UseCache As Boolean, Optional ByVal DrawProgress As Boolean = True) As Boolean
@@ -1010,7 +1009,9 @@ Public Function Polygon(ByVal hdc As Long, ByVal PenWidth As Long, ByVal oColor 
 End Function
 
 Public Sub Refresh()
-    UserControl.Refresh
+    'If m_Redraw Then
+        UserControl.Refresh
+    'End If
 End Sub
 
 Private Function ConvertColor(ByVal Color As Long, ByVal Opacity As Long) As Long
@@ -1417,13 +1418,23 @@ Private Sub DrawAcrylicBlur(hGraphics As Long, hPath As Long)
         
         GdipCreateTexture hImage2, &H0, hBrush
         GdipFillPath hGraphics, hBrush, hPath
-        GdipDeleteBrush hBrush
+        'Cleanup
+        Call GdipDeleteBrush(hBrush)
         Call GdipDeleteGraphics(hGraphics2)
+        Call GdipDisposeImage(hImage)
         Call GdipDisposeImage(hImage2)
+        Call GdipDeleteEffect(lEffect)
     End If
 End Sub
 
-Private Function DrawHotLine(hGraphics As Long, hPath As Long, ByVal PosX As Long, ByVal PosY As Long)
+Private Sub DrawCross(ByVal Left As Long, ByVal Top As Long, ByVal Width As Long, ByVal Heigth As Long, ByVal PenWidth As Long, ByVal ForeColor As OLE_COLOR)
+   UserControl.DrawWidth = PenWidth
+   UserControl.ForeColor = ForeColor
+   UserControl.Line (Left, Top)-(Left + Width, Top + Heigth)
+   UserControl.Line (Left, Top + Heigth)-(Left + Width, Top)
+End Sub
+
+Private Function DrawHotLine(hGraphics As Long, hPath As Long) ', ByVal PosX As Long, ByVal PosY As Long)
     Dim hBrush As Long
     Dim X As Long, Y As Long
     Dim WW As Long, HH As Long
@@ -1440,19 +1451,17 @@ Private Function DrawHotLine(hGraphics As Long, hPath As Long, ByVal PosX As Lon
     
     If m_BorderPosition = bpOutside Then
         If m_HotLinePosition = hlLeft Or m_HotLinePosition = hlTop Then
-            X = PosX + BW
-            Y = PosY + BW
+            X = BW
+            Y = BW
             WW = UserControl.ScaleWidth - BW
             HH = UserControl.ScaleHeight - BW
         Else
-            X = PosX
-            Y = PosY
             WW = UserControl.ScaleWidth - BW
             HH = UserControl.ScaleHeight - BW
         End If
     Else
-        X = PosX + BW
-        Y = PosY + BW
+        X = BW
+        Y = BW
         WW = UserControl.ScaleWidth - BW * 2
         HH = UserControl.ScaleHeight - BW * 2
     End If
@@ -1560,8 +1569,8 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
             If Not m_WordWrap Then GdipSetStringFormatFlags hFormat, StringFormatFlagsNoWrap
             If m_CaptionShowPrefix Then GdipSetStringFormatHotkeyPrefix hFormat, HotkeyPrefixShow
             GdipSetStringFormatTrimming hFormat, m_CaptionTriming
-            GdipSetStringFormatAlign hFormat, m_CaptionAlignmentH
-            GdipSetStringFormatLineAlign hFormat, m_CaptionAlignmentV
+            GdipSetStringFormatAlign hFormat, m_eCaptionAlignmentH
+            GdipSetStringFormatLineAlign hFormat, m_eCaptionAlignmentV
         End If
 
         GetFontStyleAndSize m_Font, lFontStyle, lFontSize
@@ -1842,6 +1851,39 @@ Private Function ManageGDIToken(ByVal projectHwnd As Long) As Long ' by LaVolpe
     
 End Function
 
+Private Function ObjFromPtr(ByVal pObj As Long) As Object
+    Dim obj As Object
+    ' force the value of the pointer into the temporary object variable
+    CopyMemory obj, pObj, 4
+    ' assign to the result (this increments the ref counter)
+    Set ObjFromPtr = obj
+    ' manually destroy the temporary object variable
+    ' (if you omit this step you'll get a GPF!)
+    CopyMemory obj, 0&, 4
+End Function
+
+Private Sub OptBehavior()
+Dim Frm As Form
+    Set Frm = Extender.Parent
+    
+Dim lHwnd As Long
+    lHwnd = Extender.Container.hwnd
+
+    Dim Ctrl As Control
+    For Each Ctrl In Frm.Controls
+        With Ctrl
+           If TypeOf Ctrl Is axLabelPlus Then
+              If .OptionBehavior = True Then
+                 'If (.Container.hWnd = lHWnd) And (Ctrl.hWnd <> UserControl.hWnd) Then
+                 If (.Container.hwnd = lHwnd) And ObjPtr(Ctrl) <> ObjPtr(Extender) Then
+                  If .Value Then .Value = False
+                 End If
+              End If
+           End If
+        End With
+    Next
+End Sub
+
 'Autor: Cobein
 Private Function ReadValue(ByVal lProp As Long, Optional Default As Long) As Long
     Dim I       As Long
@@ -2043,12 +2085,60 @@ Private Function WriteValue(ByVal lProp As Long, ByVal lValue As Long) As Boolea
         Call TlsSetValue(lFlagIndex, lProp)
         Call TlsSetValue(lIndex, lValue)
         WriteValue = True
+    Else
+        Call TlsSetValue(lIndex, lValue)
     End If
 End Function
 
 Private Function zFnAddr(ByVal sDLL As String, ByVal sProc As String) As Long
     zFnAddr = GetProcAddress(GetModuleHandleA(sDLL), sProc)  'Get the specified procedure address
 End Function
+
+Public Sub tmrMOUSEOVER_Timer()
+    Dim PT As POINTAPI
+    Dim Left As Long, Top As Long
+    Dim RECT As RECT
+  
+    GetCursorPos PT
+    ScreenToClient c_lhWnd, PT
+    
+    Left = ScaleX(Extender.Left, vbContainerSize, UserControl.ScaleMode)
+    Top = ScaleY(Extender.Top, vbContainerSize, UserControl.ScaleMode)
+
+    With RECT
+        .Left = m_PT.X - (m_Left - Left)
+        .Top = m_PT.Y - (m_Top - Top)
+        .Right = .Left + UserControl.ScaleWidth
+        .Bottom = .Top + UserControl.ScaleHeight
+    End With
+    
+    bIntercept = False
+    SendMessage c_lhWnd, WM_MOUSEMOVE, 0&, ByVal PT.X Or PT.Y * &H10000
+    
+    If bIntercept = False Then
+        If m_MouseOver = True Then
+            m_MouseOver = False
+            'RaiseEvent MouseOut
+        End If
+    End If
+    
+'    If PtInRect(RECT, PT.X, PT.Y) = 0 Then
+'        'WriteValue &H10, 0
+'        m_MouseEnter = False
+'        m_MouseOver = False
+'        tmrMOUSEOVER.Interval = 0
+'        RaiseEvent MouseLeave
+'        Refresh
+'    End If
+    
+    If Not IsMouseInExtender Then
+        m_MouseEnter = False
+        m_MouseOver = False
+        tmrMOUSEOVER.Interval = 0
+        RaiseEvent MouseLeave
+        Refresh
+    End If
+End Sub
 
 Private Sub tmrGlow_Timer()
 If m_Glowing And m_BorderGlow <= 10 Then
@@ -2062,16 +2152,6 @@ Else
   m_BorderWidth = m_BorderGlow
   m_BorderColorOpacity = 60
 End If
-End Sub
-
-Private Sub tmrMOUSEOVER_Timer()
-    If Not IsMouseInExtender Then
-        tmrMOUSEOVER.Interval = 0
-        RaiseEvent MouseLeave
-        'OnMouseOver
-        m_MouseOver = False
-        Refresh
-    End If
 End Sub
 
 Private Sub UserControl_AsyncReadComplete(AsyncProp As AsyncProperty)
@@ -2093,7 +2173,7 @@ Private Sub UserControl_AsyncReadProgress(AsyncProp As AsyncProperty)
     On Error Resume Next
     If m_DrawProgress Then
         If c_AsyncProp Is Nothing Then Set c_AsyncProp = AsyncProp
-        UserControl.Refresh
+        Refresh
     End If
     RaiseEvent PictureDownloadProgress(AsyncProp.BytesMax, AsyncProp.BytesRead)
 End Sub
@@ -2118,7 +2198,11 @@ Private Sub UserControl_DblClick()
     RaiseEvent DblClick
 End Sub
 
+
+
 Private Sub UserControl_HitTest(X As Single, Y As Single, HitResult As Integer)
+    On Error Resume Next
+
     If UserControl.Enabled Then
         If Not MouseToParent Then
             HitResult = vbHitResultHit
@@ -2126,13 +2210,40 @@ Private Sub UserControl_HitTest(X As Single, Y As Single, HitResult As Integer)
             HitResult = vbHitResultHit
         End If
         If Ambient.UserMode Then
-            If tmrMOUSEOVER.Interval = 0 Then
+            Dim PT As POINTAPI
+            Dim lHwnd As Long
+            GetCursorPos PT
+            lHwnd = WindowFromPoint(PT.X, PT.Y)
+            
+            If m_MouseEnter = False Then
+
+                ScreenToClient c_lhWnd, PT
+                m_PT.X = PT.X - X
+                m_PT.Y = PT.Y - Y
+    
+                m_Left = ScaleX(Extender.Left, vbContainerSize, UserControl.ScaleMode)
+                m_Top = ScaleY(Extender.Top, vbContainerSize, UserControl.ScaleMode)
+ 
+                m_MouseEnter = True
                 tmrMOUSEOVER.Interval = 1
-                RaiseEvent MouseEnter
+                 RaiseEvent MouseEnter
                 '----------------->
-                'OnMouseOver
                 m_MouseOver = True
                 Refresh
+            End If
+        
+            bIntercept = True
+            
+            If lHwnd = c_lhWnd Then
+                If m_MouseOver = False Then
+                    m_MouseOver = True
+                    RaiseEvent MouseOver
+                End If
+            Else
+                If m_MouseOver = True Then
+                    m_MouseOver = False
+                    'RaiseEvent MouseOut
+                End If
             End If
         End If
     ElseIf Not Ambient.UserMode Then
@@ -2142,6 +2253,7 @@ End Sub
 
 Private Sub UserControl_Initialize()
     nScale = GetWindowsDPI
+    m_Redraw = True
 End Sub
 
 Private Sub UserControl_InitProperties()
@@ -2159,9 +2271,10 @@ Private Sub UserControl_InitProperties()
     m_BorderWidth = m_def_BorderWidth
     m_Caption1 = "Cap1_" & Ambient.DisplayName
     m_Caption2 = "Cap2_" & Ambient.DisplayName
+    m_CaptionBorderColor = vbHighlightText
     m_SizeMinus = 3
-    m_CaptionAlignmentH = m_def_CaptionAlignmentH
-    m_CaptionAlignmentV = m_def_CaptionAlignmentV
+    m_eCaptionAlignmentH = m_def_eCaptionAlignmentH
+    m_eCaptionAlignmentV = m_def_eCaptionAlignmentV
     m_CaptionShadow = False
     m_CrossPosition = cTopRight
     m_CrossVisible = False
@@ -2193,9 +2306,12 @@ Private Sub UserControl_InitProperties()
     m_IconOpacity = m_def_PictureOpacity
     m_Value = m_def_Value
     m_OptionBehavior = m_def_OptionBehavior
+    m_HotLineColor = vbHighlight
     m_HotLineColorOpacity = 100
     m_HotLineWidth = 5&
-
+    m_HotLinePosition = hlBottom
+    m_WordWrap = True
+    Set m_IconFont = UserControl.Ambient.Font
     c_lhWnd = UserControl.ContainerHwnd
     Call ManageGDIToken(c_lhWnd)
   m_Glowing = m_def_Glowing
@@ -2221,6 +2337,8 @@ Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, X As Sing
 End Sub
 
 Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    'Debug.Print X, Y
+    
     If hCur Then SetCursor hCur
     RaiseEvent MouseMove(Button, Shift, X, Y)
 End Sub
@@ -2278,8 +2396,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_BorderCornerBottomLeft = .ReadProperty("BorderCornerBottomLeft", 0)
         m_BorderPosition = .ReadProperty("BorderPosition", m_def_BorderPosition)
         m_BorderWidth = .ReadProperty("BorderWidth", m_def_BorderWidth)
-        m_CaptionAlignmentH = .ReadProperty("CaptionAlignmentH", m_def_CaptionAlignmentH)
-        m_CaptionAlignmentV = .ReadProperty("CaptionAlignmentV", m_def_CaptionAlignmentV)
+        m_eCaptionAlignmentH = .ReadProperty("CaptionAlignmentH", m_def_eCaptionAlignmentH)
+        m_eCaptionAlignmentV = .ReadProperty("CaptionAlignmentV", m_def_eCaptionAlignmentV)
         m_Caption1 = .ReadProperty("Caption1", Ambient.DisplayName)
         m_Caption2 = .ReadProperty("Caption2", Ambient.DisplayName)
         m_SizeMinus = .ReadProperty("Caption2SizeMinus", 3)
@@ -2293,7 +2411,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_CaptionShadow = .ReadProperty("CaptionShadow", False)
         m_CaptionAngle = .ReadProperty("CaptionAngle", 0)
         m_CaptionShowPrefix = .ReadProperty("CaptionShowPrefix", False)
-        m_CrossPosition = .ReadProperty("CrossPosition", cTop)
+        m_CrossPosition = .ReadProperty("CrossPosition", cTopRight)
         m_CrossVisible = .ReadProperty("CrossVisible", False)
         UserControl.Enabled = .ReadProperty("Enabled", True)
         Set m_Font = .ReadProperty("Font", UserControl.Ambient.Font)
@@ -2360,7 +2478,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_IconAlignmentH = .ReadProperty("IconAlignmentH", 0)
         m_IconAlignmentV = .ReadProperty("IconAlignmentV", 0)
         m_IconOpacity = .ReadProperty("IconOpacity", 100)
-        m_Glowing = PropBag.ReadProperty("Glowing", m_def_Glowing)
+        m_Glowing = .ReadProperty("Glowing", m_def_Glowing)
         
         If m_MousePointerHands Then
             If Ambient.UserMode Then
@@ -2418,8 +2536,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("BorderCornerBottomLeft", m_BorderCornerBottomLeft, 0)
         Call .WriteProperty("BorderPosition", m_BorderPosition, m_def_BorderPosition)
         Call .WriteProperty("BorderWidth", m_BorderWidth, m_def_BorderWidth)
-        Call .WriteProperty("CaptionAlignmentH", m_CaptionAlignmentH, m_def_CaptionAlignmentH)
-        Call .WriteProperty("CaptionAlignmentV", m_CaptionAlignmentV, m_def_CaptionAlignmentV)
+        Call .WriteProperty("CaptionAlignmentH", m_eCaptionAlignmentH, m_def_eCaptionAlignmentH)
+        Call .WriteProperty("CaptionAlignmentV", m_eCaptionAlignmentV, m_def_eCaptionAlignmentV)
         Call .WriteProperty("Caption1", m_Caption1, Ambient.DisplayName)
         Call .WriteProperty("Caption2", m_Caption2, Ambient.DisplayName)
         Call .WriteProperty("Caption2SizeMinus", m_SizeMinus, 3)
@@ -2433,7 +2551,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("CaptionAngle", m_CaptionAngle, 0)
         Call .WriteProperty("CaptionTriming", m_CaptionTriming, StringTrimmingNone)
         Call .WriteProperty("CaptionShowPrefix", m_CaptionShowPrefix, False)
-        Call .WriteProperty("CrossPosition", m_CrossPosition, cTop)
+        Call .WriteProperty("CrossPosition", m_CrossPosition, cTopRight)
         Call .WriteProperty("CrossVisible", m_CrossVisible, False)
         Call .WriteProperty("Enabled", UserControl.Enabled, True)
         Call .WriteProperty("Font", m_Font, UserControl.Ambient.Font)
@@ -2500,7 +2618,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("IconAlignmentH", m_IconAlignmentH, 0)
         Call .WriteProperty("IconAlignmentV", m_IconAlignmentV, 0)
         Call .WriteProperty("IconOpacity", m_IconOpacity, 100)
-        Call PropBag.WriteProperty("Glowing", m_Glowing, m_def_Glowing)
+        Call .WriteProperty("Glowing", m_Glowing, m_def_Glowing)
         
         Call .WriteProperty("PicturePresent", m_PicturePresent, False)
         If m_PicturePresent Then
@@ -2630,26 +2748,6 @@ Public Property Let BackShadow(ByVal New_Value As Boolean)
     CreateShadow
     Refresh
 End Property
-'m_CrossPosition
-Public Property Get CrossPosition() As CrossPos
-    CrossPosition = m_CrossPosition
-End Property
-
-Public Property Let CrossPosition(ByVal New_Value As CrossPos)
-    m_CrossPosition = New_Value
-    PropertyChanged "CrossPosition"
-    Refresh
-End Property
-'m_CrossVisible
-Public Property Get CrossVisible() As Boolean
-    CrossVisible = m_CrossVisible
-End Property
-
-Public Property Let CrossVisible(ByVal New_Value As Boolean)
-    m_CrossVisible = New_Value
-    PropertyChanged "CrossVisible"
-    Refresh
-End Property
 '------------------------------------------
 Public Property Get BorderColor() As OLE_COLOR
     BorderColor = m_BorderColor
@@ -2658,16 +2756,6 @@ End Property
 Public Property Let BorderColor(ByVal New_BorderColor As OLE_COLOR)
     m_BorderColor = New_BorderColor
     PropertyChanged "BorderColor"
-    Refresh
-End Property
-'<<--------------------------------------------->>
-Public Property Get ColorOnMouseOver() As OLE_COLOR
-    ColorOnMouseOver = m_ColorOnMouseOver
-End Property
-
-Public Property Let ColorOnMouseOver(ByVal New_ColorOnMouseOver As OLE_COLOR)
-    m_ColorOnMouseOver = New_ColorOnMouseOver
-    PropertyChanged "ColorOnMouseOver"
     Refresh
 End Property
 
@@ -2679,17 +2767,6 @@ Public Property Let BorderColorOpacity(ByVal New_BorderColorOpacity As Integer)
     m_BorderColorOpacity = New_BorderColorOpacity
     SafeRange m_BorderColorOpacity, 0, 100
     PropertyChanged "BorderColorOpacity"
-    Refresh
-End Property
-
-Public Property Get ColorOpacityOnMouseOver() As Integer
-    ColorOpacityOnMouseOver = m_ColorOnMouseOverOpacity
-End Property
-
-Public Property Let ColorOpacityOnMouseOver(ByVal New_ColorOnMouseOverOpacity As Integer)
-    m_ColorOnMouseOverOpacity = New_ColorOnMouseOverOpacity
-    SafeRange m_ColorOnMouseOverOpacity, 0, 100
-    PropertyChanged "BorderColorOpacityOnMouseOver"
     Refresh
 End Property
 
@@ -2861,73 +2938,6 @@ Public Property Let CallOutWidth(ByVal New_Value As Integer)
     Refresh
 End Property
 
-Public Property Get CaptionAlignmentH() As CaptionAlignmentH
-    CaptionAlignmentH = m_CaptionAlignmentH
-End Property
-
-Public Property Let CaptionAlignmentH(ByVal New_CaptionAlignmentH As CaptionAlignmentH)
-    m_CaptionAlignmentH = New_CaptionAlignmentH
-    PropertyChanged "CaptionAlignmentH"
-    bRecreateShadowCaption = True
-    Refresh
-End Property
-
-Public Property Get CaptionAlignmentV() As CaptionAlignmentV
-    CaptionAlignmentV = m_CaptionAlignmentV
-End Property
-
-Public Property Let CaptionAlignmentV(ByVal New_CaptionAlignmentV As CaptionAlignmentV)
-    m_CaptionAlignmentV = New_CaptionAlignmentV
-    PropertyChanged "CaptionAlignmentV"
-    bRecreateShadowCaption = True
-    Refresh
-End Property
-
-Public Property Get CaptionAngle() As Integer
-    CaptionAngle = m_CaptionAngle
-End Property
-
-Public Property Let CaptionAngle(ByVal New_Value As Integer)
-    m_CaptionAngle = New_Value
-    PropertyChanged "CaptionAngle"
-    'If hImgCaptionShadow Then GdipDisposeImage hImgCaptionShadow: hImgCaptionShadow = 0
-    bRecreateShadowCaption = True
-    Refresh
-End Property
-'Caption2SizeMinus
-Public Property Get Caption2SizeMinus() As Integer
-    Caption2SizeMinus = m_SizeMinus
-End Property
-
-Public Property Let Caption2SizeMinus(ByVal New_Value As Integer)
-    m_SizeMinus = New_Value
-    PropertyChanged "Caption2SizeMinus"
-    Refresh
-End Property
-
-Public Property Get CaptionBorderColor() As OLE_COLOR
-    CaptionBorderColor = m_CaptionBorderColor
-End Property
-
-Public Property Let CaptionBorderColor(ByVal New_Value As OLE_COLOR)
-    m_CaptionBorderColor = New_Value
-    PropertyChanged "CaptionBorderColor"
-    bRecreateShadowCaption = True
-    Refresh
-End Property
-
-Public Property Get CaptionBorderWidth() As Integer
-    CaptionBorderWidth = m_CaptionBorderWidth
-End Property
-
-Public Property Let CaptionBorderWidth(ByVal New_Value As Integer)
-    m_CaptionBorderWidth = New_Value
-    If m_CaptionBorderWidth < 0 Then m_CaptionBorderWidth = 0
-    PropertyChanged "CaptionBorderWidth"
-    bRecreateShadowCaption = True
-    Refresh
-End Property
-
 Public Property Get Caption1() As String
     Caption1 = m_Caption1
 End Property
@@ -2935,19 +2945,6 @@ End Property
 Public Property Let Caption1(ByRef New_Caption As String)
     m_Caption1 = New_Caption
     PropertyChanged "Caption1"
-    If m_AutoSize Then Me.AutoSize = True
-    RaiseEvent Change
-    bRecreateShadowCaption = True
-    Refresh
-End Property
-
-Public Property Get Caption2() As String
-    Caption2 = m_Caption2
-End Property
-
-Public Property Let Caption2(ByRef New_Caption As String)
-    m_Caption2 = New_Caption
-    PropertyChanged "Caption2"
     If m_AutoSize Then Me.AutoSize = True
     RaiseEvent Change
     bRecreateShadowCaption = True
@@ -2976,6 +2973,19 @@ Public Property Let Caption1PaddingY(ByVal New_Caption1PaddingY As Integer)
     Refresh
 End Property
 
+Public Property Get Caption2() As String
+    Caption2 = m_Caption2
+End Property
+
+Public Property Let Caption2(ByRef New_Caption As String)
+    m_Caption2 = New_Caption
+    PropertyChanged "Caption2"
+    If m_AutoSize Then Me.AutoSize = True
+    RaiseEvent Change
+    bRecreateShadowCaption = True
+    Refresh
+End Property
+
 Public Property Get Caption2PaddingX() As Integer
     Caption2PaddingX = m_Caption2PaddingX
 End Property
@@ -2994,6 +3004,73 @@ End Property
 Public Property Let Caption2PaddingY(ByVal New_Caption2PaddingY As Integer)
     m_Caption2PaddingY = New_Caption2PaddingY
     PropertyChanged "Caption2PaddingY"
+    bRecreateShadowCaption = True
+    Refresh
+End Property
+'Caption2SizeMinus
+Public Property Get Caption2SizeMinus() As Integer
+    Caption2SizeMinus = m_SizeMinus
+End Property
+
+Public Property Let Caption2SizeMinus(ByVal New_Value As Integer)
+    m_SizeMinus = New_Value
+    PropertyChanged "Caption2SizeMinus"
+    Refresh
+End Property
+
+Public Property Get CaptionAlignmentH() As eCaptionAlignmentH
+    CaptionAlignmentH = m_eCaptionAlignmentH
+End Property
+
+Public Property Let CaptionAlignmentH(ByVal New_eCaptionAlignmentH As eCaptionAlignmentH)
+    m_eCaptionAlignmentH = New_eCaptionAlignmentH
+    PropertyChanged "CaptionAlignmentH"
+    bRecreateShadowCaption = True
+    Refresh
+End Property
+
+Public Property Get CaptionAlignmentV() As eCaptionAlignmentV
+    CaptionAlignmentV = m_eCaptionAlignmentV
+End Property
+
+Public Property Let CaptionAlignmentV(ByVal New_eCaptionAlignmentV As eCaptionAlignmentV)
+    m_eCaptionAlignmentV = New_eCaptionAlignmentV
+    PropertyChanged "CaptionAlignmentV"
+    bRecreateShadowCaption = True
+    Refresh
+End Property
+
+Public Property Get CaptionAngle() As Integer
+    CaptionAngle = m_CaptionAngle
+End Property
+
+Public Property Let CaptionAngle(ByVal New_Value As Integer)
+    m_CaptionAngle = New_Value
+    PropertyChanged "CaptionAngle"
+    'If hImgCaptionShadow Then GdipDisposeImage hImgCaptionShadow: hImgCaptionShadow = 0
+    bRecreateShadowCaption = True
+    Refresh
+End Property
+
+Public Property Get CaptionBorderColor() As OLE_COLOR
+    CaptionBorderColor = m_CaptionBorderColor
+End Property
+
+Public Property Let CaptionBorderColor(ByVal New_Value As OLE_COLOR)
+    m_CaptionBorderColor = New_Value
+    PropertyChanged "CaptionBorderColor"
+    bRecreateShadowCaption = True
+    Refresh
+End Property
+
+Public Property Get CaptionBorderWidth() As Integer
+    CaptionBorderWidth = m_CaptionBorderWidth
+End Property
+
+Public Property Let CaptionBorderWidth(ByVal New_Value As Integer)
+    m_CaptionBorderWidth = New_Value
+    If m_CaptionBorderWidth < 0 Then m_CaptionBorderWidth = 0
+    PropertyChanged "CaptionBorderWidth"
     bRecreateShadowCaption = True
     Refresh
 End Property
@@ -3031,6 +3108,16 @@ Public Property Let CaptionTriming(ByVal New_Value As StringTrimming)
     PropertyChanged "CaptionTriming"
     Refresh
 End Property
+
+Public Property Get ChangeColorOnClick() As Boolean
+    ChangeColorOnClick = m_ChangeColorOnClick
+End Property
+
+Public Property Let ChangeColorOnClick(ByVal New_Change As Boolean)
+    m_ChangeColorOnClick = New_Change
+    PropertyChanged "ChangeColorOnClick"
+    Refresh
+End Property
 'ChangeOnMouseOver
 Public Property Get ChangeOnMouseOver() As eChangeOnMouse
     ChangeOnMouseOver = m_ChangeOnMouseOver
@@ -3041,14 +3128,45 @@ Public Property Let ChangeOnMouseOver(ByVal New_Change As eChangeOnMouse)
     PropertyChanged "ChangeOnMouseOver"
     Refresh
 End Property
-
-Public Property Get ChangeColorOnClick() As Boolean
-    ChangeColorOnClick = m_ChangeColorOnClick
+'<<--------------------------------------------->>
+Public Property Get ColorOnMouseOver() As OLE_COLOR
+    ColorOnMouseOver = m_ColorOnMouseOver
 End Property
 
-Public Property Let ChangeColorOnClick(ByVal New_Change As Boolean)
-    m_ChangeColorOnClick = New_Change
-    PropertyChanged "ChangeColorOnClick"
+Public Property Let ColorOnMouseOver(ByVal New_ColorOnMouseOver As OLE_COLOR)
+    m_ColorOnMouseOver = New_ColorOnMouseOver
+    PropertyChanged "ColorOnMouseOver"
+    Refresh
+End Property
+
+Public Property Get ColorOpacityOnMouseOver() As Integer
+    ColorOpacityOnMouseOver = m_ColorOnMouseOverOpacity
+End Property
+
+Public Property Let ColorOpacityOnMouseOver(ByVal New_ColorOnMouseOverOpacity As Integer)
+    m_ColorOnMouseOverOpacity = New_ColorOnMouseOverOpacity
+    SafeRange m_ColorOnMouseOverOpacity, 0, 100
+    PropertyChanged "BorderColorOpacityOnMouseOver"
+    Refresh
+End Property
+'m_CrossPosition
+Public Property Get CrossPosition() As CrossPos
+    CrossPosition = m_CrossPosition
+End Property
+
+Public Property Let CrossPosition(ByVal New_Value As CrossPos)
+    m_CrossPosition = New_Value
+    PropertyChanged "CrossPosition"
+    Refresh
+End Property
+'m_CrossVisible
+Public Property Get CrossVisible() As Boolean
+    CrossVisible = m_CrossVisible
+End Property
+
+Public Property Let CrossVisible(ByVal New_Value As Boolean)
+    m_CrossVisible = New_Value
+    PropertyChanged "CrossVisible"
     Refresh
 End Property
 
@@ -3121,6 +3239,18 @@ Public Property Let ForeColorOpacity(ByVal New_ForeColorOpacity As Integer)
     SafeRange m_ForeColorOpacity, 0, 100
     PropertyChanged "ForeColorOpacity"
     Refresh
+End Property
+
+Public Property Get Glowing() As Boolean
+  Glowing = m_Glowing
+End Property
+
+Public Property Let Glowing(ByVal New_Glowing As Boolean)
+  m_Glowing = New_Glowing
+  PropertyChanged "Glowing"
+  tmrGlow.Enabled = m_Glowing
+  If Not New_Glowing Then m_BorderWidth = m_OldBorderWidth
+  Refresh
 End Property
 
 Public Property Get GradientAngle() As Integer
@@ -3234,7 +3364,7 @@ End Property
 
 Public Property Let HotLineColor(ByVal New_Value As OLE_COLOR)
     m_HotLineColor = New_Value
-    PropertyChanged "HotLineColor "
+    PropertyChanged "HotLineColor"
     Refresh
 End Property
 
@@ -3245,7 +3375,7 @@ End Property
 Public Property Let HotLineColorOpacity(ByVal New_Value As Integer)
     m_HotLineColorOpacity = New_Value
     SafeRange m_HotLineColorOpacity, 0, 100
-    PropertyChanged "HotLineColorOpacity "
+    PropertyChanged "HotLineColorOpacity"
     Refresh
 End Property
 
@@ -3279,22 +3409,22 @@ Public Property Let HotLineWidth(ByVal New_Value As Integer)
     Refresh
 End Property
 
-Public Property Get IconAlignmentH() As CaptionAlignmentH
+Public Property Get IconAlignmentH() As eCaptionAlignmentH
     IconAlignmentH = m_IconAlignmentH
 End Property
 
-Public Property Let IconAlignmentH(ByVal New_IconAlignmentH As CaptionAlignmentH)
+Public Property Let IconAlignmentH(ByVal New_IconAlignmentH As eCaptionAlignmentH)
     m_IconAlignmentH = New_IconAlignmentH
     PropertyChanged "IconAlignmentH"
     bRecreateShadowCaption = True
     Refresh
 End Property
 
-Public Property Get IconAlignmentV() As CaptionAlignmentV
+Public Property Get IconAlignmentV() As eCaptionAlignmentV
     IconAlignmentV = m_IconAlignmentV
 End Property
 
-Public Property Let IconAlignmentV(ByVal New_IconAlignmentV As CaptionAlignmentV)
+Public Property Let IconAlignmentV(ByVal New_IconAlignmentV As eCaptionAlignmentV)
     m_IconAlignmentV = New_IconAlignmentV
     PropertyChanged "IconAlignmentV"
     bRecreateShadowCaption = True
@@ -3412,6 +3542,14 @@ Public Property Get Image() As IPicture
 
     Call OleCreatePictureIndirect(Pic, IID_IDispatch, 1, Image)
 
+End Property
+
+Public Property Get IsMouseEnter() As Boolean
+    IsMouseEnter = m_MouseEnter
+End Property
+
+Public Property Get IsMouseOver() As Boolean
+    IsMouseOver = m_MouseOver
 End Property
 
 Public Property Get MouseIcon() As IPictureDisp
@@ -3646,6 +3784,14 @@ Public Property Let PictureShadow(ByVal New_Value As Boolean)
     Refresh
 End Property
 
+Public Property Get Redraw() As Boolean
+    Redraw = m_Redraw
+End Property
+
+Public Property Let Redraw(ByVal New_Value As Boolean)
+    m_Redraw = New_Value
+End Property
+
 Public Property Get ShadowColor() As OLE_COLOR
     ShadowColor = m_ShadowColor
 End Property
@@ -3727,15 +3873,4 @@ Public Property Let WordWrap(ByVal New_WordWrap As Boolean)
     Refresh
 End Property
 
-Public Property Get Glowing() As Boolean
-  Glowing = m_Glowing
-End Property
-
-Public Property Let Glowing(ByVal New_Glowing As Boolean)
-  m_Glowing = New_Glowing
-  PropertyChanged "Glowing"
-  tmrGlow.Enabled = m_Glowing
-  If Not New_Glowing Then m_BorderWidth = m_OldBorderWidth
-  Refresh
-End Property
 
