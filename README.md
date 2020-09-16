@@ -47,7 +47,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 * **Leandro Ascierto** - *Initial work* - [Leandro Ascierto VB6 Latin Blog & Forums](http://leandroascierto.com/blog/)
 
-* **AxioUK** - David Rojas *Editor* - [Leandro Ascierto VB6 Latin Blog & Forums](http://leandroascierto.com/blog/)
+* **AxioUK** - David Rojas *Editor & Forum User* - [Leandro Ascierto VB6 Latin Blog & Forums](http://leandroascierto.com/blog/)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
