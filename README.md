@@ -1,4 +1,4 @@
-# axLabelPlus
+# axLabelPlus v1.5.9
 
  Fork of Awesome LabelPlus VB6 UserControl from Leandro Ascierto
 
@@ -8,26 +8,21 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+Nothing, use from Win7 ahead
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Copy Files to your Project folder, include/reference to this and set this usercontrol to Private
 
 ```
-Give the example
+axLabelPlus.ctl
+axLabelPlus.ctx
 ```
 
-And repeat
+Or Compile the usercontrol to OCX (ActiveX), and reference to your VB6 Project
 
 ```
-until finished
+AXLPCTRL.OCX
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
