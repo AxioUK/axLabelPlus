@@ -42,7 +42,7 @@ Option Explicit
 'Moded Name: axLabelPlus
 'Autor:  David Rojas A. [AxioUK]
 'LastUpdate: 07/05/2020
-'Version: 1.5.7
+'Version: 1.6.0
 'Special thanks to:
 '- Leandro Ascierto por la creación de este Espectacular Control, su apoyo y guía y por permitirme modificar su control.
 '- YAcosta por sus ideas y por testear cada modificación.
@@ -427,7 +427,7 @@ Const m_def_GradientColorP1Opacity = 100
 Const m_def_GradientColorP2 = &HC1A06F
 Const m_def_GradientColorP2Opacity = 100
 Const m_def_PictureOpacity = 100
-Const m_def_WordWrap = True
+Const m_def_WordWrap = False
 Const m_def_Value = False
 Const m_def_OptionBehavior = False
 
@@ -485,6 +485,7 @@ Dim m_AutoSize As Boolean
 Dim m_MousePointerHands As Boolean
 Dim m_Font As StdFont
 Attribute m_Font.VB_VarHelpID = -1
+Dim m_Font2 As StdFont
 Dim m_ForeColor As OLE_COLOR
 Dim m_ForeColorOpacity As Integer
 Dim m_ForeColorP As OLE_COLOR
@@ -535,7 +536,8 @@ Dim XCrossPos         As Long
 Dim m_CrossPosition   As CrossPos
 Dim m_CrossVisible    As Boolean
 
-Dim m_WordWrap        As Boolean
+Dim m_WordWrap1       As Boolean
+Dim m_WordWrap2       As Boolean
 Dim m_IconFont        As StdFont
 Dim m_IconCharCode    As Long
 Dim m_IconForeColor   As Long
@@ -683,7 +685,10 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
         DrawHotLine hGraphics, hPath ', PosX, PosY
     End If
     
+    'Caption1
     GDIP_AddPathString hGraphics, Xx, Yy, WW, HH
+    'Caption2
+    GDIP_AddPathString2 hGraphics, Xx, Yy, WW, HH
 
     If m_Border And BorderWidth > 0 Then
         If m_ChangeOnMouseOver = eChangeBorderColor And m_MouseOver Then
@@ -1557,7 +1562,6 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
     Dim hFontFamily As Long
     Dim hFormat As Long
     Dim layoutRect As RECTF
-    Dim layoutRect2 As RECTF
     Dim lFontSize As Long
     Dim lFontStyle As GDIPLUS_FONTSTYLE
     Dim hFont As Long
@@ -1566,13 +1570,14 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
     If GdipCreatePath(&H0, hPath) = 0 Then
     
         If GdipCreateStringFormat(0, 0, hFormat) = 0 Then
-            If Not m_WordWrap Then GdipSetStringFormatFlags hFormat, StringFormatFlagsNoWrap
+            If Not m_WordWrap1 Then GdipSetStringFormatFlags hFormat, StringFormatFlagsNoWrap
             If m_CaptionShowPrefix Then GdipSetStringFormatHotkeyPrefix hFormat, HotkeyPrefixShow
             GdipSetStringFormatTrimming hFormat, m_CaptionTriming
             GdipSetStringFormatAlign hFormat, m_eCaptionAlignmentH
             GdipSetStringFormatLineAlign hFormat, m_eCaptionAlignmentV
         End If
 
+        'Caption
         GetFontStyleAndSize m_Font, lFontStyle, lFontSize
         
         If GdipCreateFontFamilyFromName(StrPtr(m_Font.Name), 0, hFontFamily) Then
@@ -1584,7 +1589,7 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
                 If GdipGetGenericFontFamilySansSerif(hFontFamily) Then Exit Function
             End If
         End If
-        
+                
         If GetMeasureString Then
             Dim BB As RECTF, CF As Long, LF As Long
             
@@ -1592,35 +1597,25 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
                 .Left = X: .Top = Y
                 .Width = Width: .Height = Height
             End With
-                        
-            With layoutRect2
-                .Left = X: .Top = Y + lFontSize
-                .Width = Width: .Height = Height
-            End With
-                        
+                                                
+            'Caption
             Call GdipCreateFont(hFontFamily, lFontSize, lFontStyle, UnitPixel, hFont)
             GdipMeasureString hGraphics, StrPtr(m_Caption1), -1, hFont, layoutRect, hFormat, BB, CF, LF
-            GdipDeleteFont hFont
-            Call GdipCreateFont(hFontFamily, lFontSize - m_SizeMinus, lFontStyle, UnitPixel, hFont)
-            GdipMeasureString hGraphics, StrPtr(m_Caption2), -1, hFont, layoutRect2, hFormat, BB, CF, LF
             GdipDeleteFont hFont
                       
             X = BB.Left
             Y = BB.Top
-            Width = BB.Width
+            Width = BB.Width 'IIf(BB.Width < (UserControl.ScaleWidth - m_Caption1PaddingX), (UserControl.ScaleWidth - m_Caption1PaddingX), BB.Width)
             Height = BB.Height
             GdipDeleteFontFamily hFontFamily
         Else
             With layoutRect
-                .Left = X + m_Caption1PaddingX * nScale: .Width = Width - (m_Caption1PaddingX * nScale) * 2
-                .Top = Y + m_Caption1PaddingY * nScale: .Height = Height - (m_Caption1PaddingY * nScale) * 2
+                .Left = X + m_Caption1PaddingX * nScale
+                .Top = Y + m_Caption1PaddingY * nScale
+                .Width = Width - (m_Caption1PaddingX * nScale) * 2
+                .Height = Height - (m_Caption1PaddingY * nScale) * 2
             End With
-            
-            With layoutRect2
-                .Left = X + m_Caption2PaddingX * nScale: .Width = Width - (m_Caption2PaddingX * nScale) * 2
-                .Top = Y + lFontSize + m_Caption2PaddingY * nScale: .Height = Height - (m_Caption2PaddingY * nScale) * 2
-            End With
-            
+                        
             If m_CaptionAngle <> 0 Then
                 If ForShadow Then
                     layoutRect.Left = layoutRect.Left - (Width / 2)
@@ -1635,7 +1630,158 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
             End If
             
             GdipAddPathString hPath, StrPtr(m_Caption1), -1, hFontFamily, lFontStyle, lFontSize, layoutRect, hFormat
-            GdipAddPathString hPath, StrPtr(m_Caption2), -1, hFontFamily, lFontStyle, lFontSize - m_SizeMinus, layoutRect2, hFormat
+            GdipDeleteStringFormat hFormat
+            
+            If m_ChangeColorOnClick And m_Clicked Then
+                GdipCreateSolidFill ConvertColor(m_ForeColorP, IIf(ForShadow, m_ShadowColorOpacity, m_ForeColorPOpacity)), hBrush
+            Else
+                GdipCreateSolidFill ConvertColor(m_ForeColor, IIf(ForShadow, m_ShadowColorOpacity, m_ForeColorOpacity)), hBrush
+            End If
+            
+            GdipFillPath hGraphics, hBrush, hPath
+            GdipDeleteBrush hBrush
+            
+            If m_CaptionBorderWidth > 0 Then
+               GdipCreatePen1 ConvertColor(m_CaptionBorderColor, IIf(ForShadow, m_ShadowColorOpacity, 100)), m_CaptionBorderWidth, UnitPixel, hPen
+               GdipDrawPath hGraphics, hPen, hPath
+               GdipDeletePen hPen
+            End If
+            
+            If m_CaptionAngle <> 0 Then GdipResetWorldTransform hGraphics
+            
+            GdipDeleteFontFamily hFontFamily
+            
+            If m_IconCharCode Then
+                
+                If GdipCreateFontFamilyFromName(StrPtr(m_IconFont.Name), 0, hFontFamily) Then
+                    If GdipCreateFontFamilyFromName(StrPtr(m_IconFont.Name), hFontCollection, hFontFamily) Then
+                        GdipDeletePath hPath
+                        Exit Function
+                    End If
+                End If
+                
+                With layoutRect
+                    .Left = X + m_IconPaddingX * nScale: .Width = Width - (m_IconPaddingX * nScale) * 2
+                    .Top = Y + m_IconPaddingY * nScale: .Height = Height - (m_IconPaddingY * nScale) * 2
+                End With
+                
+                If m_CaptionAngle <> 0 Then
+                    If ForShadow Then
+                        layoutRect.Left = layoutRect.Left - (Width / 2)
+                        layoutRect.Top = layoutRect.Top - (Height / 2)
+                        Call GdipTranslateWorldTransform(hGraphics, (Width / 2), (Height / 2), 0)
+                    Else
+                        layoutRect.Left = layoutRect.Left - (UserControl.ScaleWidth / 2)
+                        layoutRect.Top = layoutRect.Top - (UserControl.ScaleHeight / 2)
+                        Call GdipTranslateWorldTransform(hGraphics, (UserControl.ScaleWidth / 2), (UserControl.ScaleHeight / 2), 0)
+                    End If
+                    Call GdipRotateWorldTransform(hGraphics, m_CaptionAngle, 0)
+                End If
+                GetFontStyleAndSize m_IconFont, lFontStyle, lFontSize
+                
+                If GdipCreateStringFormat(0, 0, hFormat) = 0 Then
+                    GdipSetStringFormatAlign hFormat, m_IconAlignmentH
+                    GdipSetStringFormatLineAlign hFormat, m_IconAlignmentV
+                End If
+                                
+                GdipResetPath hPath
+                GdipAddPathString hPath, StrPtr(ChrW2(m_IconCharCode)), -1, hFontFamily, lFontStyle, lFontSize, layoutRect, hFormat
+                GdipDeleteStringFormat hFormat
+            
+                GdipCreateSolidFill ConvertColor(m_IconForeColor, IIf(ForShadow, m_ShadowColorOpacity, m_IconOpacity)), hBrush
+                GdipFillPath hGraphics, hBrush, hPath
+                GdipDeleteBrush hBrush
+                
+                If m_CaptionBorderWidth > 0 Then
+                   GdipCreatePen1 ConvertColor(m_CaptionBorderColor, IIf(ForShadow, m_ShadowColorOpacity, 100)), m_CaptionBorderWidth, UnitPixel, hPen
+                   GdipDrawPath hGraphics, hPen, hPath
+                   GdipDeletePen hPen
+                End If
+                
+                GdipDeleteFontFamily hFontFamily
+                
+                If m_CaptionAngle <> 0 Then GdipResetWorldTransform hGraphics
+            End If
+        End If
+        
+        GdipDeletePath hPath
+    End If
+
+End Function
+
+Private Function GDIP_AddPathString2(ByVal hGraphics As Long, X As Long, Y As Long, Width As Long, Height As Long, Optional ForShadow As Boolean, Optional GetMeasureString As Boolean) As Boolean
+    Dim hPath As Long
+    Dim hPen As Long
+    Dim hBrush As Long
+    Dim hFontFamily As Long
+    Dim hFormat As Long
+    Dim layoutRect As RECTF
+    Dim lFontSize As Long
+    Dim lFontStyle As GDIPLUS_FONTSTYLE
+    Dim hFont As Long
+    Dim hdc As Long
+
+    If GdipCreatePath(&H0, hPath) = 0 Then
+    
+        If GdipCreateStringFormat(0, 0, hFormat) = 0 Then
+            If Not m_WordWrap2 Then GdipSetStringFormatFlags hFormat, StringFormatFlagsNoWrap
+            If m_CaptionShowPrefix Then GdipSetStringFormatHotkeyPrefix hFormat, HotkeyPrefixShow
+            GdipSetStringFormatTrimming hFormat, m_CaptionTriming
+            GdipSetStringFormatAlign hFormat, m_eCaptionAlignmentH
+            GdipSetStringFormatLineAlign hFormat, m_eCaptionAlignmentV
+        End If
+
+        'Caption
+        GetFontStyleAndSize m_Font2, lFontStyle, lFontSize
+        
+        If GdipCreateFontFamilyFromName(StrPtr(m_Font2.Name), 0, hFontFamily) Then
+            If hFontCollection Then
+                If GdipCreateFontFamilyFromName(StrPtr(m_Font2.Name), hFontCollection, hFontFamily) Then
+                    If GdipGetGenericFontFamilySansSerif(hFontFamily) Then Exit Function
+                End If
+            Else
+                If GdipGetGenericFontFamilySansSerif(hFontFamily) Then Exit Function
+            End If
+        End If
+                
+        If GetMeasureString Then
+            Dim BB As RECTF, CF As Long, LF As Long
+            
+            With layoutRect
+                .Left = X: .Top = Y
+                .Width = Width: .Height = Height
+            End With
+                                                
+            'Caption
+            Call GdipCreateFont(hFontFamily, lFontSize, lFontStyle, UnitPixel, hFont)
+            GdipMeasureString hGraphics, StrPtr(m_Caption2), -1, hFont, layoutRect, hFormat, BB, CF, LF
+            GdipDeleteFont hFont
+                      
+            X = BB.Left
+            Y = BB.Top
+            Width = BB.Width
+            Height = BB.Height
+            GdipDeleteFontFamily hFontFamily
+        Else
+            With layoutRect
+                .Left = X + m_Caption2PaddingX * nScale: .Width = Width - (m_Caption2PaddingX * nScale) * 2
+                .Top = Y + m_Caption2PaddingY * nScale: .Height = Height - (m_Caption2PaddingY * nScale) * 2
+            End With
+                        
+            If m_CaptionAngle <> 0 Then
+                If ForShadow Then
+                    layoutRect.Left = layoutRect.Left - (Width / 2)
+                    layoutRect.Top = layoutRect.Top - (Height / 2)
+                    Call GdipTranslateWorldTransform(hGraphics, (Width / 2), (Height / 2), 0)
+                Else
+                    layoutRect.Left = layoutRect.Left - (UserControl.ScaleWidth / 2)
+                    layoutRect.Top = layoutRect.Top - (UserControl.ScaleHeight / 2)
+                    Call GdipTranslateWorldTransform(hGraphics, (UserControl.ScaleWidth / 2), (UserControl.ScaleHeight / 2), 0)
+                End If
+                Call GdipRotateWorldTransform(hGraphics, m_CaptionAngle, 0)
+            End If
+            
+            GdipAddPathString hPath, StrPtr(m_Caption2), -1, hFontFamily, lFontStyle, lFontSize, layoutRect, hFormat
             GdipDeleteStringFormat hFormat
             
             If m_ChangeColorOnClick And m_Clicked Then
@@ -2279,6 +2425,7 @@ Private Sub UserControl_InitProperties()
     m_CrossPosition = cTopRight
     m_CrossVisible = False
     Set m_Font = UserControl.Ambient.Font
+    Set m_Font2 = UserControl.Ambient.Font
     m_ForeColor = m_def_ForeColor
     m_ForeColorOpacity = m_def_ForeColorOpacity
     m_ForeColorP = m_def_ForeColorP
@@ -2296,7 +2443,8 @@ Private Sub UserControl_InitProperties()
     m_PictureOpacity = m_def_PictureOpacity
     m_PicturePaddingX = 0
     m_PicturePaddingY = 0
-    m_WordWrap = m_def_WordWrap
+    m_WordWrap1 = m_def_WordWrap
+    m_WordWrap2 = m_def_WordWrap
     Set m_IconFont = UserControl.Ambient.Font
     m_IconForeColor = UserControl.Ambient.ForeColor
     m_IconPaddingX = 0
@@ -2310,11 +2458,11 @@ Private Sub UserControl_InitProperties()
     m_HotLineColorOpacity = 100
     m_HotLineWidth = 5&
     m_HotLinePosition = hlBottom
-    m_WordWrap = True
     Set m_IconFont = UserControl.Ambient.Font
     c_lhWnd = UserControl.ContainerHwnd
     Call ManageGDIToken(c_lhWnd)
-  m_Glowing = m_def_Glowing
+    m_Glowing = m_def_Glowing
+    
 End Sub
 
 Private Sub UserControl_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -2414,7 +2562,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_CrossPosition = .ReadProperty("CrossPosition", cTopRight)
         m_CrossVisible = .ReadProperty("CrossVisible", False)
         UserControl.Enabled = .ReadProperty("Enabled", True)
-        Set m_Font = .ReadProperty("Font", UserControl.Ambient.Font)
+        Set m_Font = .ReadProperty("Caption1Font", UserControl.Ambient.Font)
+        Set m_Font2 = .ReadProperty("Caption2Font", UserControl.Ambient.Font)
         m_ForeColor = .ReadProperty("ForeColor", m_def_ForeColor)
         m_ForeColorOpacity = .ReadProperty("ForeColorOpacity", m_def_ForeColorOpacity)
         m_ForeColorP = .ReadProperty("ForeColorOnPress", m_def_ForeColorP)
@@ -2442,7 +2591,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_PicturePaddingY = .ReadProperty("PicturePaddingY", 0)
         m_PictureSetWidth = .ReadProperty("PictureSetWidth", 0)
         m_PictureSetHeight = .ReadProperty("PictureSetHeight", 0)
-        m_WordWrap = .ReadProperty("WordWrap", m_def_WordWrap)
+        m_WordWrap1 = .ReadProperty("Caption1WordWrap", m_def_WordWrap)
+        m_WordWrap2 = .ReadProperty("Caption2WordWrap", m_def_WordWrap)
         m_ShadowSize = .ReadProperty("ShadowSize", 0)
         m_ShadowColor = .ReadProperty("ShadowColor", vbBlack)
         m_ShadowOffsetX = .ReadProperty("ShadowOffsetX", 0)
@@ -2554,7 +2704,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("CrossPosition", m_CrossPosition, cTopRight)
         Call .WriteProperty("CrossVisible", m_CrossVisible, False)
         Call .WriteProperty("Enabled", UserControl.Enabled, True)
-        Call .WriteProperty("Font", m_Font, UserControl.Ambient.Font)
+        Call .WriteProperty("Caption1Font", m_Font, UserControl.Ambient.Font)
+        Call .WriteProperty("Caption2Font", m_Font2, UserControl.Ambient.Font)
         Call .WriteProperty("ForeColor", m_ForeColor, m_def_ForeColor)
         Call .WriteProperty("ForeColorOpacity", m_ForeColorOpacity, m_def_ForeColorOpacity)
         Call .WriteProperty("ForeColorOnPress", m_ForeColorP, m_def_ForeColorP)
@@ -2582,7 +2733,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("PicturePaddingY", m_PicturePaddingY, 0)
         Call .WriteProperty("PictureSetWidth", m_PictureSetWidth, 0)
         Call .WriteProperty("PictureSetHeight", m_PictureSetHeight, 0)
-        Call .WriteProperty("WordWrap", m_WordWrap, True)
+        Call .WriteProperty("Caption1WordWrap", m_WordWrap1, True)
+        Call .WriteProperty("Caption2WordWrap", m_WordWrap2, True)
         Call .WriteProperty("ShadowSize", m_ShadowSize, 0)
         Call .WriteProperty("ShadowColor", m_ShadowColor, vbBlack)
         Call .WriteProperty("ShadowOffsetX", m_ShadowOffsetX, 0)
@@ -2654,7 +2806,13 @@ Public Property Let AutoSize(ByVal NewValue As Boolean)
     End If
     lDif = lDif * nScale
     
-    If m_WordWrap Then
+    If m_WordWrap1 Then
+        lWidth = UserControl.ScaleWidth - lDif
+    Else
+        lWidth = Screen.Width
+    End If
+    
+    If m_WordWrap2 Then
         lWidth = UserControl.ScaleWidth - lDif
     Else
         lWidth = Screen.Width
@@ -3007,16 +3165,16 @@ Public Property Let Caption2PaddingY(ByVal New_Caption2PaddingY As Integer)
     bRecreateShadowCaption = True
     Refresh
 End Property
-'Caption2SizeMinus
-Public Property Get Caption2SizeMinus() As Integer
-    Caption2SizeMinus = m_SizeMinus
-End Property
-
-Public Property Let Caption2SizeMinus(ByVal New_Value As Integer)
-    m_SizeMinus = New_Value
-    PropertyChanged "Caption2SizeMinus"
-    Refresh
-End Property
+''Caption2SizeMinus
+'Public Property Get Caption2SizeMinus() As Integer
+'    Caption2SizeMinus = m_SizeMinus
+'End Property
+'
+'Public Property Let Caption2SizeMinus(ByVal New_Value As Integer)
+'    m_SizeMinus = New_Value
+'    PropertyChanged "Caption2SizeMinus"
+'    Refresh
+'End Property
 
 Public Property Get CaptionAlignmentH() As eCaptionAlignmentH
     CaptionAlignmentH = m_eCaptionAlignmentH
@@ -3179,11 +3337,11 @@ Public Property Let Enabled(ByVal NewValue As Boolean)
     PropertyChanged "Enabled"
 End Property
 
-Public Property Get Font() As StdFont
-    Set Font = m_Font
+Public Property Get Caption1Font() As StdFont
+    Set Caption1Font = m_Font
 End Property
 
-Public Property Set Font(New_Font As StdFont)
+Public Property Set Caption1Font(New_Font As StdFont)
     With m_Font
         .Name = New_Font.Name
         .Size = New_Font.Size
@@ -3194,7 +3352,27 @@ Public Property Set Font(New_Font As StdFont)
         .Weight = New_Font.Weight
         .Charset = New_Font.Charset
     End With
-    PropertyChanged "Font"
+    PropertyChanged "Caption1Font"
+    bRecreateShadowCaption = True
+    Refresh
+End Property
+
+Public Property Get Caption2Font() As StdFont
+    Set Caption2Font = m_Font2
+End Property
+
+Public Property Set Caption2Font(New_Font As StdFont)
+    With m_Font2
+        .Name = New_Font.Name
+        .Size = New_Font.Size
+        .Bold = New_Font.Bold
+        .Italic = New_Font.Italic
+        .Underline = New_Font.Underline
+        .Strikethrough = New_Font.Strikethrough
+        .Weight = New_Font.Weight
+        .Charset = New_Font.Charset
+    End With
+    PropertyChanged "Caption2Font"
     bRecreateShadowCaption = True
     Refresh
 End Property
@@ -3863,13 +4041,23 @@ Public Property Let Value(ByVal NewValue As Boolean)
     RaiseEvent ChangeValue(m_Value)
 End Property
 
-Public Property Get WordWrap() As Boolean
-    WordWrap = m_WordWrap
+Public Property Get Caption1WordWrap() As Boolean
+    Caption1WordWrap = m_WordWrap1
 End Property
 
-Public Property Let WordWrap(ByVal New_WordWrap As Boolean)
-    m_WordWrap = New_WordWrap
-    PropertyChanged "WordWrap"
+Public Property Let Caption1WordWrap(ByVal New_WordWrap As Boolean)
+    m_WordWrap1 = New_WordWrap
+    PropertyChanged "Caption1WordWrap"
+    Refresh
+End Property
+
+Public Property Get Caption2WordWrap() As Boolean
+    Caption2WordWrap = m_WordWrap2
+End Property
+
+Public Property Let Caption2WordWrap(ByVal New_WordWrap As Boolean)
+    m_WordWrap2 = New_WordWrap
+    PropertyChanged "Caption2WordWrap"
     Refresh
 End Property
 

@@ -1,8 +1,8 @@
-Línea 201: la clase AXLPCTRL.axLabelPlus del control axLPGlow no era una clase de control cargada.
-Línea 277: la clase AXLPCTRL.axLabelPlus del control axLPCross no era una clase de control cargada.
-Línea 375: la clase AXLPCTRL.axLabelPlus del control axLPValue no era una clase de control cargada.
-Línea 515: la clase AXLPCTRL.axLabelPlus del control axLPdc no era una clase de control cargada.
-Línea 589: la clase AXLPCTRL.axLabelPlus del control axLPccc no era una clase de control cargada.
-Línea 647: la clase AXLPCTRL.axLabelPlus del control axLPbc no era una clase de control cargada.
-Línea 702: la clase AXLPCTRL.axLabelPlus del control axLPbc no era una clase de control cargada.
-Línea 777: la clase AXLPCTRL.axLabelPlus del control axLPbc no era una clase de control cargada.
+Línea 208: no se puede cargar el control axLPCross.
+Línea 296: no se puede cargar el control axLPGlow.
+Línea 412: no se puede cargar el control axLPValue.
+Línea 552: no se puede cargar el control axLPdc.
+Línea 626: no se puede cargar el control axLPccc.
+Línea 684: no se puede cargar el control axLPbc.
+Línea 739: no se puede cargar el control axLPbc.
+Línea 814: no se puede cargar el control axLPbc.

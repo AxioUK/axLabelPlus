@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "*\AaxLabelPlus.vbp"
+Object = "{D6F84FAD-6738-419D-846A-64AC9AD4766C}#2.0#0"; "axLabelPlus.ocx"
 Begin VB.Form Form2 
    Caption         =   "Form2"
    ClientHeight    =   8265

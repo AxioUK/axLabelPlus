@@ -103,7 +103,16 @@ Begin VB.PropertyPage axLPProPag
       Caption1        =   "axLabelPlus.pgx":0000
       Caption2        =   "axLabelPlus.pgx":0022
       CaptionBorderColor=   0
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+      BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BeginProperty Caption2Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
          Charset         =   0
@@ -117,6 +126,8 @@ Begin VB.PropertyPage axLPProPag
       GradientColorP1Opacity=   0
       GradientColorP2 =   0
       GradientColorP2Opacity=   0
+      Caption1WordWrap=   0   'False
+      Caption2WordWrap=   0   'False
       ShadowColorOpacity=   0
       CallOutAlign    =   0
       CallOutWidth    =   0
