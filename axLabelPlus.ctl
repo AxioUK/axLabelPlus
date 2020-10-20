@@ -2750,8 +2750,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("PicturePaddingY", m_PicturePaddingY, 0)
         Call .WriteProperty("PictureSetWidth", m_PictureSetWidth, 0)
         Call .WriteProperty("PictureSetHeight", m_PictureSetHeight, 0)
-        Call .WriteProperty("Caption1WordWrap", m_WordWrap1, True)
-        Call .WriteProperty("Caption2WordWrap", m_WordWrap2, True)
+        Call .WriteProperty("Caption1WordWrap", m_WordWrap1, False)
+        Call .WriteProperty("Caption2WordWrap", m_WordWrap2, False)
         Call .WriteProperty("ShadowSize", m_ShadowSize, 0)
         Call .WriteProperty("ShadowColor", m_ShadowColor, vbBlack)
         Call .WriteProperty("ShadowOffsetX", m_ShadowOffsetX, 0)
@@ -2829,11 +2829,11 @@ Public Property Let AutoSize(ByVal NewValue As Boolean)
         lWidth = Screen.Width
     End If
     
-    If m_WordWrap2 Then
-        lWidth = UserControl.ScaleWidth - lDif
-    Else
-        lWidth = Screen.Width
-    End If
+    'If m_WordWrap2 Then
+    '    lWidth = UserControl.ScaleWidth - lDif
+    'Else
+    '    lWidth = Screen.Width
+    'End If
     
     GDIP_AddPathString hGraphics, 0, 0, lWidth, lHeight, False, True
     lWidth = lWidth + lDif + 1 'NO SE QUE FALLA QUE DEVO SUMAR 1

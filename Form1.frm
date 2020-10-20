@@ -21,6 +21,14 @@ Begin VB.Form Form1
    ScaleWidth      =   10725
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton Command4 
+      Caption         =   "Form2 Sample"
+      Height          =   360
+      Left            =   5055
+      TabIndex        =   68
+      Top             =   7410
+      Width           =   1485
+   End
    Begin VB.TextBox OP2 
       Alignment       =   2  'Center
       Height          =   285
@@ -1308,6 +1316,10 @@ With cmDlg
   Picture1.BackColor = .Color
   axLPdc.Caption1Forecolor = .Color
 End With
+End Sub
+
+Private Sub Command4_Click()
+Form2.Show
 End Sub
 
 Private Sub Form_Load()
