@@ -2,8 +2,8 @@ VERSION 5.00
 Object = "*\AaxLabelPlus.vbp"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
 Begin VB.Form Form1 
-   Caption         =   "New Properties axLabelPlus (Mod Version of Great LabelPlus from Leandro Ascierto)"
-   ClientHeight    =   6555
+   BackColor       =   &H00000000&
+   ClientHeight    =   8145
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   10725
@@ -17,10 +17,153 @@ Begin VB.Form Form1
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6555
+   ScaleHeight     =   8145
    ScaleWidth      =   10725
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.TextBox OP2 
+      Alignment       =   2  'Center
+      Height          =   285
+      Left            =   8835
+      TabIndex        =   65
+      Text            =   "50"
+      Top             =   7005
+      Width           =   405
+   End
+   Begin VB.TextBox OP1 
+      Alignment       =   2  'Center
+      Height          =   285
+      Left            =   8835
+      TabIndex        =   64
+      Text            =   "50"
+      Top             =   6600
+      Width           =   405
+   End
+   Begin VB.PictureBox Picture2 
+      BackColor       =   &H0000FFFF&
+      Height          =   330
+      Left            =   7890
+      ScaleHeight     =   270
+      ScaleWidth      =   285
+      TabIndex        =   63
+      TabStop         =   0   'False
+      Top             =   7005
+      Width           =   345
+   End
+   Begin VB.PictureBox Picture1 
+      Height          =   330
+      Left            =   7890
+      ScaleHeight     =   270
+      ScaleWidth      =   285
+      TabIndex        =   62
+      TabStop         =   0   'False
+      Top             =   6570
+      Width           =   345
+   End
+   Begin VB.CommandButton Command3 
+      Caption         =   "..."
+      Height          =   330
+      Left            =   8325
+      TabIndex        =   59
+      Top             =   6585
+      Width           =   345
+   End
+   Begin VB.CommandButton Command2 
+      Caption         =   "..."
+      Height          =   330
+      Left            =   8325
+      TabIndex        =   58
+      Top             =   7005
+      Width           =   345
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeCaptionHotLine"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   10
+      Left            =   3555
+      TabIndex        =   57
+      Top             =   2850
+      Width           =   2040
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeCaptionBorder"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   9
+      Left            =   3555
+      TabIndex        =   56
+      Top             =   2604
+      Width           =   2040
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeCaptionIcon"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   8
+      Left            =   3555
+      TabIndex        =   55
+      Top             =   2358
+      Width           =   2040
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeIconBorder"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   7
+      Left            =   3555
+      TabIndex        =   54
+      Top             =   2112
+      Width           =   2040
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeIconOnly"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   6
+      Left            =   3555
+      TabIndex        =   53
+      Top             =   1866
+      Width           =   2040
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeCaptions"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   5
+      Left            =   3555
+      TabIndex        =   52
+      Top             =   1620
+      Width           =   2040
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeCaption2"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   4
+      Left            =   3555
+      TabIndex        =   51
+      Top             =   1374
+      Width           =   2040
+   End
+   Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
+      Caption         =   "eChangeCaption1"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   3
+      Left            =   3555
+      TabIndex        =   50
+      Top             =   1128
+      Width           =   2040
+   End
    Begin MSComDlg.CommonDialog cmDlg 
       Left            =   6450
       Top             =   5610
@@ -47,6 +190,7 @@ Begin VB.Form Form1
    End
    Begin VB.TextBox txtFont1 
       BackColor       =   &H00E0E0E0&
+      ForeColor       =   &H00404040&
       Height          =   330
       Left            =   7875
       Locked          =   -1  'True
@@ -57,6 +201,7 @@ Begin VB.Form Form1
    End
    Begin VB.TextBox txtFont2 
       BackColor       =   &H00E0E0E0&
+      ForeColor       =   &H00404040&
       Height          =   330
       Left            =   7875
       Locked          =   -1  'True
@@ -66,7 +211,9 @@ Begin VB.Form Form1
       Width           =   2160
    End
    Begin VB.CheckBox Check4 
+      BackColor       =   &H00000000&
       Caption         =   "Shadow"
+      ForeColor       =   &H00FFFFFF&
       Height          =   210
       Left            =   3120
       TabIndex        =   0
@@ -93,7 +240,9 @@ Begin VB.Form Form1
       Width           =   405
    End
    Begin VB.CheckBox Check3 
+      BackColor       =   &H00000000&
       Caption         =   "HotLine Visible"
+      ForeColor       =   &H00FFFFFF&
       Height          =   210
       Left            =   3120
       TabIndex        =   7
@@ -104,12 +253,13 @@ Begin VB.Form Form1
    Begin VB.CommandButton cmdGlowing 
       Caption         =   "Glowing"
       Height          =   360
-      Left            =   4575
+      Left            =   2190
       TabIndex        =   10
-      Top             =   2310
+      Top             =   7440
       Width           =   1305
    End
    Begin VB.TextBox Text2 
+      ForeColor       =   &H00FF0000&
       Height          =   330
       Left            =   7875
       TabIndex        =   26
@@ -118,6 +268,7 @@ Begin VB.Form Form1
       Width           =   2160
    End
    Begin VB.TextBox Text1 
+      ForeColor       =   &H00FF0000&
       Height          =   330
       Left            =   7875
       TabIndex        =   35
@@ -133,7 +284,9 @@ Begin VB.Form Form1
       Width           =   1860
    End
    Begin VB.CheckBox Check2 
+      BackColor       =   &H00000000&
       Caption         =   "Cross Visible"
+      ForeColor       =   &H00FFFFFF&
       Height          =   210
       Left            =   1815
       TabIndex        =   31
@@ -155,7 +308,7 @@ Begin VB.Form Form1
       Max             =   50
       TabIndex        =   24
       Top             =   3045
-      Value           =   15
+      Value           =   20
       Width           =   210
    End
    Begin VB.TextBox Y2 
@@ -163,7 +316,7 @@ Begin VB.Form Form1
       Height          =   285
       Left            =   9060
       TabIndex        =   20
-      Text            =   "15"
+      Text            =   "20"
       Top             =   4485
       Width           =   405
    End
@@ -212,7 +365,9 @@ Begin VB.Form Form1
       Width           =   2625
    End
    Begin VB.CheckBox Check1 
+      BackColor       =   &H00000000&
       Caption         =   "Gradient"
+      ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   3360
       TabIndex        =   9
@@ -220,30 +375,36 @@ Begin VB.Form Form1
       Width           =   1950
    End
    Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
       Caption         =   "eChangeHotlineColor"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   2
-      Left            =   3360
+      Left            =   3555
       TabIndex        =   3
-      Top             =   1050
+      Top             =   882
       Width           =   2040
    End
    Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
       Caption         =   "eChangeBorderColor"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   1
-      Left            =   3360
+      Left            =   3555
       TabIndex        =   2
-      Top             =   780
+      Top             =   636
       Width           =   2040
    End
    Begin VB.OptionButton Option1 
+      BackColor       =   &H00000000&
       Caption         =   "eChangeNone"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   0
-      Left            =   3360
+      Left            =   3555
       TabIndex        =   1
-      Top             =   510
+      Top             =   390
       Value           =   -1  'True
       Width           =   2040
    End
@@ -258,7 +419,56 @@ Begin VB.Form Form1
    Begin VB.Label Label7 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
+      Caption         =   "% Opacity"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   5
+      Left            =   9270
+      TabIndex        =   67
+      Top             =   7050
+      Width           =   765
+   End
+   Begin VB.Label Label7 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "% Opacity"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   4
+      Left            =   9270
+      TabIndex        =   66
+      Top             =   6645
+      Width           =   765
+   End
+   Begin VB.Label Label6 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Color 1"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   3
+      Left            =   7275
+      TabIndex        =   61
+      Top             =   6645
+      Width           =   645
+   End
+   Begin VB.Label Label7 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Color 2"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Index           =   3
+      Left            =   7275
+      TabIndex        =   60
+      Top             =   7065
+      Width           =   645
+   End
+   Begin VB.Label Label7 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Font 2"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   2
       Left            =   7275
@@ -270,6 +480,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Font 1"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   2
       Left            =   7275
@@ -279,20 +490,23 @@ Begin VB.Form Form1
    End
    Begin AXLPCTRL.axLabelPlus axLPGlow 
       Height          =   705
-      Left            =   3780
+      Left            =   525
       TabIndex        =   43
-      Top             =   2130
-      Width           =   705
-      _ExtentX        =   1244
+      Top             =   7080
+      Width           =   1140
+      _ExtentX        =   2011
       _ExtentY        =   1244
+      BackColor       =   -2147483633
       Border          =   -1  'True
+      BorderColor     =   255
+      BorderColorOpacity=   75
       BorderCornerLeftTop=   30
       BorderCornerRightTop=   30
       BorderCornerBottomRight=   30
       BorderCornerBottomLeft=   30
-      BorderWidth     =   10
+      BorderWidth     =   15
       Caption1        =   "Form1.frx":0000
-      Caption2        =   "Form1.frx":0022
+      Caption2        =   "Form1.frx":0020
       BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -349,11 +563,11 @@ Begin VB.Form Form1
       BorderCornerBottomRight=   5
       BorderCornerBottomLeft=   5
       BorderWidth     =   2
-      Caption1        =   "Form1.frx":0044
-      Caption2        =   "Form1.frx":007C
+      Caption1        =   "Form1.frx":0040
+      Caption2        =   "Form1.frx":0078
       Caption1PaddingX=   10
       Caption2PaddingX=   10
-      Caption2PaddingY=   15
+      Caption2PaddingY=   20
       CaptionShadow   =   -1  'True
       BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
@@ -373,6 +587,10 @@ Begin VB.Form Form1
          Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
+      Caption1ForeColor=   16777215
+      Caption1ForeColorOpacity=   50
+      Caption2ForeColor=   65535
+      Caption2ForeColorOpacity=   50
       Caption1WordWrap=   0   'False
       Caption2WordWrap=   0   'False
       HotLine         =   -1  'True
@@ -388,6 +606,7 @@ Begin VB.Form Form1
          Strikethrough   =   0   'False
       EndProperty
       IconCharCode    =   61384
+      IconForeColor   =   16777215
       IconPaddingX    =   15
       IconAlignmentH  =   2
       IconAlignmentV  =   1
@@ -408,8 +627,8 @@ Begin VB.Form Form1
       BorderCornerBottomRight=   5
       BorderCornerBottomLeft=   5
       BorderWidth     =   2
-      Caption1        =   "Form1.frx":00B4
-      Caption2        =   "Form1.frx":00EC
+      Caption1        =   "Form1.frx":00B0
+      Caption2        =   "Form1.frx":00E8
       Caption1PaddingX=   20
       Caption1PaddingY=   15
       Caption2PaddingX=   20
@@ -433,6 +652,8 @@ Begin VB.Form Form1
          Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
+      Caption1ForeColor=   16777215
+      Caption2ForeColor=   16777215
       Caption1WordWrap=   0   'False
       Caption2WordWrap=   0   'False
       HotLine         =   -1  'True
@@ -448,6 +669,7 @@ Begin VB.Form Form1
          Strikethrough   =   0   'False
       EndProperty
       IconCharCode    =   61384
+      IconForeColor   =   192
       IconPaddingX    =   15
       IconAlignmentH  =   2
       IconAlignmentV  =   1
@@ -461,6 +683,7 @@ Begin VB.Form Form1
       Width           =   2730
       _ExtentX        =   4815
       _ExtentY        =   1984
+      BackColor       =   -2147483633
       BackShadow      =   -1  'True
       Border          =   -1  'True
       BorderColor     =   16711680
@@ -469,8 +692,8 @@ Begin VB.Form Form1
       BorderCornerBottomRight=   5
       BorderCornerBottomLeft=   5
       BorderWidth     =   2
-      Caption1        =   "Form1.frx":0124
-      Caption2        =   "Form1.frx":015C
+      Caption1        =   "Form1.frx":0120
+      Caption2        =   "Form1.frx":0158
       Caption1PaddingX=   42
       Caption1PaddingY=   15
       Caption2PaddingX=   20
@@ -526,6 +749,8 @@ Begin VB.Form Form1
       Width           =   2835
       _ExtentX        =   5001
       _ExtentY        =   1429
+      BackColor       =   -2147483633
+      BackColorPress  =   8421504
       Border          =   -1  'True
       BorderColor     =   16711680
       BorderCornerLeftTop=   5
@@ -533,8 +758,8 @@ Begin VB.Form Form1
       BorderCornerBottomRight=   5
       BorderCornerBottomLeft=   5
       BorderWidth     =   2
-      Caption1        =   "Form1.frx":0194
-      Caption2        =   "Form1.frx":01CC
+      Caption1        =   "Form1.frx":0190
+      Caption2        =   "Form1.frx":01C8
       Caption1PaddingX=   10
       Caption2PaddingX=   10
       Caption2PaddingY=   20
@@ -557,6 +782,7 @@ Begin VB.Form Form1
          Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
+      ChangeColorOnClick=   -1  'True
       ChangeOnMouseOver=   0
       Caption1WordWrap=   0   'False
       Caption2WordWrap=   0   'False
@@ -587,15 +813,17 @@ Begin VB.Form Form1
       Width           =   2835
       _ExtentX        =   5001
       _ExtentY        =   1429
+      BackColor       =   12648384
       Border          =   -1  'True
-      BorderColor     =   16711680
+      BorderColor     =   16448
+      ColorOnMouseOver=   65280
       BorderCornerLeftTop=   5
       BorderCornerRightTop=   5
       BorderCornerBottomRight=   5
       BorderCornerBottomLeft=   5
       BorderWidth     =   2
-      Caption1        =   "Form1.frx":0204
-      Caption2        =   "Form1.frx":023C
+      Caption1        =   "Form1.frx":0200
+      Caption2        =   "Form1.frx":0238
       Caption1PaddingX=   10
       Caption2PaddingX=   10
       Caption2PaddingY=   20
@@ -648,15 +876,17 @@ Begin VB.Form Form1
       Width           =   2835
       _ExtentX        =   5001
       _ExtentY        =   1429
+      BackColor       =   12648384
       Border          =   -1  'True
-      BorderColor     =   16711680
+      BorderColor     =   16448
+      ColorOnMouseOver=   33023
       BorderCornerLeftTop=   5
       BorderCornerRightTop=   5
       BorderCornerBottomRight=   5
       BorderCornerBottomLeft=   5
       BorderWidth     =   2
-      Caption1        =   "Form1.frx":0274
-      Caption2        =   "Form1.frx":02AC
+      Caption1        =   "Form1.frx":0270
+      Caption2        =   "Form1.frx":02A8
       Caption1PaddingX=   10
       Caption2PaddingX=   10
       Caption2PaddingY=   20
@@ -709,15 +939,17 @@ Begin VB.Form Form1
       Width           =   2835
       _ExtentX        =   5001
       _ExtentY        =   1429
+      BackColor       =   12648384
       Border          =   -1  'True
-      BorderColor     =   16711680
+      BorderColor     =   16448
+      ColorOnMouseOver=   16711935
       BorderCornerLeftTop=   5
       BorderCornerRightTop=   5
       BorderCornerBottomRight=   5
       BorderCornerBottomLeft=   5
       BorderWidth     =   2
-      Caption1        =   "Form1.frx":02E4
-      Caption2        =   "Form1.frx":031C
+      Caption1        =   "Form1.frx":02E0
+      Caption2        =   "Form1.frx":0318
       Caption1PaddingX=   10
       Caption2PaddingX=   10
       Caption2PaddingY=   20
@@ -763,6 +995,7 @@ Begin VB.Form Form1
    End
    Begin VB.Label Label8 
       AutoSize        =   -1  'True
+      BackColor       =   &H00000000&
       Caption         =   " Glowing "
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -773,25 +1006,26 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00000080&
+      ForeColor       =   &H000000FF&
       Height          =   240
-      Left            =   3735
+      Left            =   480
       TabIndex        =   29
-      Top             =   1815
+      Top             =   6765
       Width           =   855
    End
    Begin VB.Shape Shape1 
       BorderColor     =   &H000000FF&
       BorderWidth     =   3
       Height          =   1050
-      Left            =   3630
-      Top             =   1950
-      Width           =   2520
+      Left            =   375
+      Top             =   6900
+      Width           =   3360
    End
    Begin VB.Label Label6 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Caption1"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   1
       Left            =   7140
@@ -803,6 +1037,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Caption2"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   1
       Left            =   7140
@@ -823,6 +1058,7 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H0000FF00&
       Height          =   240
       Index           =   4
       Left            =   360
@@ -843,6 +1079,7 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H0000C000&
       Height          =   240
       Index           =   3
       Left            =   6480
@@ -854,6 +1091,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Caption2"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   0
       Left            =   7170
@@ -865,6 +1103,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Caption1"
+      ForeColor       =   &H00FFFFFF&
       Height          =   195
       Index           =   0
       Left            =   7170
@@ -876,6 +1115,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Y :"
+      ForeColor       =   &H0000FFFF&
       Height          =   195
       Left            =   8820
       TabIndex        =   21
@@ -886,6 +1126,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Y :"
+      ForeColor       =   &H0000FFFF&
       Height          =   195
       Left            =   8820
       TabIndex        =   19
@@ -896,6 +1137,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "X :"
+      ForeColor       =   &H0000FFFF&
       Height          =   195
       Left            =   7950
       TabIndex        =   17
@@ -906,6 +1148,7 @@ Begin VB.Form Form1
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "X :"
+      ForeColor       =   &H0000FFFF&
       Height          =   195
       Left            =   7965
       TabIndex        =   15
@@ -925,6 +1168,7 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H0000C000&
       Height          =   240
       Index           =   2
       Left            =   6435
@@ -945,6 +1189,7 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H0000FF00&
       Height          =   240
       Index           =   1
       Left            =   300
@@ -965,6 +1210,7 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H0000FF00&
       Height          =   240
       Index           =   0
       Left            =   255
@@ -1046,6 +1292,24 @@ Private Sub Command1_Click()
 axLPCross.Visible = True
 End Sub
 
+Private Sub Command2_Click()
+With cmDlg
+  .DialogTitle = "Seleccionar Color Caption2"
+  .ShowColor
+  Picture2.BackColor = .Color
+  axLPdc.Caption2Forecolor = .Color
+End With
+End Sub
+
+Private Sub Command3_Click()
+With cmDlg
+  .DialogTitle = "Seleccionar Color Caption1"
+  .ShowColor
+  Picture1.BackColor = .Color
+  axLPdc.Caption1Forecolor = .Color
+End With
+End Sub
+
 Private Sub Form_Load()
 
 Set mFont = New StdFont
@@ -1061,6 +1325,7 @@ With List1
   .AddItem "cMiddleBottom"
 End With
 
+Me.Caption = "AxLabelPlus v" & axLabelPlus1(0).Version & " - New Properties (Mod Version of Great LabelPlus from Leandro Ascierto)"
 End Sub
 
 Private Sub HScroll1_Change()
@@ -1080,6 +1345,14 @@ End Sub
 
 Private Sub List1_Click()
 axLPCross.CrossPosition = List1.ListIndex
+End Sub
+
+Private Sub OP1_Change()
+axLPdc.Caption1ForeColorOpacity = CInt(OP1.Text)
+End Sub
+
+Private Sub OP2_Change()
+axLPdc.Caption2ForeColorOpacity = CInt(OP2.Text)
 End Sub
 
 Private Sub Option1_Click(Index As Integer)
