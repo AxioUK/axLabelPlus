@@ -27,7 +27,7 @@ Attribute VB_Name = "axLabelPlus"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = True
+Attribute VB_Exposed = true
 Option Explicit
 '------------------------------------------
 'Original Name: LabelPlus
@@ -41,12 +41,19 @@ Option Explicit
 '-----------------------------------------------
 'Moded Name: axLabelPlus
 'Autor:  David Rojas A. [AxioUK]
-'LastUpdate: 07/05/2020
-'Version: 1.6.3
-'Updates:
+'LastUpdate: 31/10/2020
+'Version: 1.6.6 ------------------------------
+'- Improved Glowing Efect.
+'- Added Properties Glowing, GlowColor, GlowTick for control Glowing Effect.
+'Version: 1.6.5 ------------------------------
+'- Implement LoadPicturefromPath (replicated code from Properties Page to usercontrol).
+'Version: 1.6.4 ------------------------------
+'- Minor bugfixes
+'Version: 1.6.3 ------------------------------
 '- Added more combinations to ChangeColorOnMouseOver property
 '- Implemented Independent Fonts & Color for each Caption
-'- Implemented independet Color for each Caption
+'- Minor bugfixes
+'--------------------------------------------
 'Special thanks to:
 '- Leandro Ascierto por la creación de este Espectacular Control, su apoyo y guía y por permitirme modificar su control.
 '- YAcosta por sus ideas y por testear cada modificación.
@@ -446,7 +453,6 @@ Const m_def_Value = False
 Const m_def_OptionBehavior = False
 
 'Property Variables:
-Dim m_Glowing As Boolean
 Dim m_CallOut As Boolean
 Dim m_CallOutPosicion As eCallOutPosition
 Dim m_CallOutAlign As eCallOutAlign
@@ -463,14 +469,21 @@ Dim m_BackShadow As Boolean
 Dim m_Border As Boolean
 Dim m_BorderColor As OLE_COLOR
 Dim m_BorderColorOpacity As Integer
+Dim m_OldBorderColorOpacity As Integer
 Dim m_BorderPosition As eBorderPosition
 Dim m_BorderCornerLeftTop As Integer
 Dim m_BorderCornerRightTop As Integer
 Dim m_BorderCornerBottomLeft As Integer
 Dim m_BorderCornerBottomRight As Integer
 Dim m_BorderWidth As Integer
-Dim m_OldBorderWidth As Integer
-Dim m_BorderGlow As Integer
+'-----------
+Dim m_GlowFixBorder As Integer
+Dim m_GlowBorder As Integer
+Dim m_GlowColor As OLE_COLOR
+Dim m_GlowOpacity As Integer
+Dim m_Glowing As Boolean
+Dim m_GlowTick As Integer
+'-----------
 Dim hImgShadow As Long
 Dim m_ShadowSize As Integer
 Dim m_ShadowColor As OLE_COLOR
@@ -580,6 +593,11 @@ Dim m_PT            As POINTAPI
 Dim m_Left          As Long
 Dim m_Top           As Long
 
+
+Public Function LoadImagefromPath(sFile As String)
+  PictureFromStream ReadFile(sFile)
+End Function
+
 Public Function ChrW2(ByVal CharCode As Long) As String
   Const POW10 As Long = 2 ^ 10
   If CharCode <= &HFFFF& Then ChrW2 = ChrW$(CharCode) Else _
@@ -604,6 +622,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
     ShadowOffsetX = m_ShadowOffsetX * nScale
     ShadowOffsetY = m_ShadowOffsetY * nScale
     BorderWidth = m_BorderWidth * nScale
+    m_GlowBorder = m_GlowBorder * nScale
     
     If m_BackAcrylicBlur Then
         BitBlt hDCMemory, 0, 0, UserControl.ScaleWidth, UserControl.ScaleHeight, UserControl.hdc, 0, 0, vbSrcCopy
@@ -733,6 +752,30 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
         GdipDrawPath hGraphics, hPen, hPath
         GdipDeletePen hPen
     End If
+    
+'--Border-Glowing....
+    If m_Glowing Then
+        'Oculto Border Original
+        'BorderColorOpacity = 0
+        
+        GdipCreatePen1 ConvertColor(m_GlowColor, m_GlowOpacity), m_GlowBorder, UnitPixel, hPen
+        
+        If m_BorderPosition = bpInside Then
+            GdipSetPenMode hPen, PenAlignmentInset
+        ElseIf m_BorderPosition = bpOutside Then
+    
+            GdipDeletePath hPath
+            X = (m_GlowBorder / 2) + PosX
+            Y = (m_GlowBorder / 2) + PosY
+            lWidth = UserControl.ScaleWidth - m_GlowBorder
+            lHeight = UserControl.ScaleHeight - m_GlowBorder
+            hPath = GlowRectangle(X, Y, lWidth, lHeight, True)
+        End If
+        
+        GdipDrawPath hGraphics, hPen, hPath
+        GdipDeletePen hPen
+    End If
+'--End-Glowing------------------
     
     GdipDeletePath hPath
     If hdc <> 0 Then GdipDeleteGraphics hGraphics
@@ -2027,12 +2070,13 @@ Dim Frm As Form
 Dim lHwnd As Long
     lHwnd = Extender.Container.hwnd
 
+
     Dim Ctrl As Control
     For Each Ctrl In Frm.Controls
         With Ctrl
            If TypeOf Ctrl Is axLabelPlus Then
               If .OptionBehavior = True Then
-                 'If (.Container.hWnd = lHWnd) And (Ctrl.hWnd <> UserControl.hWnd) Then
+                 'If (.Container.hwnd = lHwnd) And (Ctrl.hwnd <> UserControl.hwnd) Then
                  If (.Container.hwnd = lHwnd) And ObjPtr(Ctrl) <> ObjPtr(Extender) Then
                   If .Value Then .Value = False
                  End If
@@ -2041,6 +2085,15 @@ Dim lHwnd As Long
         End With
     Next
 End Sub
+
+Private Function ReadFile(sFileName As String) As Byte()
+    Dim FF As Integer
+    FF = FreeFile
+    Open sFileName For Binary As #FF
+        ReDim ReadFile(LOF(FF) - 1)
+        Get #FF, , ReadFile
+    Close #FF
+End Function
 
 'Autor: Cobein
 Private Function ReadValue(ByVal lProp As Long, Optional Default As Long) As Long
@@ -2215,6 +2268,167 @@ Private Function RoundRectangle(X As Long, Y As Long, Width As Long, Height As L
 
 End Function
 
+Private Function GlowRectangle(X As Long, Y As Long, Width As Long, Height As Long, Optional Inflate As Boolean, Optional nn As Boolean) As Long
+    Dim mPath As Long
+    Dim BCLT As Integer
+    Dim BCRT As Integer
+    Dim BCBR As Integer
+    Dim BCBL As Integer
+    Dim Xx As Long, Yy As Long
+    Dim MidBorder As Long
+    Dim coLen As Long
+    Dim coWidth As Long
+    Dim lMax As Long
+    Dim coAngle  As Long
+
+    Width = Width - 1 'Antialias pixel
+    Height = Height - 1 'Antialias pixel
+        
+    coWidth = m_coWidth * nScale
+    coLen = m_coLen * nScale
+    coAngle = IIf(m_coRightTriangle, 0, coWidth / 2)
+
+    If nn Then
+        If m_BorderPosition = bpCenter Then
+            coWidth = coWidth + m_GlowBorder * nScale / 2
+        ElseIf m_BorderPosition = bpOutside Then
+            coWidth = coWidth + m_GlowBorder * nScale
+        ElseIf m_BorderPosition = bpInside Then
+            coWidth = coWidth - m_GlowBorder * nScale / 2
+        End If
+    End If
+    
+
+    If Inflate Then MidBorder = m_GlowBorder / 2
+    BCLT = GetSafeRound((m_BorderCornerLeftTop + MidBorder) * nScale, Width, Height)
+    BCRT = GetSafeRound((m_BorderCornerRightTop + MidBorder) * nScale, Width, Height)
+    BCBR = GetSafeRound((m_BorderCornerBottomRight + MidBorder) * nScale, Width, Height)
+    BCBL = GetSafeRound((m_BorderCornerBottomLeft + MidBorder) * nScale, Width, Height)
+    
+    If m_CallOut Then
+        Select Case m_CallOutPosicion
+            Case coLeft
+                X = X + coLen
+                Width = Width - coLen
+                lMax = Height - BCLT - BCBL
+                If coWidth > lMax Then coWidth = lMax
+            Case coTop
+                Y = Y + coLen
+                Height = Height - coLen
+                lMax = Width - BCLT - BCBL
+                If coWidth > lMax Then coWidth = lMax
+            Case coRight
+                Width = Width - coLen
+                lMax = Height - BCRT - BCBR
+                If coWidth > lMax Then coWidth = lMax
+            Case coBottom
+                Height = Height - coLen
+                lMax = Width - BCBL - BCBR
+                If coWidth > lMax Then coWidth = lMax
+        End Select
+    End If
+
+    Call GdipCreatePath(&H0, mPath)
+                    
+                    
+    If BCLT Then GdipAddPathArcI mPath, X, Y, BCLT * 2, BCLT * 2, 180, 90
+
+    If m_CallOutPosicion = coTop And m_CallOut Then
+        Select Case m_CallOutAlign
+            Case coFirstCorner: Xx = X + BCLT
+            Case coMidle: Xx = X + BCLT + ((Width - BCLT - BCRT) \ 2) - (coWidth \ 2)
+            Case coSecondCorner: Xx = X + Width - coWidth - BCRT
+            Case coCustomPosition: Xx = X + (m_coCustomPos * nScale)
+        End Select
+        
+        If (Xx > Width / 2) And coAngle = 0 Then
+            GdipAddPathLineI mPath, Xx, Y, Xx + coWidth, Y - coLen
+            GdipAddPathLineI mPath, Xx + coWidth, Y - coLen, Xx + coWidth, Y
+        Else
+            If BCLT = 0 Then GdipAddPathLineI mPath, X, Y, X, Y
+            GdipAddPathLineI mPath, Xx, Y, Xx + coAngle, Y - coLen
+            GdipAddPathLineI mPath, Xx + coAngle, Y - coLen, Xx + coWidth, Y
+        End If
+    Else
+        If BCLT = 0 Then GdipAddPathLineI mPath, X, Y, X + Width - BCRT, Y
+    End If
+
+
+    If BCRT Then GdipAddPathArcI mPath, X + Width - BCRT * 2, Y, BCRT * 2, BCRT * 2, 270, 90
+
+    If m_CallOutPosicion = coRight And m_CallOut Then
+        Select Case m_CallOutAlign
+            Case coFirstCorner: Yy = Y + BCRT
+            Case coMidle: Yy = Y + BCRT + ((Height - BCRT - BCBR) \ 2) - (coWidth \ 2)
+            Case coSecondCorner: Yy = Y + Height - coWidth - BCBR
+            Case coCustomPosition: Yy = Y + (m_coCustomPos * nScale)
+        End Select
+        Xx = X + Width
+        If (Yy > Height / 2) And coAngle = 0 Then
+            GdipAddPathLineI mPath, Xx, Yy, Xx + coLen, Yy + coWidth
+            GdipAddPathLineI mPath, Xx + coLen, Yy + coWidth, Xx, Yy + coWidth
+            
+        Else
+            If BCRT = 0 Then GdipAddPathLineI mPath, X + Width, Y, X + Width, Y
+            GdipAddPathLineI mPath, Xx, Yy, Xx + coLen, Yy + coAngle
+            GdipAddPathLineI mPath, Xx + coLen, Yy + coAngle, Xx, Yy + coWidth
+        End If
+    Else
+        If BCRT = 0 Then GdipAddPathLineI mPath, X + Width, Y, X + Width, Y + Height - BCBR
+    End If
+
+    If BCBR Then GdipAddPathArcI mPath, X + Width - BCBR * 2, Y + Height - BCBR * 2, BCBR * 2, BCBR * 2, 0, 90
+
+
+    If m_CallOutPosicion = coBottom And m_CallOut Then
+        Select Case m_CallOutAlign
+            Case coFirstCorner: Xx = X + BCBL
+            Case coMidle: Xx = X + BCBL + ((Width - BCBR - BCBL) \ 2) - (coWidth \ 2)
+            Case coSecondCorner: Xx = X + Width - coWidth - BCBR
+            Case coCustomPosition: Xx = X + (m_coCustomPos * nScale)
+        End Select
+        
+        Yy = Y + Height
+        If (Xx > Width / 2) And coAngle = 0 Then
+            GdipAddPathLineI mPath, Xx + coWidth, Yy, Xx + coWidth, Yy + coLen
+            GdipAddPathLineI mPath, Xx + coWidth, Yy + coLen, Xx, Yy
+        Else
+            If BCBR = 0 Then GdipAddPathLineI mPath, X + Width, Y + Height, X + Width, Y + Height
+            GdipAddPathLineI mPath, Xx + coWidth, Yy, Xx + coAngle, Yy + coLen
+            GdipAddPathLineI mPath, Xx + coAngle, Yy + coLen, Xx, Yy
+        End If
+    Else
+        If BCBR = 0 Then GdipAddPathLineI mPath, X + Width, Y + Height, X + BCBL, Y + Height
+    End If
+
+    If BCBL Then GdipAddPathArcI mPath, X, Y + Height - BCBL * 2, BCBL * 2, BCBL * 2, 90, 90
+    
+    If m_CallOutPosicion = coLeft And m_CallOut Then
+        Select Case m_CallOutAlign
+            Case coFirstCorner: Yy = Y + BCLT
+            Case coMidle: Yy = Y + BCLT + ((Height - BCBL - BCLT) \ 2) - (coWidth \ 2)
+            Case coSecondCorner: Yy = Y + Height - coWidth - BCBL
+            Case coCustomPosition: Yy = Y + (m_coCustomPos * nScale)
+        End Select
+        
+        If (Yy > Height / 2) And coAngle = 0 Then
+            GdipAddPathLineI mPath, X, Yy + coWidth, X - coLen, Yy + coWidth
+            GdipAddPathLineI mPath, X - coLen, Yy + coWidth, X, Yy
+        Else
+            If BCBL = 0 Then GdipAddPathLineI mPath, X, Y + Height, X, Y + Height
+            GdipAddPathLineI mPath, X, Yy + coWidth, X - coLen, Yy + coAngle
+            GdipAddPathLineI mPath, X - coLen, Yy + coAngle, X, Yy
+        End If
+    Else
+        If BCBL = 0 Then GdipAddPathLineI mPath, X, Y + Height, X, Y + BCLT
+    End If
+   
+    GdipClosePathFigures mPath
+  
+    GlowRectangle = mPath
+
+End Function
+
 Private Sub SafeRange(Value, Min, Max)
     If Value < Min Then Value = Min
     If Value > Max Then Value = Max
@@ -2299,17 +2513,20 @@ Public Sub tmrMOUSEOVER_Timer()
 End Sub
 
 Private Sub tmrGlow_Timer()
-If m_Glowing And m_BorderGlow <= 10 Then
-  m_BorderPosition = bpInside
-  m_BorderGlow = m_BorderGlow + 1
-  m_BorderWidth = m_BorderGlow
-  m_BorderColorOpacity = 100 - (m_BorderGlow * 10)
-  Refresh
+
+If m_Glowing And m_GlowBorder >= 0 Then
+  m_GlowBorder = m_GlowBorder - 1
+  m_GlowOpacity = m_GlowOpacity + 5
+  m_BorderColorOpacity = m_BorderColorOpacity + 5
 Else
-  m_BorderGlow = 1
-  m_BorderWidth = m_BorderGlow
-  m_BorderColorOpacity = 60
+  m_GlowBorder = m_GlowFixBorder
+  m_GlowOpacity = 0
+  m_BorderColorOpacity = 0
 End If
+
+DoEvents
+Refresh
+
 End Sub
 
 Private Sub UserControl_AsyncReadComplete(AsyncProp As AsyncProperty)
@@ -2644,6 +2861,11 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_IconAlignmentV = .ReadProperty("IconAlignmentV", 0)
         m_IconOpacity = .ReadProperty("IconOpacity", 100)
         m_Glowing = .ReadProperty("Glowing", m_def_Glowing)
+        m_GlowTick = .ReadProperty("GlowTick", 50)
+        m_GlowColor = .ReadProperty("GlowColor", m_def_BorderColor)
+        
+        m_GlowFixBorder = m_BorderWidth
+        tmrGlow.Interval = m_GlowTick
         
         If m_MousePointerHands Then
             If Ambient.UserMode Then
@@ -2788,6 +3010,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("IconAlignmentV", m_IconAlignmentV, 0)
         Call .WriteProperty("IconOpacity", m_IconOpacity, 100)
         Call .WriteProperty("Glowing", m_Glowing, m_def_Glowing)
+        Call .WriteProperty("GlowTick", m_GlowTick, 50)
+        Call .WriteProperty("GlowColor", m_GlowColor, m_def_BorderColor)
         
         Call .WriteProperty("PicturePresent", m_PicturePresent, False)
         If m_PicturePresent Then
@@ -2798,7 +3022,6 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         
     End With
 
-  
 End Sub
 
 Public Property Get AutoSize() As Boolean
@@ -3023,7 +3246,7 @@ End Property
 
 Public Property Let BorderWidth(ByVal New_BorderWidth As Integer)
     m_BorderWidth = New_BorderWidth
-    m_OldBorderWidth = New_BorderWidth
+    m_GlowFixBorder = New_BorderWidth
     PropertyChanged "BorderWidth"
     If m_PictureBrush <> 0 Then GdipDeleteBrush m_PictureBrush: m_PictureBrush = 0
     CreateShadow
@@ -3456,6 +3679,16 @@ Public Property Let ForeColorOnPressOpacity(ByVal New_ForeColorPOpacity As Integ
     PropertyChanged "ForeColorOnPressOpacity"
     Refresh
 End Property
+'--GLOWING------
+Public Property Get GlowColor() As OLE_COLOR
+    GlowColor = m_GlowColor
+End Property
+
+Public Property Let GlowColor(ByVal New_GlowColor As OLE_COLOR)
+    m_GlowColor = New_GlowColor
+    PropertyChanged "GlowColor"
+    Refresh
+End Property
 
 Public Property Get Glowing() As Boolean
   Glowing = m_Glowing
@@ -3464,11 +3697,27 @@ End Property
 Public Property Let Glowing(ByVal New_Glowing As Boolean)
   m_Glowing = New_Glowing
   PropertyChanged "Glowing"
+  m_OldBorderColorOpacity = m_BorderColorOpacity
   tmrGlow.Enabled = m_Glowing
-  If Not New_Glowing Then m_BorderWidth = m_OldBorderWidth
+  PropertyChanged "Glowing"
+  If New_Glowing = False Then
+    BorderColorOpacity = m_OldBorderColorOpacity
+  End If
   Refresh
 End Property
 
+Public Property Get GlowTick() As Integer
+    GlowTick = m_GlowTick
+End Property
+
+Public Property Let GlowTick(ByVal New_GlowTick As Integer)
+    m_GlowTick = New_GlowTick
+    tmrGlow.Interval = m_GlowTick
+    PropertyChanged "GlowTick"
+    Refresh
+End Property
+
+'--END-GLOWING------
 Public Property Get GradientAngle() As Integer
     GradientAngle = m_GradientAngle
 End Property
@@ -3830,7 +4079,11 @@ Public Property Let OptionBehavior(ByVal bOptionBehavior As Boolean)
    m_OptionBehavior = bOptionBehavior
    PropertyChanged "OptionBehavior"
 End Property
+
 '-------------------------------------->
+
+'-------------------------------------->
+
 Public Property Get PictureAlignmentH() As PictureAlignmentH
     PictureAlignmentH = m_PictureAlignmentH
 End Property

@@ -1002,15 +1002,19 @@ Begin VB.Form Form2
       _ExtentX        =   6562
       _ExtentY        =   3175
       BackColor       =   7496448
+      BackColorPress  =   4194368
+      Border          =   -1  'True
+      BorderColor     =   4194304
       ColorOnMouseOver=   49152
+      BorderWidth     =   1
       CaptionAlignmentH=   2
       Caption1        =   "Form2.frx":0624
-      Caption2        =   "Form2.frx":0654
+      Caption2        =   "Form2.frx":065A
       Caption2SizeMinus=   5
-      Caption1PaddingX=   70
+      Caption1PaddingX=   30
       Caption1PaddingY=   15
       Caption2PaddingX=   10
-      Caption2PaddingY=   95
+      Caption2PaddingY=   80
       BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
          Size            =   20.25
@@ -1031,6 +1035,7 @@ Begin VB.Form Form2
       EndProperty
       Caption1ForeColor=   16777215
       Caption2ForeColor=   16777215
+      ChangeColorOnClick=   -1  'True
       ChangeOnMouseOver=   3
       GradientColorP1 =   0
       GradientColorP1Opacity=   0
@@ -1055,7 +1060,7 @@ Begin VB.Form Form2
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      IconCharCode    =   60677
+      IconCharCode    =   61176
       IconForeColor   =   16777215
       IconPaddingX    =   5
       IconPaddingY    =   10
@@ -1069,8 +1074,14 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private Sub axlpButton_Click(Index As Integer)
+If Index = 0 Then Form1.Show
+End Sub
+
 Private Sub Form_Load()
 
+axlpButton(0).Caption2 = "Test Propiedades y Eventos de AxLabelPlus" & vbNewLine & _
+                        "Click para pasar a Form1"
 
 axlpButton(1).Caption2 = "- Productos" & vbNewLine & "- Servicios" & vbNewLine & "- Impuestos" & vbNewLine & _
                          "- Categoria de Productos" & vbNewLine & "- Categoria de Servicios" & vbNewLine & _
