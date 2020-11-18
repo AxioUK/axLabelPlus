@@ -1,4 +1,4 @@
-# axLabelPlus v1.6.4
+# axLabelPlus v1.6.6
 
  Fork of Awesome LabelPlus VB6 UserControl from Leandro Ascierto
 
