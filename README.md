@@ -15,8 +15,10 @@ Nothing, use from Win7 ahead
 Copy Files to your Project folder, include/reference to this and set this usercontrol to Private
 
 ```
-axLabelPlus.ctl
-axLabelPlus.ctx
+axLabelPlus.ctl    <UserControl>
+axLabelPlus.ctx    <resources of Usercontrol>
+axLabelPlus.pag    <Property Page of Usercontrol>
+axLabelPlus.pgx    <resources of Property Page>
 ```
 
 Or Compile the usercontrol to OCX (ActiveX), and reference to your VB6 Project
