@@ -17,7 +17,7 @@ Begin VB.PropertyPage axLPProPag
       ScaleHeight     =   23
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   305
-      TabIndex        =   8
+      TabIndex        =   7
       TabStop         =   0   'False
       Top             =   4560
       Width           =   4575
@@ -36,7 +36,7 @@ Begin VB.PropertyPage axLPProPag
       Height          =   360
       Index           =   1
       Left            =   4800
-      TabIndex        =   7
+      TabIndex        =   6
       Top             =   4575
       Width           =   375
    End
@@ -88,17 +88,17 @@ Begin VB.PropertyPage axLPProPag
       Top             =   3480
       Width           =   915
    End
-   Begin Proyecto1.axLabelPlus axLabelPlus1 
-      Height          =   2985
-      Left            =   60
-      TabIndex        =   6
-      Top             =   45
-      Width           =   5130
-      _ExtentX        =   9049
-      _ExtentY        =   5265
+   Begin AXLPCTRL.axLabelPlus axLabelPlus1 
+      Height          =   2910
+      Left            =   90
+      TabIndex        =   8
+      Top             =   90
+      Width           =   5100
+      _ExtentX        =   8996
+      _ExtentY        =   5133
       Caption1        =   "axLabelPlus.pgx":0000
-      Caption2        =   "axLabelPlus.pgx":0038
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+      Caption2        =   "axLabelPlus.pgx":0042
+      BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
          Charset         =   0
@@ -107,6 +107,20 @@ Begin VB.PropertyPage axLPProPag
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      BeginProperty Caption2Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ChangeOnMouseOver=   0
+      GradientColorP1 =   0
+      GradientColorP1Opacity=   0
+      GradientColorP2 =   0
+      GradientColorP2Opacity=   0
       ShadowColorOpacity=   0
       CallOutAlign    =   0
       CallOutWidth    =   0
@@ -121,8 +135,8 @@ Begin VB.PropertyPage axLPProPag
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      IconForeColor   =   0
-      IconOpacity     =   0
+      GlowTick        =   0
+      GlowColor       =   0
       PictureArr      =   0
    End
    Begin VB.Label LblInfo 
@@ -159,10 +173,9 @@ Begin VB.PropertyPage axLPProPag
 End
 Attribute VB_Name = "axLPProPag"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
-
+Attribute VB_Exposed = True
 
 Option Explicit
 Private Declare Function CreateWindowEx Lib "user32.dll" Alias "CreateWindowExA" (ByVal dwExStyle As Long, ByVal lpClassName As String, ByVal lpWindowName As String, ByVal dwStyle As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, ByRef lpParam As Any) As Long
