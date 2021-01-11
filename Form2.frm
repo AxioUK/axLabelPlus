@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "*\AaxLabelPlus.vbp"
+Object = "{D6F84FAD-6738-419D-846A-64AC9AD4766C}#3.1#0"; "axLabelPlusX.ocx"
 Begin VB.Form Form2 
    Caption         =   "Form2"
    ClientHeight    =   7890
@@ -22,6 +22,79 @@ Begin VB.Form Form2
    StartUpPosition =   3  'Windows Default
    Begin AXLPCTRL.axLabelPlus axlpButton 
       Height          =   1800
+      Index           =   0
+      Left            =   3945
+      TabIndex        =   0
+      Top             =   150
+      Width           =   3720
+      _ExtentX        =   6562
+      _ExtentY        =   3175
+      BackColor       =   7496448
+      BackColorPress  =   4194368
+      BorderColor     =   255
+      ColorOnMouseOver=   49152
+      BorderWidth     =   1
+      Caption1        =   "Form2.frx":0000
+      Caption2        =   "Form2.frx":0036
+      Caption2SizeMinus=   5
+      Caption1PaddingX=   30
+      Caption1PaddingY=   15
+      Caption2PaddingX=   120
+      Caption2PaddingY=   80
+      CaptionTriming  =   3
+      BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   20.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BeginProperty Caption2Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   20.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Caption1ForeColor=   16777215
+      Caption2ForeColor=   16777215
+      ChangeColorOnClick=   -1  'True
+      ChangeOnMouseOver=   3
+      GradientColorP1 =   0
+      GradientColorP1Opacity=   0
+      GradientColorP2 =   0
+      GradientColorP2Opacity=   0
+      PictureAlignmentV=   1
+      PictureGraysScale=   -1  'True
+      PicturePaddingX =   20
+      ShadowColorOpacity=   0
+      CallOutAlign    =   0
+      CallOutWidth    =   0
+      CallOutLen      =   0
+      PictureColorize =   -1  'True
+      PictureColor    =   16777215
+      MousePointer    =   0
+      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "IcoFont"
+         Size            =   36
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      IconCharCode    =   61176
+      IconForeColor   =   16777215
+      IconPaddingX    =   5
+      IconPaddingY    =   10
+      PictureArr      =   0
+   End
+   Begin AXLPCTRL.axLabelPlus axlpButton 
+      Height          =   1800
       Index           =   14
       Left            =   9735
       TabIndex        =   14
@@ -33,8 +106,8 @@ Begin VB.Form Form2
       ColorOnMouseOver=   49152
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":0000
-      Caption2        =   "Form2.frx":0048
+      Caption1        =   "Form2.frx":00BE
+      Caption2        =   "Form2.frx":0106
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -101,11 +174,13 @@ Begin VB.Form Form2
       _ExtentX        =   3228
       _ExtentY        =   3175
       BackColor       =   3155968
+      BorderColor     =   255
       ColorOnMouseOver=   49152
+      BorderWidth     =   1
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":0068
-      Caption2        =   "Form2.frx":009A
+      Caption1        =   "Form2.frx":0126
+      Caption2        =   "Form2.frx":0158
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -171,11 +246,13 @@ Begin VB.Form Form2
       _ExtentX        =   3228
       _ExtentY        =   3175
       BackColor       =   3155968
+      BorderColor     =   255
       ColorOnMouseOver=   49152
+      BorderWidth     =   1
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":00BA
-      Caption2        =   "Form2.frx":00EC
+      Caption1        =   "Form2.frx":0178
+      Caption2        =   "Form2.frx":01AA
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -241,11 +318,13 @@ Begin VB.Form Form2
       _ExtentX        =   3228
       _ExtentY        =   3175
       BackColor       =   10587392
+      BorderColor     =   255
       ColorOnMouseOver=   49152
+      BorderWidth     =   1
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":010C
-      Caption2        =   "Form2.frx":0138
+      Caption1        =   "Form2.frx":01CA
+      Caption2        =   "Form2.frx":01F6
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -314,8 +393,8 @@ Begin VB.Form Form2
       ColorOnMouseOver=   49152
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":0158
-      Caption2        =   "Form2.frx":0182
+      Caption1        =   "Form2.frx":0216
+      Caption2        =   "Form2.frx":0240
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -381,11 +460,13 @@ Begin VB.Form Form2
       _ExtentX        =   3228
       _ExtentY        =   3175
       BackColor       =   10587392
+      BorderColor     =   255
       ColorOnMouseOver=   49152
+      BorderWidth     =   1
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":01A2
-      Caption2        =   "Form2.frx":01D8
+      Caption1        =   "Form2.frx":0260
+      Caption2        =   "Form2.frx":0296
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -451,11 +532,13 @@ Begin VB.Form Form2
       _ExtentX        =   3228
       _ExtentY        =   3175
       BackColor       =   9074944
+      BorderColor     =   255
       ColorOnMouseOver=   49152
+      BorderWidth     =   1
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":01F8
-      Caption2        =   "Form2.frx":022C
+      Caption1        =   "Form2.frx":02B6
+      Caption2        =   "Form2.frx":02EA
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -521,11 +604,13 @@ Begin VB.Form Form2
       _ExtentX        =   3228
       _ExtentY        =   3175
       BackColor       =   7496193
+      BorderColor     =   255
       ColorOnMouseOver=   49152
+      BorderWidth     =   1
       CaptionAlignmentH=   2
       CaptionAlignmentV=   2
-      Caption1        =   "Form2.frx":024C
-      Caption2        =   "Form2.frx":028A
+      Caption1        =   "Form2.frx":030A
+      Caption2        =   "Form2.frx":0348
       Caption2SizeMinus=   5
       Caption1PaddingX=   5
       Caption1PaddingY=   8
@@ -592,8 +677,8 @@ Begin VB.Form Form2
       _ExtentY        =   3175
       BackColor       =   5589504
       ColorOnMouseOver=   49152
-      Caption1        =   "Form2.frx":02AA
-      Caption2        =   "Form2.frx":02D8
+      Caption1        =   "Form2.frx":0368
+      Caption2        =   "Form2.frx":0396
       Caption2SizeMinus=   5
       Caption1PaddingX=   65
       Caption1PaddingY=   15
@@ -659,9 +744,11 @@ Begin VB.Form Form2
       _ExtentX        =   6562
       _ExtentY        =   3175
       BackColor       =   3024640
+      BorderColor     =   255
       ColorOnMouseOver=   49152
-      Caption1        =   "Form2.frx":0328
-      Caption2        =   "Form2.frx":0362
+      BorderWidth     =   1
+      Caption1        =   "Form2.frx":03E6
+      Caption2        =   "Form2.frx":0420
       Caption2SizeMinus=   5
       Caption1PaddingX=   65
       Caption1PaddingY=   15
@@ -727,9 +814,11 @@ Begin VB.Form Form2
       _ExtentX        =   6562
       _ExtentY        =   3175
       BackColor       =   3024640
+      BorderColor     =   255
       ColorOnMouseOver=   49152
-      Caption1        =   "Form2.frx":03C8
-      Caption2        =   "Form2.frx":040E
+      BorderWidth     =   1
+      Caption1        =   "Form2.frx":0486
+      Caption2        =   "Form2.frx":04CC
       Caption2SizeMinus=   5
       Caption1PaddingX=   65
       Caption1PaddingY=   15
@@ -796,9 +885,11 @@ Begin VB.Form Form2
       _ExtentX        =   6562
       _ExtentY        =   3175
       BackColor       =   5589504
+      BorderColor     =   255
       ColorOnMouseOver=   49152
-      Caption1        =   "Form2.frx":047A
-      Caption2        =   "Form2.frx":04BC
+      BorderWidth     =   1
+      Caption1        =   "Form2.frx":0538
+      Caption2        =   "Form2.frx":057A
       Caption2SizeMinus=   5
       Caption1PaddingX=   64
       Caption1PaddingY=   15
@@ -867,8 +958,8 @@ Begin VB.Form Form2
       BackColor       =   7496448
       ColorOnMouseOver=   49152
       CaptionAlignmentH=   2
-      Caption1        =   "Form2.frx":0512
-      Caption2        =   "Form2.frx":0546
+      Caption1        =   "Form2.frx":05D0
+      Caption2        =   "Form2.frx":0604
       Caption2SizeMinus=   5
       Caption1PaddingX=   30
       Caption1PaddingY=   15
@@ -925,18 +1016,20 @@ Begin VB.Form Form2
       PictureArr      =   0
    End
    Begin AXLPCTRL.axLabelPlus axlpButton 
-      Height          =   3720
+      Height          =   1200
       Index           =   1
       Left            =   90
       TabIndex        =   1
       Top             =   150
       Width           =   3720
       _ExtentX        =   6562
-      _ExtentY        =   6562
+      _ExtentY        =   2117
       BackColor       =   13616249
+      BorderColor     =   255
       ColorOnMouseOver=   49152
-      Caption1        =   "Form2.frx":05A4
-      Caption2        =   "Form2.frx":05EE
+      BorderWidth     =   1
+      Caption1        =   "Form2.frx":0662
+      Caption2        =   "Form2.frx":06AC
       Caption2SizeMinus=   6
       Caption1PaddingX=   64
       Caption1PaddingY=   10
@@ -992,80 +1085,6 @@ Begin VB.Form Form2
       IconPaddingY    =   10
       PictureArr      =   0
    End
-   Begin AXLPCTRL.axLabelPlus axlpButton 
-      Height          =   1800
-      Index           =   0
-      Left            =   3945
-      TabIndex        =   0
-      Top             =   150
-      Width           =   3720
-      _ExtentX        =   6562
-      _ExtentY        =   3175
-      BackColor       =   7496448
-      BackColorPress  =   4194368
-      Border          =   -1  'True
-      BorderColor     =   4194304
-      ColorOnMouseOver=   49152
-      BorderWidth     =   1
-      CaptionAlignmentH=   2
-      Caption1        =   "Form2.frx":0624
-      Caption2        =   "Form2.frx":065A
-      Caption2SizeMinus=   5
-      Caption1PaddingX=   30
-      Caption1PaddingY=   15
-      Caption2PaddingX=   10
-      Caption2PaddingY=   80
-      BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   20.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      BeginProperty Caption2Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Caption1ForeColor=   16777215
-      Caption2ForeColor=   16777215
-      ChangeColorOnClick=   -1  'True
-      ChangeOnMouseOver=   3
-      GradientColorP1 =   0
-      GradientColorP1Opacity=   0
-      GradientColorP2 =   0
-      GradientColorP2Opacity=   0
-      PictureAlignmentV=   1
-      PictureGraysScale=   -1  'True
-      PicturePaddingX =   20
-      ShadowColorOpacity=   0
-      CallOutAlign    =   0
-      CallOutWidth    =   0
-      CallOutLen      =   0
-      PictureColorize =   -1  'True
-      PictureColor    =   16777215
-      MousePointer    =   0
-      BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "IcoFont"
-         Size            =   36
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      IconCharCode    =   61176
-      IconForeColor   =   16777215
-      IconPaddingX    =   5
-      IconPaddingY    =   10
-      PictureArr      =   0
-   End
 End
 Attribute VB_Name = "Form2"
 Attribute VB_GlobalNameSpace = False
@@ -1075,16 +1094,30 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub axlpButton_Click(Index As Integer)
-If Index = 0 Then Form1.Show
+Select Case Index
+  Case Is = 0
+      Form1.Show
+  Case Is = 1
+      axlpButton(1).Height = 3720
+      axlpButton(1).Caption2 = "- Productos" & vbNewLine & "- Servicios" & vbNewLine & "- Impuestos" & vbNewLine & _
+                         "- Categoria de Productos" & vbNewLine & "- Categoria de Servicios" & vbNewLine & _
+                         "- Ofertas" & vbNewLine & "- Marcas" & vbNewLine & "- Categoria de Control"
+    
+End Select
+End Sub
+
+Private Sub axlpButton_MouseEnter(Index As Integer)
+axlpButton(Index).Border = True
+End Sub
+
+Private Sub axlpButton_MouseLeave(Index As Integer)
+axlpButton(Index).Border = False
+axlpButton(1).Height = 1200
 End Sub
 
 Private Sub Form_Load()
 
 axlpButton(0).Caption2 = "Test Propiedades y Eventos de AxLabelPlus" & vbNewLine & _
                         "Click para pasar a Form1"
-
-axlpButton(1).Caption2 = "- Productos" & vbNewLine & "- Servicios" & vbNewLine & "- Impuestos" & vbNewLine & _
-                         "- Categoria de Productos" & vbNewLine & "- Categoria de Servicios" & vbNewLine & _
-                         "- Ofertas" & vbNewLine & "- Marcas" & vbNewLine & "- Categoria de Control"
 
 End Sub

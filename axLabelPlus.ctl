@@ -27,7 +27,7 @@ Attribute VB_Name = "axLabelPlus"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = true
+Attribute VB_Exposed = True
 Option Explicit
 '------------------------------------------
 'Original Name: LabelPlus
@@ -41,12 +41,17 @@ Option Explicit
 '-----------------------------------------------
 'Moded Name: axLabelPlus
 'Autor:  David Rojas A. [AxioUK]
-'LastUpdate: 31/10/2020
+'LastUpdate: 25/12/2020
+'Version: 1.6.7 ------------------------------
+'- Improved Glowing Efect.
+'- Property GlowTick renamed to GlowSpeed.
+'- Added Property GlowTicks to define how many Glows can do.
 'Version: 1.6.6 ------------------------------
 '- Improved Glowing Efect.
-'- Added Properties Glowing, GlowColor, GlowTick for control Glowing Effect.
+'- Added Properties Glowing, GlowColor, GlowSpeed for control Glowing Effect.
 'Version: 1.6.5 ------------------------------
 '- Implement LoadPicturefromPath (replicated code from Properties Page to usercontrol).
+'- Removed Properties Pages
 'Version: 1.6.4 ------------------------------
 '- Minor bugfixes
 'Version: 1.6.3 ------------------------------
@@ -482,7 +487,9 @@ Dim m_GlowBorder As Integer
 Dim m_GlowColor As OLE_COLOR
 Dim m_GlowOpacity As Integer
 Dim m_Glowing As Boolean
-Dim m_GlowTick As Integer
+Dim m_GlowSpeed As Integer
+Dim m_GlowTiks As Integer
+Dim iT As Integer
 '-----------
 Dim hImgShadow As Long
 Dim m_ShadowSize As Integer
@@ -724,6 +731,8 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
     GDIP_AddPathString hGraphics, Xx, Yy, WW, HH
     'Caption2
     GDIP_AddPathString2 hGraphics, Xx, Yy, WW, HH
+    Debug.Print "Xx=" & Xx & ", Yy=" & Yy & ", WW=" & WW & ", HH=" & HH
+    Debug.Print "UserControl.ScaleWidth=" & UserControl.ScaleWidth
 
     If m_Border And BorderWidth > 0 Then
         Select Case m_ChangeOnMouseOver
@@ -1087,7 +1096,7 @@ End Sub
 Private Function ConvertColor(ByVal Color As Long, ByVal Opacity As Long) As Long
     Dim BGRA(0 To 3) As Byte
     OleTranslateColor Color, 0, VarPtr(Color)
-  
+  On Error Resume Next
     BGRA(3) = CByte((Abs(Opacity) / 100) * 255)
     BGRA(0) = ((Color \ &H10000) And &HFF)
     BGRA(1) = ((Color \ &H100) And &HFF)
@@ -1685,7 +1694,7 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
             With layoutRect
                 .Left = X + m_Caption1PaddingX * nScale
                 .Top = Y + m_Caption1PaddingY * nScale
-                .Width = Width - (m_Caption1PaddingX * nScale) * 2
+                .Width = Width - (m_Caption1PaddingX * nScale) '* 2
                 .Height = Height - (m_Caption1PaddingY * nScale) * 2
             End With
                         
@@ -1859,7 +1868,7 @@ Private Function GDIP_AddPathString2(ByVal hGraphics As Long, X As Long, Y As Lo
             GdipDeleteFontFamily hFontFamily
         Else
             With layoutRect
-                .Left = X + m_Caption2PaddingX * nScale: .Width = Width - (m_Caption2PaddingX * nScale) * 2
+                .Left = X + m_Caption2PaddingX * nScale: .Width = Width - (m_Caption2PaddingX * nScale) '* 2
                 .Top = Y + m_Caption2PaddingY * nScale: .Height = Height - (m_Caption2PaddingY * nScale) * 2
             End With
 
@@ -2514,19 +2523,27 @@ End Sub
 
 Private Sub tmrGlow_Timer()
 
+If iT >= (m_GlowTiks) Then
+  iT = 0
+  Glowing = False
+  tmrGlow.Enabled = False
+End If
+
 If m_Glowing And m_GlowBorder >= 0 Then
   m_GlowBorder = m_GlowBorder - 1
   m_GlowOpacity = m_GlowOpacity + 5
   m_BorderColorOpacity = m_BorderColorOpacity + 5
+  
 Else
   m_GlowBorder = m_GlowFixBorder
   m_GlowOpacity = 0
   m_BorderColorOpacity = 0
+  iT = iT + 1
 End If
 
 DoEvents
 Refresh
-
+Debug.Print "Tiks:" & iT
 End Sub
 
 Private Sub UserControl_AsyncReadComplete(AsyncProp As AsyncProperty)
@@ -2861,11 +2878,13 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_IconAlignmentV = .ReadProperty("IconAlignmentV", 0)
         m_IconOpacity = .ReadProperty("IconOpacity", 100)
         m_Glowing = .ReadProperty("Glowing", m_def_Glowing)
-        m_GlowTick = .ReadProperty("GlowTick", 50)
+        m_GlowSpeed = .ReadProperty("GlowSpeed", 50)
         m_GlowColor = .ReadProperty("GlowColor", m_def_BorderColor)
+        m_GlowTiks = .ReadProperty("GlowTiks", 10)
         
         m_GlowFixBorder = m_BorderWidth
-        tmrGlow.Interval = m_GlowTick
+        tmrGlow.Interval = m_GlowSpeed
+        tmrGlow.Enabled = m_Glowing
         
         If m_MousePointerHands Then
             If Ambient.UserMode Then
@@ -3010,8 +3029,9 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("IconAlignmentV", m_IconAlignmentV, 0)
         Call .WriteProperty("IconOpacity", m_IconOpacity, 100)
         Call .WriteProperty("Glowing", m_Glowing, m_def_Glowing)
-        Call .WriteProperty("GlowTick", m_GlowTick, 50)
+        Call .WriteProperty("GlowSpeed", m_GlowSpeed, 50)
         Call .WriteProperty("GlowColor", m_GlowColor, m_def_BorderColor)
+        Call .WriteProperty("GlowTiks", m_GlowTiks, 10)
         
         Call .WriteProperty("PicturePresent", m_PicturePresent, False)
         If m_PicturePresent Then
@@ -3696,28 +3716,37 @@ End Property
 
 Public Property Let Glowing(ByVal New_Glowing As Boolean)
   m_Glowing = New_Glowing
-  PropertyChanged "Glowing"
   m_OldBorderColorOpacity = m_BorderColorOpacity
+  iT = 0
   tmrGlow.Enabled = m_Glowing
   PropertyChanged "Glowing"
   If New_Glowing = False Then
     BorderColorOpacity = m_OldBorderColorOpacity
   End If
-  Refresh
+  'Refresh
 End Property
 
-Public Property Get GlowTick() As Integer
-    GlowTick = m_GlowTick
+Public Property Get GlowSpeed() As Integer
+    GlowSpeed = m_GlowSpeed
 End Property
 
-Public Property Let GlowTick(ByVal New_GlowTick As Integer)
-    m_GlowTick = New_GlowTick
-    tmrGlow.Interval = m_GlowTick
-    PropertyChanged "GlowTick"
+Public Property Let GlowSpeed(ByVal New_GlowSpeed As Integer)
+    m_GlowSpeed = New_GlowSpeed
+    tmrGlow.Interval = m_GlowSpeed
+    PropertyChanged "GlowSpeed"
     Refresh
 End Property
 
+Public Property Get GlowTiks() As Integer
+  GlowTiks = m_GlowTiks
+End Property
+
+Public Property Let GlowTiks(ByVal NewGlowTiks As Integer)
+  m_GlowTiks = NewGlowTiks
+  PropertyChanged "GlowTiks"
+End Property
 '--END-GLOWING------
+
 Public Property Get GradientAngle() As Integer
     GradientAngle = m_GradientAngle
 End Property
