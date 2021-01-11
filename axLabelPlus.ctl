@@ -42,6 +42,8 @@ Option Explicit
 'Moded Name: axLabelPlus
 'Autor:  David Rojas A. [AxioUK]
 'LastUpdate: 25/12/2020
+'Version: 1.6.11 -----------------------------
+'- Improved CaptionTrimming property.
 'Version: 1.6.7 ------------------------------
 '- Improved Glowing Efect.
 '- Property GlowTick renamed to GlowSpeed.
