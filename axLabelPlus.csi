@@ -1,0 +1,6 @@
+[History]
+1=#P0#=mb	#P1#=GDIP_AddPathString	#P2#=AXLPCTRL/axLabelPlus/GDIP_AddPathString	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20210319151622	#P7#=0	#P8#=42	.
+2=#P0#=mb	#P1#=GDIP_AddPathString2	#P2#=AXLPCTRL/axLabelPlus/GDIP_AddPathString2	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20210319151439	#P7#=0	#P8#=58	.
+3=#P0#=mb	#P1#=Caption1PaddingX	#P2#=AXLPCTRL/axLabelPlus/Caption1PaddingX [Get]	#P3#=	#P4#=	#P5#=MembProperty	#P6#=20210319120124	#P7#=0	#P8#=1	.
+4=#P0#=mb	#P1#=Draw	#P2#=AXLPCTRL/axLabelPlus/Draw	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20210109173735	#P7#=0	#P8#=118	.
+5=#P0#=mb	#P1#=CaptionTriming	#P2#=AXLPCTRL/axLabelPlus/CaptionTriming [Let]	#P3#=	#P4#=	#P5#=MembProperty	#P6#=20210109172403	#P7#=0	#P8#=1	.

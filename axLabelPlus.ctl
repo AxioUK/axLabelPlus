@@ -41,7 +41,9 @@ Option Explicit
 '-----------------------------------------------
 'Moded Name: axLabelPlus
 'Autor:  David Rojas A. [AxioUK]
-'LastUpdate: 25/12/2020
+'LastUpdate: 19/03/2021
+'Version: 1.6.12 -----------------------------
+'- Improved all CaptionPadding properties.
 'Version: 1.6.11 -----------------------------
 '- Improved CaptionTrimming property.
 'Version: 1.6.7 ------------------------------
@@ -1694,8 +1696,8 @@ Private Function GDIP_AddPathString(ByVal hGraphics As Long, X As Long, Y As Lon
             
         Else
             With layoutRect
-                .Left = X + m_Caption1PaddingX * nScale
-                .Top = Y + m_Caption1PaddingY * nScale
+                .Left = IIf(m_eCaptionAlignmentH = cLeft, X + m_Caption1PaddingX * nScale, X - m_Caption1PaddingX * nScale)
+                .Top = IIf(m_eCaptionAlignmentV = cTop, Y + m_Caption1PaddingY * nScale, Y - m_Caption1PaddingY * nScale)
                 .Width = Width - (m_Caption1PaddingX * nScale) '* 2
                 .Height = Height - (m_Caption1PaddingY * nScale) * 2
             End With
@@ -1870,8 +1872,11 @@ Private Function GDIP_AddPathString2(ByVal hGraphics As Long, X As Long, Y As Lo
             GdipDeleteFontFamily hFontFamily
         Else
             With layoutRect
-                .Left = X + m_Caption2PaddingX * nScale: .Width = Width - (m_Caption2PaddingX * nScale) '* 2
-                .Top = Y + m_Caption2PaddingY * nScale: .Height = Height - (m_Caption2PaddingY * nScale) * 2
+                .Left = IIf(m_eCaptionAlignmentH = cLeft, X + m_Caption2PaddingX * nScale, X - m_Caption2PaddingX * nScale)
+                .Width = Width - (m_Caption2PaddingX * nScale) '* 2
+                .Top = IIf(m_eCaptionAlignmentV = cTop, Y + m_Caption2PaddingY * nScale, Y - m_Caption2PaddingY * nScale)
+                '.Top = Y + m_Caption2PaddingY * nScale
+                .Height = Height - (m_Caption2PaddingY * nScale) * 2
             End With
 
             If m_CaptionAngle <> 0 Then

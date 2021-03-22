@@ -89,13 +89,13 @@ Begin VB.PropertyPage axLPProPag
       Width           =   915
    End
    Begin AXLPCTRL.axLabelPlus axLabelPlus1 
-      Height          =   2910
-      Left            =   90
+      Height          =   2985
+      Left            =   75
       TabIndex        =   8
-      Top             =   90
-      Width           =   5100
-      _ExtentX        =   8996
-      _ExtentY        =   5133
+      Top             =   60
+      Width           =   5145
+      _ExtentX        =   9075
+      _ExtentY        =   5265
       Caption1        =   "axLabelPlus.pgx":0000
       Caption2        =   "axLabelPlus.pgx":0042
       BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -313,6 +313,7 @@ Private Const MAX_PATH = 260
 Private Const MAX_FILE = 260
 
 Private m_oUCImage As axLabelPlus
+
 Dim I As Integer
 
 Private Function VBGetOpenFileName(Filename As String, _
