@@ -148,14 +148,14 @@ Fork of Awesome LabelPlus VB6 UserControl from Leandro Ascierto
 
 | Functions                                                    | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **DrawLine(**hdc, X, Y1, X2, Y2, [oColor], [Opacity], [PenWidth]**)** | *allows to draw a line over the control*                     |
-| **DrawText(**hdc, Text, X, Y, Width, Height, Font, ForeColor, [ColorOpacity], [HorizontalAlign], [VerticalAlign], [WordWrap]**)** | *allows to draw text over the control*                       |
+| DrawLine(hdc, X, Y1, X2, Y2, [oColor], [Opacity], [PenWidth]) | *allows to draw a line over the control*                     |
+| DrawText(hdc, Text, X, Y, Width, Height, Font, ForeColor, [ColorOpacity], [HorizontalAlign], [VerticalAlign], [WordWrap]) | *allows to draw text over the control*                       |
 | :star:IsMouseInExtender                                      | *this function returns TRUE or FALSE whether the mouse pointer is in the control or not. use this instead of* MouseEnter, MouseOver *or* MouseLeave *when you can't or don't want to depend on those events* |
-| :star:**LoadImagefromPath(**path_to_file**)**                | *Load an image on the control from path string*              |
+| :star:LoadImagefromPath(path_to_file)                | *Load an image on the control from path string*              |
 | PictureDelete                                                | *delete the image from the control*                          |
-| **PictureFromStream(**array_of_bytes**)**                    | *load an image on the conrol from an array of bytes (internally the control uses this function to load an image from the properties page)* |
-| **PictureFromURL(**sUrl, [UseCache], [DrawProgress]**)**     | *Load an image on the control from url*                      |
-| **Polygon(**hDc, PenWidth, Color, Opacity, ParamArray vPoints()**)** | allows you to draw polygons on the control                   |
+| PictureFromStream(array_of_bytes)                    | *load an image on the conrol from an array of bytes (internally the control uses this function to load an image from the properties page)* |
+| PictureFromURL(sUrl, [UseCache], [DrawProgress])     | *Load an image on the control from url*                      |
+| Polygon(hDc, PenWidth, Color, Opacity, ParamArray vPoints()) | allows you to draw polygons on the control                   |
 | Refresh                                                      | *Refresh the drawing of the control*                         |
 
 
