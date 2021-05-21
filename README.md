@@ -191,7 +191,8 @@ AXLPCTRL.OCX
 
 ## Built With
 
-- *Clasic and Beloved* **Visual Basic 6 - ServicePack 6**  (Visual Basic *is trademark of* <img src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3Ntvk?ver=f8e2&q=90&m=6&h=120&w=400&b=%23FFFFFFFF&l=f&o=t&aim=true" alt="x" style="zoom: 50%;" />)
+- *Clasic and Beloved* **Visual Basic 6 - ServicePack 6**  (Visual Basic *is trademark of* ![micrologo](https://user-images.githubusercontent.com/61160830/119084996-d1da1a80-b9d0-11eb-9132-f0f3e062f9d0.jpg))
+
 
 ## Versioning
 
