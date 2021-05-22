@@ -372,7 +372,7 @@ Begin VB.Form Form2
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      IconCharCode    =   61148
+      IconCharCode    =   61154
       IconForeColor   =   16777215
       IconPaddingX    =   5
       IconPaddingY    =   10
@@ -1102,7 +1102,8 @@ Select Case Index
       axlpButton(1).Caption2 = "- Productos" & vbNewLine & "- Servicios" & vbNewLine & "- Impuestos" & vbNewLine & _
                          "- Categoria de Productos" & vbNewLine & "- Categoria de Servicios" & vbNewLine & _
                          "- Ofertas" & vbNewLine & "- Marcas" & vbNewLine & "- Categoria de Control"
-    
+  Case Is = 11
+    Unload Me
 End Select
 End Sub
 
