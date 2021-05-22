@@ -2535,37 +2535,37 @@ Private Sub SafeRange(Value, Min, Max)
     If Value > Max Then Value = Max
 End Sub
 
-'las dos funciones a continuacion son de cobein y con algunas modificaciones mias,
-'las he utilizado para crear una bandera publica sin tener que agregar un modulo publico.
-Private Function WriteValue(ByVal lProp As Long, ByVal lValue As Long) As Boolean
-    Dim lFlagIndex As Long
-    Dim I       As Long
-    Dim lIndex  As Long: lIndex = -1
-    
-    For I = 0 To TLS_MINIMUM_AVAILABLE - 1
-        If TlsGetValue(I) = lProp Then
-            lIndex = I + 1
-            Exit For
-        End If
-    Next
+''las dos funciones a continuacion son de cobein y con algunas modificaciones mias,
+''las he utilizado para crear una bandera publica sin tener que agregar un modulo publico.
+'Private Function WriteValue(ByVal lProp As Long, ByVal lValue As Long) As Boolean
+'    Dim lFlagIndex As Long
+'    Dim I       As Long
+'    Dim lIndex  As Long: lIndex = -1
+'
+'    For I = 0 To TLS_MINIMUM_AVAILABLE - 1
+'        If TlsGetValue(I) = lProp Then
+'            lIndex = I + 1
+'            Exit For
+'        End If
+'    Next
+'
+'    If lIndex = -1 Then
+'        Do
+'            lFlagIndex = TlsAlloc '// Find two consecutive slots
+'            lIndex = TlsAlloc
+'            If lIndex >= TLS_MINIMUM_AVAILABLE Then Exit Function
+'        Loop While Not lFlagIndex + 1 = lIndex
+'        Call TlsSetValue(lFlagIndex, lProp)
+'        Call TlsSetValue(lIndex, lValue)
+'        WriteValue = True
+'    Else
+'        Call TlsSetValue(lIndex, lValue)
+'    End If
+'End Function
 
-    If lIndex = -1 Then
-        Do
-            lFlagIndex = TlsAlloc '// Find two consecutive slots
-            lIndex = TlsAlloc
-            If lIndex >= TLS_MINIMUM_AVAILABLE Then Exit Function
-        Loop While Not lFlagIndex + 1 = lIndex
-        Call TlsSetValue(lFlagIndex, lProp)
-        Call TlsSetValue(lIndex, lValue)
-        WriteValue = True
-    Else
-        Call TlsSetValue(lIndex, lValue)
-    End If
-End Function
-
-Private Function zFnAddr(ByVal sDLL As String, ByVal sProc As String) As Long
-    zFnAddr = GetProcAddress(GetModuleHandleA(sDLL), sProc)  'Get the specified procedure address
-End Function
+'Private Function zFnAddr(ByVal sDLL As String, ByVal sProc As String) As Long
+'    zFnAddr = GetProcAddress(GetModuleHandleA(sDLL), sProc)  'Get the specified procedure address
+'End Function
 
 Public Sub tmrMOUSEOVER_Timer()
     Dim PT As POINTAPI
