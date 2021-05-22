@@ -1,4 +1,4 @@
-# axLabelPlus v1.6.12
+# axLabelPlus v1.6.14
 
 Fork of Awesome LabelPlus VB6 UserControl from Leandro Ascierto
 
@@ -99,6 +99,7 @@ Fork of Awesome LabelPlus VB6 UserControl from Leandro Ascierto
 | PictureColorize                 |  Boolean  | *enable the effect of putting the image in one color*        |
 | PictureContrast                 |  Integer  | *set the contrast of the picture*                            |
 | PictureExist                    |  Boolean  | *return* TRUE *if exist a picture in the control*            |
+| ⭐ PictureEffectMouseOver   | Constant  | *indicates what effect to apply on the image when hovering the mouse over the control* |
 | PictureGetHeight                |   Long    | *return the height of the picture setted in the control*     |
 | PictureGetWidth                 |   Long    | *return the width of the picture setted in the control*      |
 | PictureGrayScale                |  Boolean  | *enable the effect of grayscaling the picture*               |
