@@ -474,7 +474,7 @@ Dim m_BackColorOpacity As Integer
 Dim m_BackColorP As OLE_COLOR
 Dim m_BackColorPOpacity As Integer
 Dim m_BackAcrylicBlur As Boolean
-Dim m_BackShadow As Boolean
+Dim m_Shadow As Boolean
 Dim m_Border As Boolean
 Dim m_BorderColor As OLE_COLOR
 Dim m_BorderColorOpacity As Integer
@@ -666,7 +666,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
         GdipDrawImageRectI hGraphics, hImgShadow, Xx, Yy, UserControl.ScaleWidth - Abs(ShadowOffsetX), UserControl.ScaleHeight - Abs(ShadowOffsetY)
     End If
     
-    If m_BackShadow = True And m_ShadowSize > 0 Then
+    If m_Shadow = True And m_ShadowSize > 0 Then
         X = X + ShadowSize + IIf(ShadowOffsetX < 0, Abs(ShadowOffsetX), 0) '+ PosX
         Y = Y + ShadowSize + IIf(ShadowOffsetY < 0, Abs(ShadowOffsetY), 0) '+ PosY
         lWidth = lWidth - (ShadowSize * 2) - Abs(ShadowOffsetX)
@@ -796,7 +796,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
   If m_CrossVisible Then
     Select Case m_CrossPosition
       Case Is = cTopRight
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = (BorderWidth + m_ShadowSize + 5)
             XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 17)
           Else
@@ -805,7 +805,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
           End If
           
       Case Is = cMiddleRight
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = (UserControl.ScaleHeight / 2) - 5
             XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 17)
           Else
@@ -814,7 +814,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
           End If
           
       Case Is = cBottomRight
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 17)
             XCrossPos = UserControl.ScaleWidth - (BorderWidth + m_ShadowSize + 17)
           Else
@@ -823,7 +823,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
           End If
           
       Case Is = cTopLeft
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = (BorderWidth + m_ShadowSize + 5)
             XCrossPos = (BorderWidth + m_ShadowSize + 5) + IIf(m_HotLine, m_HotLineWidth, 0)
           Else
@@ -832,7 +832,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
           End If
               
       Case Is = cMiddleLeft
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = (UserControl.ScaleHeight / 2) - 5
             XCrossPos = (BorderWidth + m_ShadowSize + 5) + IIf(m_HotLine, m_HotLineWidth, 0)
           Else
@@ -841,7 +841,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
           End If
           
       Case Is = cBottomLeft
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 17)
             XCrossPos = (BorderWidth + m_ShadowSize + 5) + IIf(m_HotLine, m_HotLineWidth, 0)
           Else
@@ -850,7 +850,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
           End If
           
       Case Is = cMiddleTop
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = (BorderWidth + m_ShadowSize + 5)
             XCrossPos = (UserControl.ScaleWidth / 2)
           Else
@@ -859,7 +859,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
           End If
           
       Case Is = cMiddleBottom
-          If m_BackShadow Then
+          If m_Shadow Then
             YCrossPos = UserControl.ScaleHeight - (BorderWidth + m_ShadowSize + 12)
             XCrossPos = (UserControl.ScaleWidth / 2)
           Else
@@ -1508,7 +1508,7 @@ Private Sub CreateShadow()
     Dim ShadowSize As Integer
     
     If hImgShadow Then GdipDisposeImage hImgShadow: hImgShadow = 0
-    If m_BackShadow = False Then Exit Sub
+    If m_Shadow = False Then Exit Sub
     
     bRecreateShadowCaption = True
         
@@ -1618,7 +1618,7 @@ Private Function DrawHotLine(hGraphics As Long, hPath As Long) ', ByVal PosX As 
         HH = UserControl.ScaleHeight - BW * 2
     End If
     
-    If m_BackShadow Then
+    If m_Shadow Then
         SS = ShadowSize * nScale
         If m_HotLinePosition = hlRight Or m_HotLinePosition = hlBottom Then
             X = X - SS
@@ -2906,7 +2906,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         m_BackColorP = .ReadProperty("BackColorPress", m_def_BackColorP)
         m_BackColorPOpacity = .ReadProperty("BackColorPressOpacity", m_def_BackColorPOpacity)
         m_BackAcrylicBlur = .ReadProperty("BackAcrylicBlur", False)
-        m_BackShadow = .ReadProperty("BackShadow", False)
+        m_Shadow = .ReadProperty("Shadow", False)
         m_Border = .ReadProperty("Border", m_def_Border)
         m_BorderColor = .ReadProperty("BorderColor", m_def_BorderColor)
         m_BorderColorOpacity = .ReadProperty("BorderColorOpacity", m_def_BorderColorOpacity)
@@ -3061,7 +3061,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
         Call .WriteProperty("BackColorPress", m_BackColorP, m_def_BackColorP)
         Call .WriteProperty("BackColorPressOpacity", m_BackColorPOpacity, m_def_BackColorPOpacity)
         Call .WriteProperty("BackAcrylicBlur", m_BackAcrylicBlur, False)
-        Call .WriteProperty("BackShadow", m_BackShadow, False)
+        Call .WriteProperty("Shadow", m_Shadow, False)
         Call .WriteProperty("Border", m_Border, m_def_Border)
         Call .WriteProperty("BorderColor", m_BorderColor, m_def_BorderColor)
         Call .WriteProperty("BorderColorOpacity", m_BorderColorOpacity, m_def_BorderColorOpacity)
@@ -3193,7 +3193,7 @@ Public Property Let AutoSize(ByVal NewValue As Boolean)
     GdipGetImageGraphicsContext hImage, hGraphics
     
     lDif = (m_BorderWidth * 2) + IIf((m_Caption2PaddingX * 2) > (m_Caption1PaddingX * 2), (m_Caption2PaddingX * 2), (m_Caption1PaddingX * 2))
-    If m_BackShadow Then lDif = lDif + (m_ShadowSize * 2)
+    If m_Shadow Then lDif = lDif + (m_ShadowSize * 2)
     If m_CallOut = True And m_CallOutPosicion = coLeft Or m_CallOutPosicion = coRight Then
         lDif = lDif + m_coLen
     End If
@@ -3214,7 +3214,7 @@ Public Property Let AutoSize(ByVal NewValue As Boolean)
     GDIP_AddPathString hGraphics, 0, 0, lWidth, lHeight, False, True
     lWidth = lWidth + lDif + 1 'NO SE QUE FALLA QUE DEVO SUMAR 1
     lDif = ((m_BorderWidth * 2) + (m_Caption1PaddingY * 2))
-    If m_BackShadow Then lDif = lDif + (m_ShadowSize * 2)
+    If m_Shadow Then lDif = lDif + (m_ShadowSize * 2)
     If m_CallOut = True And m_CallOutPosicion = coTop Or m_CallOutPosicion = coBottom Then
         lDif = lDif + m_coLen
     End If
@@ -3289,13 +3289,13 @@ Public Property Let BackColorPressOpacity(ByVal New_BackColorPOpacity As Integer
     Refresh
 End Property
 
-Public Property Get BackShadow() As Boolean
-    BackShadow = m_BackShadow
+Public Property Get Shadow() As Boolean
+    Shadow = m_Shadow
 End Property
 
-Public Property Let BackShadow(ByVal New_Value As Boolean)
-    m_BackShadow = New_Value
-    PropertyChanged "BackShadow"
+Public Property Let Shadow(ByVal New_Value As Boolean)
+    m_Shadow = New_Value
+    PropertyChanged "Shadow"
     CreateShadow
     Refresh
 End Property

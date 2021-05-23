@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
-Object = "{D6F84FAD-6738-419D-846A-64AC9AD4766C}#4.0#0"; "axLabelPlusX.ocx"
+Object = "{D6F84FAD-6738-419D-846A-64AC9AD4766C}#4.0#0"; "axLabelPlus.ocx"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.OCX"
 Begin VB.Form Form1 
    ClientHeight    =   8805
@@ -138,17 +138,17 @@ Begin VB.Form Form1
    Begin VB.TextBox txtTiks 
       Alignment       =   2  'Center
       Height          =   285
-      Left            =   600
+      Left            =   1125
       TabIndex        =   40
       Text            =   "10"
-      Top             =   7155
+      Top             =   7170
       Width           =   345
    End
    Begin MSComctlLib.Slider Slider1 
       Height          =   510
-      Left            =   255
+      Left            =   285
       TabIndex        =   41
-      Top             =   7515
+      Top             =   7860
       Width           =   2085
       _ExtentX        =   3678
       _ExtentY        =   900
@@ -203,7 +203,7 @@ Begin VB.Form Form1
       Width           =   405
    End
    Begin VB.PictureBox Picture2 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H00C00000&
       Height          =   330
       Left            =   7710
       ScaleHeight     =   270
@@ -214,6 +214,7 @@ Begin VB.Form Form1
       Width           =   345
    End
    Begin VB.PictureBox Picture1 
+      BackColor       =   &H0000C000&
       Height          =   330
       Left            =   7710
       ScaleHeight     =   270
@@ -350,7 +351,7 @@ Begin VB.Form Form1
       Left            =   7695
       Locked          =   -1  'True
       TabIndex        =   44
-      Text            =   "Font1"
+      Text            =   "Verdana"
       Top             =   5835
       Width           =   2160
    End
@@ -361,7 +362,7 @@ Begin VB.Form Form1
       Left            =   7695
       Locked          =   -1  'True
       TabIndex        =   43
-      Text            =   "Font2"
+      Text            =   "Tahoma"
       Top             =   6150
       Width           =   2160
    End
@@ -403,11 +404,11 @@ Begin VB.Form Form1
    End
    Begin VB.CommandButton cmdGlowing 
       Caption         =   "Glowing"
-      Height          =   300
-      Left            =   1500
+      Height          =   465
+      Left            =   1665
       TabIndex        =   10
-      Top             =   7185
-      Width           =   855
+      Top             =   7260
+      Width           =   765
    End
    Begin VB.TextBox Text2 
       ForeColor       =   &H00FF0000&
@@ -475,7 +476,7 @@ Begin VB.Form Form1
       Height          =   285
       Left            =   8880
       TabIndex        =   18
-      Text            =   "00"
+      Text            =   "5"
       Top             =   4485
       Width           =   405
    End
@@ -493,7 +494,7 @@ Begin VB.Form Form1
       Height          =   285
       Left            =   8010
       TabIndex        =   14
-      Text            =   "10"
+      Text            =   "7"
       Top             =   4485
       Width           =   405
    End
@@ -503,6 +504,7 @@ Begin VB.Form Form1
       Max             =   50
       TabIndex        =   13
       Top             =   3150
+      Value           =   5
       Width           =   210
    End
    Begin VB.HScrollBar HScroll1 
@@ -511,7 +513,7 @@ Begin VB.Form Form1
       Max             =   50
       TabIndex        =   12
       Top             =   2640
-      Value           =   10
+      Value           =   7
       Width           =   2625
    End
    Begin VB.CheckBox Check1 
@@ -562,6 +564,27 @@ Begin VB.Form Form1
       Top             =   4815
       Width           =   1350
    End
+   Begin VB.Label Label11 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "If GlowTiks value is set=0 then Glowing indefinitely"
+      Height          =   195
+      Left            =   240
+      TabIndex        =   85
+      Top             =   8445
+      Width           =   3645
+   End
+   Begin VB.Label Label10 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "GlowSpeed"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Left            =   285
+      TabIndex        =   84
+      Top             =   7605
+      Width           =   795
+   End
    Begin AXLPCTRL.axLabelPlus axLPGlow 
       Height          =   465
       Index           =   2
@@ -572,9 +595,11 @@ Begin VB.Form Form1
       _ExtentX        =   873
       _ExtentY        =   820
       BackColor       =   8421504
+      BackColorOpacity=   50
       BackColorPress  =   8421504
+      BackColorPressOpacity=   50
       Border          =   -1  'True
-      BorderColor     =   16711680
+      BorderColor     =   65280
       BorderColorOpacity=   0
       BorderCornerLeftTop=   20
       BorderCornerRightTop=   20
@@ -636,9 +661,11 @@ Begin VB.Form Form1
       _ExtentX        =   1058
       _ExtentY        =   1032
       BackColor       =   255
+      BackColorOpacity=   50
       BackColorPress  =   8421504
+      BackColorPressOpacity=   50
       Border          =   -1  'True
-      BorderColor     =   16711680
+      BorderColor     =   65535
       BorderColorOpacity=   0
       BorderCornerLeftTop=   20
       BorderCornerRightTop=   20
@@ -708,7 +735,7 @@ Begin VB.Form Form1
       Left            =   10710
       TabIndex        =   77
       Top             =   135
-      Width           =   2820
+      Width           =   3090
       WordWrap        =   -1  'True
    End
    Begin AXLPCTRL.axLabelPlus axLPValue 
@@ -885,7 +912,6 @@ Begin VB.Form Form1
       Caption1PaddingX=   10
       Caption2PaddingX=   10
       Caption2PaddingY=   20
-      CaptionShadow   =   -1  'True
       BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -907,7 +933,7 @@ Begin VB.Form Form1
       ChangeColorOnClick=   -1  'True
       ChangeOnMouseOver=   0
       ShadowSize      =   10
-      ShadowColor     =   12648447
+      ShadowColor     =   8388736
       HotLineWidth    =   7
       HotLinePosition =   0
       BeginProperty IconFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -943,7 +969,6 @@ Begin VB.Form Form1
       ColorOnMouseOver=   12632256
       ColorOpacityOnMouseOver=   90
       BorderWidth     =   2
-      CaptionAlignmentH=   1
       Caption1        =   "Form1.frx":2A17
       Caption2        =   "Form1.frx":2A59
       Caption1PaddingX=   7
@@ -952,7 +977,7 @@ Begin VB.Form Form1
       Caption2PaddingY=   20
       CaptionShowPrefix=   -1  'True
       BeginProperty Caption1Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
+         Name            =   "Verdana"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -969,6 +994,10 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      Caption1ForeColor=   49152
+      Caption1ForeColorOpacity=   50
+      Caption2ForeColor=   12582912
+      Caption2ForeColorOpacity=   50
       ChangeOnMouseOver=   0
       GradientColorP1 =   0
       GradientColorP1Opacity=   0
@@ -1008,7 +1037,9 @@ Begin VB.Form Form1
       Width           =   720
       _ExtentX        =   1270
       _ExtentY        =   1217
+      BackColorOpacity=   50
       BackColorPress  =   8421504
+      BackColorPressOpacity=   50
       Border          =   -1  'True
       BorderColor     =   16711680
       BorderColorOpacity=   0
@@ -1065,13 +1096,13 @@ Begin VB.Form Form1
    Begin VB.Label Label9 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Tiks"
-      ForeColor       =   &H00FFFFFF&
+      Caption         =   "GlowTiks"
+      ForeColor       =   &H00000000&
       Height          =   195
       Left            =   285
       TabIndex        =   69
       Top             =   7200
-      Width           =   270
+      Width           =   615
    End
    Begin VB.Label Label7 
       AutoSize        =   -1  'True
@@ -1456,7 +1487,7 @@ Begin VB.Form Form1
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Value"
+      Caption         =   "Value [OptionBehavior=TRUE]"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   12
@@ -1469,10 +1500,10 @@ Begin VB.Form Form1
       ForeColor       =   &H00000080&
       Height          =   270
       Index           =   3
-      Left            =   6150
+      Left            =   6105
       TabIndex        =   27
-      Top             =   465
-      Width           =   735
+      Top             =   555
+      Width           =   4050
    End
    Begin VB.Label Label7 
       AutoSize        =   -1  'True
@@ -1756,6 +1787,12 @@ Me.Caption = "AxLabelPlus v" & axLabelPlus1(0).Version & " - New Properties (Mod
 axLPGlow(0).GlowSpeed = CInt(txtTiks.Text)
 axLPGlow(1).GlowSpeed = CInt(txtTiks.Text)
 axLPGlow(2).GlowSpeed = CInt(txtTiks.Text)
+
+With axLPdc
+  .Caption1 = Text1.Text
+  .Caption2 = Text2.Text
+End With
+
 
 End Sub
 
