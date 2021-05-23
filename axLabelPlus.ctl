@@ -51,6 +51,7 @@ Option Explicit
 'Version: 1.6.14 -----------------------------
 '- Updated LoadImage and LoadImagefromPath functions (from original LabelPlus)
 '- Improved Glowing Efect.
+'- Enable Shadow no longer affects the size of the control.
 'Version: 1.6.13 -----------------------------
 '- Added eChangePictureEffect option to ChangeOnMouseOver property.
 '- Added PictureEffectMouseOver property
@@ -666,7 +667,7 @@ Public Sub Draw(ByVal hdc As Long, ByVal hGraphics As Long, ByVal PosX As Long, 
         GdipDrawImageRectI hGraphics, hImgShadow, Xx, Yy, UserControl.ScaleWidth - Abs(ShadowOffsetX), UserControl.ScaleHeight - Abs(ShadowOffsetY)
     End If
     
-    If m_Shadow = True And m_ShadowSize > 0 Then
+    If m_ShadowSize > 0 Then
         X = X + ShadowSize + IIf(ShadowOffsetX < 0, Abs(ShadowOffsetX), 0) '+ PosX
         Y = Y + ShadowSize + IIf(ShadowOffsetY < 0, Abs(ShadowOffsetY), 0) '+ PosY
         lWidth = lWidth - (ShadowSize * 2) - Abs(ShadowOffsetX)
